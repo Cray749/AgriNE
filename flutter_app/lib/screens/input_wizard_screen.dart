@@ -18,8 +18,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../core/theme.dart';
+import '../core/theme_provider.dart';
 import '../core/models.dart';
 import '../core/api_client.dart';
 
@@ -48,7 +50,6 @@ class _InputWizardScreenState extends State<InputWizardScreen> {
 
   // ── Farmer profile (loaded from SharedPreferences) ───────────────────────
   double _landSizeAcres = 1.0;
-  String _farmerName    = 'Farmer';
 
   // ── Submission state ─────────────────────────────────────────────────────
   bool _isLoading = false;
@@ -63,7 +64,6 @@ class _InputWizardScreenState extends State<InputWizardScreen> {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
       _landSizeAcres = prefs.getDouble('land_size_acres') ?? 1.0;
-      _farmerName    = prefs.getString('farmer_name')    ?? 'Farmer';
     });
   }
 
@@ -164,15 +164,25 @@ class _InputWizardScreenState extends State<InputWizardScreen> {
               )
             : null,
         actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 16),
-            child: Center(
-              child: Text(
-                'Hi, $_farmerName 👋',
-                style: kStyleLabel.copyWith(color: kTextSecondary),
-              ),
+          // Theme toggle
+          IconButton(
+            icon: Icon(
+              context.watch<ThemeProvider>().isDark
+                  ? Icons.light_mode_outlined
+                  : Icons.dark_mode_outlined,
+              color: kGreenAccent,
+              size: 22,
             ),
+            tooltip: 'Toggle theme',
+            onPressed: () => context.read<ThemeProvider>().toggle(),
           ),
+          // Farmer profile
+          IconButton(
+            icon: const Icon(Icons.account_circle_outlined, color: kGreenAccent, size: 22),
+            tooltip: 'My Profile',
+            onPressed: () => Navigator.pushNamed(context, '/farmer_profile'),
+          ),
+          const SizedBox(width: 4),
         ],
       ),
       body: Column(

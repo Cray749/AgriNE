@@ -3,3 +3,5 @@ uvicorn[standard]
 streamlit
 pydantic
 google-generativeai
+fpdf2>=2.7.9
+requests>=2.31.0

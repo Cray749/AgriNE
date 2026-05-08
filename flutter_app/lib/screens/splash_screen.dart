@@ -147,18 +147,20 @@ class _SplashScreenState extends State<SplashScreen>
                           ),
                         ),
                       ),
-                      // Logo circle
+                      // ICAR Logo circle (white bg so the logo is clearly visible)
                       SlideTransition(
                         position: _logoSlide,
                         child: FadeTransition(
                           opacity: _logoFade,
                           child: Container(
-                            width: 92,
-                            height: 92,
+                            width: 96,
+                            height: 96,
+                            clipBehavior: Clip.antiAlias,
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              color: kBgCard,
-                              border: Border.all(color: kGreenAccent.withOpacity(0.65), width: 2),
+                              color: Colors.white,
+                              border: Border.all(
+                                  color: kGreenAccent.withOpacity(0.65), width: 2),
                               boxShadow: [
                                 BoxShadow(
                                   color: kGreenAccent.withOpacity(0.30),
@@ -167,7 +169,18 @@ class _SplashScreenState extends State<SplashScreen>
                                 ),
                               ],
                             ),
-                            child: const Icon(Icons.eco_rounded, color: kGreenAccent, size: 46),
+                            child: Padding(
+                              padding: const EdgeInsets.all(10),
+                              child: Image.asset(
+                                'assets/images/icar_logo.png',
+                                fit: BoxFit.contain,
+                                errorBuilder: (_, __, ___) => const Icon(
+                                  Icons.eco_rounded,
+                                  color: kGreenAccent,
+                                  size: 46,
+                                ),
+                              ),
+                            ),
                           ),
                         ),
                       ),

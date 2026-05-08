@@ -1,56 +1,40 @@
 /// AgriSutra NE — App Entry Point
 /// =================================
 /// Sets up:
-///   1. Global theme (from core/theme.dart)
-///   2. Named route table (all 6 screens)
-///   3. Error widget for development (shows red border on widget errors)
-///
-/// Route table summary:
-///   /              → SplashScreen    (auto-routes based on profile existence)
-///   /landing       → LandingScreen   (first-time visitor, marketing page)
-///   /login         → LoginScreen     (phone OTP — mock for Phase 1)
-///   /profile_setup → ProfileSetupScreen (name + district + land size)
-///   /wizard        → InputWizardScreen  (crop + soil + yield input, 3 pages)
-///   /results       → ResultsScreen   (fertilizer prescription cards)
-///
-/// Arguments passing:
-///   /results receives a RecommendResponse passed as Navigator argument:
-///     Navigator.pushNamed(context, '/results', arguments: response)
-///   ResultsScreen reads it via: ModalRoute.of(context)!.settings.arguments
+///   1. ThemeProvider (light/dark toggle, persisted to SharedPreferences)
+///   2. Global theme (from core/theme.dart)
+///   3. Named route table (all 7 screens)
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 
 import 'core/theme.dart';
+import 'core/theme_provider.dart';
 import 'screens/splash_screen.dart';
 import 'screens/landing_screen.dart';
 import 'screens/login_screen.dart';
 import 'screens/profile_setup_screen.dart';
 import 'screens/input_wizard_screen.dart';
 import 'screens/results_screen.dart';
+import 'screens/farmer_profile_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Lock orientation to portrait — the app's layout is portrait-first.
-  // Farmers hold their phones upright. Landscape causes layout overflow on
-  // cheap Android phones with small screens.
+  // Lock to portrait — farmers hold phones upright
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
 
-  // Style the Android status bar to match the dark background.
-  SystemChrome.setSystemUIOverlayStyle(
-    const SystemUiOverlayStyle(
-      statusBarColor: Colors.transparent,
-      statusBarIconBrightness: Brightness.light,
-      systemNavigationBarColor: kBgDark,
-      systemNavigationBarIconBrightness: Brightness.light,
+  // Status bar styling is handled dynamically per theme in AgriSutraApp
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => ThemeProvider(),
+      child: const AgriSutraApp(),
     ),
   );
-
-  runApp(const AgriSutraApp());
 }
 
 class AgriSutraApp extends StatelessWidget {
@@ -58,42 +42,45 @@ class AgriSutraApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = context.watch<ThemeProvider>();
+
+    // Update system UI bar colors to match the active theme
+    SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+        statusBarIconBrightness:
+            themeProvider.isDark ? Brightness.light : Brightness.dark,
+        systemNavigationBarColor:
+            themeProvider.isDark ? kBgDark : kLightBgPrimary,
+        systemNavigationBarIconBrightness:
+            themeProvider.isDark ? Brightness.light : Brightness.dark,
+      ),
+    );
+
     return MaterialApp(
-      // ── App metadata ──────────────────────────────────────────────────────
       title: 'AgriSutra NE',
-      debugShowCheckedModeBanner: false, // Hide the red DEBUG ribbon
+      debugShowCheckedModeBanner: false,
 
-      // ── Theme ─────────────────────────────────────────────────────────────
-      // buildAppTheme() is defined in core/theme.dart.
-      // All colors, fonts, button styles, and input decoration come from there.
-      theme: buildAppTheme(),
+      // Both themes defined — themeMode switches between them
+      theme:     buildLightTheme(),
+      darkTheme: buildAppTheme(),
+      themeMode: themeProvider.isDark ? ThemeMode.dark : ThemeMode.light,
 
-      // ── Initial route ─────────────────────────────────────────────────────
-      // SplashScreen checks SharedPreferences and routes automatically.
-      // Do NOT set home: and initialRoute: at the same time.
       initialRoute: '/',
 
-      // ── Route table ───────────────────────────────────────────────────────
       routes: {
-        '/':              (ctx) => const SplashScreen(),
-        '/landing':       (ctx) => const LandingScreen(),
-        '/login':         (ctx) => const LoginScreen(),
-        '/profile_setup': (ctx) => const ProfileSetupScreen(),
-        '/wizard':        (ctx) => const InputWizardScreen(),
-        '/results':       (ctx) => const ResultsScreen(),
+        '/':               (ctx) => const SplashScreen(),
+        '/landing':        (ctx) => const LandingScreen(),
+        '/login':          (ctx) => const LoginScreen(),
+        '/profile_setup':  (ctx) => const ProfileSetupScreen(),
+        '/wizard':         (ctx) => const InputWizardScreen(),
+        '/results':        (ctx) => const ResultsScreen(),
+        '/farmer_profile': (ctx) => const FarmerProfileScreen(),
       },
 
-      // ── Unknown route fallback ────────────────────────────────────────────
-      // If navigation is ever called with a route that doesn't exist,
-      // show a friendly error screen instead of a crash.
       onUnknownRoute: (settings) => MaterialPageRoute(
         builder: (_) => _UnknownRouteScreen(routeName: settings.name ?? '?'),
       ),
-
-      // ── Global page transitions ───────────────────────────────────────────
-      // Default Material slide transition is fine. The flutter_animate package
-      // adds micro-animations inside each screen (fade-in, slide-up cards).
-      // No custom PageTransitionsTheme needed at this level.
     );
   }
 }
@@ -103,9 +90,6 @@ class AgriSutraApp extends StatelessWidget {
 //  FALLBACK SCREEN (unknown route)
 // ════════════════════════════════════════════════════════════════════════════
 
-/// Shown if Navigator is ever called with an unregistered route name.
-/// This should never appear in production, but protects against typos during
-/// development (e.g. Navigator.pushNamed(ctx, '/reults') with a typo).
 class _UnknownRouteScreen extends StatelessWidget {
   final String routeName;
   const _UnknownRouteScreen({required this.routeName});

@@ -28,7 +28,7 @@ class ApiClient {
   // ── Base URL ───────────────────────────────────────────────────────────────
   // Android emulator uses 10.0.2.2 to reach the host machine's localhost.
   // Change this to your Railway URL before building the release APK.
-  static const String kBaseUrl = 'http://172.31.32.231:8000';
+  static const String kBaseUrl = 'http://172.31.34.114:8000';
 
   // ── Timeout ────────────────────────────────────────────────────────────────
   // 30 seconds is generous. FPE math takes < 1 ms; most time is network.

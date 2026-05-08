@@ -5,56 +5,70 @@
 /// Rules:
 ///   1. Never hardcode a color, font size, or padding anywhere in the app.
 ///      Always import from this file.
-///   2. The color palette is optimised for dark-mode on cheap Android screens
-///      (low brightness, AMOLED panels) used by farmers in bright daylight.
-///   3. Minimum body font: 16sp. Minimum touch target: 48×48px.
-///      These are non-negotiable for a 40-45 year old rural user base.
+///   2. The dark palette is optimised for cheap AMOLED Android screens used
+///      by farmers in bright daylight.
+///   3. Minimum body font: 16sp. Minimum touch target: 48x48px.
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 // ════════════════════════════════════════════════════════════════════════════
-//  COLOUR PALETTE
+//  DARK PALETTE (default)
 // ════════════════════════════════════════════════════════════════════════════
 
-// ── Primary greens (trust, nature, agriculture) ─────────────────────────────
-const Color kGreenPrimary = Color(0xFF2E7D32); // Deep forest green — buttons, headers
-const Color kGreenAccent  = Color(0xFF69F0AE); // Bright mint — CTAs, highlighted values
+// ── Primary greens — richer, ICAR-grade ──────────────────────────────────────
+const Color kGreenPrimary = Color(0xFF1B5E20); // Deep forest green — buttons, headers
+const Color kGreenAccent  = Color(0xFF00E676); // Vivid spring green — CTAs, values
 const Color kGreenLight   = Color(0xFFE8F5E9); // Very light green — subtle backgrounds
-const String kFontFamily = 'Poppins';
+const String kFontFamily  = 'Poppins';
 
-// ── Backgrounds ─────────────────────────────────────────────────────────────
-const Color kBgDark       = Color(0xFF0F1117); // Near-black — main scaffold background
-const Color kBgCard       = Color(0xFF1A2420); // Slightly lighter card surface
-const Color kBgCardBorder = Color(0xFF2D4A3E); // Card border / divider lines
+// ── Dark Backgrounds — warmer, less harsh than pure black ────────────────────
+const Color kBgDark       = Color(0xFF111814); // Warm near-black with green tint
+const Color kBgCard       = Color(0xFF1C2B22); // Richer card surface
+const Color kBgCardBorder = Color(0xFF2D4A35); // Card border / divider lines
 
 // ── Text ────────────────────────────────────────────────────────────────────
 const Color kTextPrimary   = Color(0xFFE0E0E0); // Off-white — main body text
 const Color kTextSecondary = Color(0xFF90A4AE); // Cool grey — labels, subtitles
 const Color kTextHighlight = Color(0xFFFFFFFF); // Pure white — critical values
 
-// ── Nutrient-specific (maps exactly to N → P → K, never swap these) ─────────
-const Color kColorN = Color(0xFF69F0AE); // Mint green — Nitrogen  / Urea
-const Color kColorP = Color(0xFF81D4FA); // Sky blue   — Phosphorus / SSP
-const Color kColorK = Color(0xFFFFCC80); // Warm amber — Potassium  / MOP
+// ── Nutrient-specific (maps exactly to N -> P -> K, never swap these) ─────────
+const Color kColorN = Color(0xFF69F0AE); // Mint green  — Nitrogen  / Urea
+const Color kColorP = Color(0xFF40C4FF); // Bright sky blue — Phosphorus / SSP
+const Color kColorK = Color(0xFFFFD600); // Harvest yellow — Potassium / MOP
 
 // ── Status ──────────────────────────────────────────────────────────────────
 const Color kSuccess = Color(0xFF4CAF50);
 const Color kWarning = Color(0xFFFF9800);
 const Color kError   = Color(0xFFE53935);
 
-// ── Fertility class colours (used in chips on wizard and results) ────────────
-const Color kFertilityLow    = Color(0xFFEF5350); // Red   — Low fertility
-const Color kFertilityMedium = Color(0xFFFFCA28); // Amber — Medium fertility
-const Color kFertilityHigh   = Color(0xFF66BB6A); // Green — High fertility
+// ── Fertility class colours ──────────────────────────────────────────────────
+const Color kFertilityLow    = Color(0xFFEF5350);
+const Color kFertilityMedium = Color(0xFFFFCA28);
+const Color kFertilityHigh   = Color(0xFF66BB6A);
+
+// ── Gradient for header banners ───────────────────────────────────────────────
+const List<Color> kGradientHeader = [
+  Color(0xFF1B5E20),
+  Color(0xFF2E7D32),
+  Color(0xFF388E3C),
+];
+
+
+// ════════════════════════════════════════════════════════════════════════════
+//  LIGHT PALETTE
+// ════════════════════════════════════════════════════════════════════════════
+
+const Color kLightBgPrimary     = Color(0xFFF1F8E9); // Soft warm white-green
+const Color kLightBgCard        = Color(0xFFFFFFFF);
+const Color kLightBgCardBorder  = Color(0xFFDCEDC8);
+const Color kLightTextPrimary   = Color(0xFF1B2E1A);
+const Color kLightTextSecondary = Color(0xFF558B2F);
 
 
 // ════════════════════════════════════════════════════════════════════════════
 //  TYPOGRAPHY  (Poppins via google_fonts)
 // ════════════════════════════════════════════════════════════════════════════
-//
-// Usage:  Text("Hello", style: kStyleHeadingXL)
-// All sizes are in logical pixels (sp ≡ lp in Flutter).
 
 final TextStyle kStyleHeadingXL = GoogleFonts.poppins(
   fontSize: 28,
@@ -78,7 +92,7 @@ final TextStyle kStyleHeadingM = GoogleFonts.poppins(
 );
 
 final TextStyle kStyleBodyL = GoogleFonts.poppins(
-  fontSize: 16, // ← Minimum for farmer readability. Do NOT go below this.
+  fontSize: 16,
   fontWeight: FontWeight.w400,
   color: kTextPrimary,
   height: 1.5,
@@ -99,7 +113,6 @@ final TextStyle kStyleLabel = GoogleFonts.poppins(
 );
 
 /// The BIG number shown on results cards — urea/ssp/mop kg/ha.
-/// Must be unmissable even in bright sunlight.
 final TextStyle kStyleValueXL = GoogleFonts.poppins(
   fontSize: 36,
   fontWeight: FontWeight.w700,
@@ -114,7 +127,6 @@ final TextStyle kStyleValueL = GoogleFonts.poppins(
   height: 1.2,
 );
 
-/// Convenience: copy a style with a different color.
 extension TextStyleX on TextStyle {
   TextStyle withColor(Color c) => copyWith(color: c);
   TextStyle withSize(double s)  => copyWith(fontSize: s);
@@ -126,18 +138,15 @@ extension TextStyleX on TextStyle {
 //  SPACING & SHAPE
 // ════════════════════════════════════════════════════════════════════════════
 
-// ── Border radii ─────────────────────────────────────────────────────────────
-const double kRadiusCard   = 16.0;  // Main content cards
-const double kRadiusButton = 12.0;  // Buttons
-const double kRadiusChip   = 24.0;  // Pill-shaped selection chips
-const double kRadiusSmall  = 8.0;   // Inner elements, badges
+const double kRadiusCard   = 16.0;
+const double kRadiusButton = 12.0;
+const double kRadiusChip   = 24.0;
+const double kRadiusSmall  = 8.0;
 
-// ── Padding ──────────────────────────────────────────────────────────────────
 const EdgeInsets kPaddingScreen = EdgeInsets.symmetric(horizontal: 20, vertical: 16);
 const EdgeInsets kPaddingCard   = EdgeInsets.all(20);
 const EdgeInsets kPaddingButton = EdgeInsets.symmetric(horizontal: 24, vertical: 16);
 
-// ── Standard gaps ────────────────────────────────────────────────────────────
 const SizedBox kGapXS = SizedBox(height: 4);
 const SizedBox kGapS  = SizedBox(height: 8);
 const SizedBox kGapM  = SizedBox(height: 16);
@@ -149,7 +158,7 @@ const SizedBox kGapHorizontalM = SizedBox(width: 16);
 
 
 // ════════════════════════════════════════════════════════════════════════════
-//  CARD DECORATION  (used throughout the app for consistency)
+//  CARD DECORATIONS
 // ════════════════════════════════════════════════════════════════════════════
 
 BoxDecoration kCardDecoration({Color? borderColor}) => BoxDecoration(
@@ -165,21 +174,19 @@ BoxDecoration kCardDecoration({Color? borderColor}) => BoxDecoration(
   ],
 );
 
-/// A card with a colored top-border accent — used for nutrient result cards.
 BoxDecoration kNutrientCardDecoration(Color accentColor) => BoxDecoration(
   color: kBgCard,
   borderRadius: BorderRadius.circular(kRadiusCard),
   border: Border.all(color: accentColor.withOpacity(0.45), width: 1.5),
   boxShadow: [
     BoxShadow(
-      color: accentColor.withOpacity(0.12),
-      blurRadius: 16,
-      offset: const Offset(0, 4),
+      color: accentColor.withOpacity(0.15),
+      blurRadius: 20,
+      offset: const Offset(0, 6),
     ),
   ],
 );
 
-/// Inner card (used for "Why?" expandable sections inside result cards).
 BoxDecoration kInnerCardDecoration() => BoxDecoration(
   color: kBgDark,
   borderRadius: BorderRadius.circular(kRadiusSmall),
@@ -191,7 +198,6 @@ BoxDecoration kInnerCardDecoration() => BoxDecoration(
 //  FERTILITY CLASS HELPERS
 // ════════════════════════════════════════════════════════════════════════════
 
-/// Returns the display color for a fertility class string.
 Color fertilityClassColor(String fc) {
   switch (fc.toLowerCase()) {
     case 'low':    return kFertilityLow;
@@ -200,7 +206,6 @@ Color fertilityClassColor(String fc) {
   }
 }
 
-/// Returns the display label with emoji for a fertility class.
 String fertilityClassLabel(String fc) {
   switch (fc.toLowerCase()) {
     case 'low':    return '🔴 LOW';
@@ -211,7 +216,7 @@ String fertilityClassLabel(String fc) {
 
 
 // ════════════════════════════════════════════════════════════════════════════
-//  MATERIAL THEME  (passed into MaterialApp)
+//  DARK MATERIAL THEME  (default)
 // ════════════════════════════════════════════════════════════════════════════
 
 ThemeData buildAppTheme() {
@@ -228,33 +233,29 @@ ThemeData buildAppTheme() {
       error:     kError,
     ),
 
-    // AppBar
     appBarTheme: AppBarTheme(
       backgroundColor: kBgDark,
       elevation: 0,
       centerTitle: true,
       titleTextStyle: kStyleHeadingM,
       iconTheme: const IconThemeData(color: kGreenAccent),
+      surfaceTintColor: Colors.transparent,
     ),
 
-    // ElevatedButton default style (all buttons derived from this)
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
         backgroundColor: kGreenPrimary,
         foregroundColor: kTextHighlight,
-        minimumSize: const Size(double.infinity, 56), // full-width, 56px tall
+        minimumSize: const Size(double.infinity, 56),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(kRadiusButton),
         ),
-        textStyle: GoogleFonts.poppins(
-          fontSize: 17,
-          fontWeight: FontWeight.w600,
-        ),
-        elevation: 3,
+        textStyle: GoogleFonts.poppins(fontSize: 17, fontWeight: FontWeight.w600),
+        elevation: 4,
+        shadowColor: kGreenPrimary.withOpacity(0.5),
       ),
     ),
 
-    // OutlinedButton (secondary actions)
     outlinedButtonTheme: OutlinedButtonThemeData(
       style: OutlinedButton.styleFrom(
         foregroundColor: kGreenAccent,
@@ -263,14 +264,19 @@ ThemeData buildAppTheme() {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(kRadiusButton),
         ),
-        textStyle: GoogleFonts.poppins(
-          fontSize: 16,
-          fontWeight: FontWeight.w600,
-        ),
+        textStyle: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.w600),
       ),
     ),
 
-    // TextField / Input decoration
+    cardTheme: CardTheme(
+      color: kBgCard,
+      elevation: 8,
+      shadowColor: kGreenAccent.withOpacity(0.2),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(kRadiusCard),
+      ),
+    ),
+
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
       fillColor: kBgCard,
@@ -285,41 +291,37 @@ ThemeData buildAppTheme() {
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(kRadiusSmall),
-        borderSide: const BorderSide(color: kGreenAccent, width: 1.8),
+        borderSide: const BorderSide(color: kGreenAccent, width: 2),
       ),
       labelStyle: kStyleBodyM,
       hintStyle: kStyleBodyM.withColor(kTextSecondary.withOpacity(0.6)),
     ),
 
-    // Slider
     sliderTheme: const SliderThemeData(
-      activeTrackColor:   kGreenPrimary,
-      inactiveTrackColor: kBgCardBorder,
-      thumbColor:         kGreenAccent,
-      overlayColor:       Color(0x2269F0AE),
+      activeTrackColor:    kGreenPrimary,
+      inactiveTrackColor:  kBgCardBorder,
+      thumbColor:          kGreenAccent,
+      overlayColor:        Color(0x2200E676),
       valueIndicatorColor: kGreenPrimary,
     ),
 
-    // Chip
     chipTheme: ChipThemeData(
-      backgroundColor:   kBgCard,
-      selectedColor:     kGreenPrimary,
-      labelStyle:        kStyleBodyM,
-      side:              const BorderSide(color: kBgCardBorder),
+      backgroundColor: kBgCard,
+      selectedColor:   kGreenPrimary,
+      labelStyle:      kStyleBodyM,
+      side:            const BorderSide(color: kBgCardBorder),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(kRadiusChip),
       ),
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
     ),
 
-    // Divider
     dividerTheme: const DividerThemeData(
       color:     kBgCardBorder,
       thickness: 1,
       space:     1,
     ),
 
-    // SnackBar
     snackBarTheme: SnackBarThemeData(
       backgroundColor:  kBgCard,
       contentTextStyle: kStyleBodyM.withColor(kTextPrimary),
@@ -329,15 +331,136 @@ ThemeData buildAppTheme() {
       ),
     ),
 
-    // Progress indicator
     progressIndicatorTheme: const ProgressIndicatorThemeData(
-      color:           kGreenAccent,
+      color:            kGreenAccent,
       linearTrackColor: kBgCardBorder,
     ),
 
     textTheme: GoogleFonts.poppinsTextTheme(base.textTheme).apply(
       bodyColor:    kTextPrimary,
       displayColor: kTextHighlight,
+    ),
+  );
+}
+
+
+// ════════════════════════════════════════════════════════════════════════════
+//  LIGHT MATERIAL THEME
+// ════════════════════════════════════════════════════════════════════════════
+
+ThemeData buildLightTheme() {
+  final base = ThemeData.light();
+
+  return base.copyWith(
+    useMaterial3: true,
+    scaffoldBackgroundColor: kLightBgPrimary,
+
+    colorScheme: const ColorScheme.light(
+      primary:   kGreenPrimary,
+      secondary: Color(0xFF2E7D32),
+      surface:   kLightBgCard,
+      error:     kError,
+    ),
+
+    appBarTheme: AppBarTheme(
+      backgroundColor: kLightBgPrimary,
+      elevation: 0,
+      centerTitle: true,
+      titleTextStyle: GoogleFonts.poppins(
+        fontSize: 18,
+        fontWeight: FontWeight.w600,
+        color: kLightTextPrimary,
+      ),
+      iconTheme: const IconThemeData(color: kGreenPrimary),
+      surfaceTintColor: Colors.transparent,
+    ),
+
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: kGreenPrimary,
+        foregroundColor: Colors.white,
+        minimumSize: const Size(double.infinity, 56),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(kRadiusButton),
+        ),
+        textStyle: GoogleFonts.poppins(fontSize: 17, fontWeight: FontWeight.w600),
+        elevation: 4,
+        shadowColor: kGreenPrimary.withOpacity(0.4),
+      ),
+    ),
+
+    outlinedButtonTheme: OutlinedButtonThemeData(
+      style: OutlinedButton.styleFrom(
+        foregroundColor: kGreenPrimary,
+        side: const BorderSide(color: kGreenPrimary, width: 1.5),
+        minimumSize: const Size(double.infinity, 52),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(kRadiusButton),
+        ),
+        textStyle: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.w600),
+      ),
+    ),
+
+    cardTheme: CardTheme(
+      color: kLightBgCard,
+      elevation: 4,
+      shadowColor: kGreenPrimary.withOpacity(0.15),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(kRadiusCard),
+        side: const BorderSide(color: kLightBgCardBorder, width: 1),
+      ),
+    ),
+
+    inputDecorationTheme: InputDecorationTheme(
+      filled: true,
+      fillColor: kLightBgCard,
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(kRadiusSmall),
+        borderSide: const BorderSide(color: kLightBgCardBorder),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(kRadiusSmall),
+        borderSide: const BorderSide(color: kLightBgCardBorder),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(kRadiusSmall),
+        borderSide: const BorderSide(color: kGreenPrimary, width: 2),
+      ),
+      labelStyle: GoogleFonts.poppins(fontSize: 14, color: kLightTextSecondary),
+      hintStyle: GoogleFonts.poppins(fontSize: 14, color: kLightTextSecondary.withOpacity(0.6)),
+    ),
+
+    chipTheme: ChipThemeData(
+      backgroundColor: kLightBgCard,
+      selectedColor:   kGreenPrimary,
+      labelStyle: GoogleFonts.poppins(fontSize: 14, color: kLightTextPrimary),
+      side: const BorderSide(color: kLightBgCardBorder),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(kRadiusChip)),
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+    ),
+
+    dividerTheme: const DividerThemeData(
+      color: kLightBgCardBorder,
+      thickness: 1,
+      space: 1,
+    ),
+
+    snackBarTheme: SnackBarThemeData(
+      backgroundColor:  kLightBgCard,
+      contentTextStyle: GoogleFonts.poppins(fontSize: 14, color: kLightTextPrimary),
+      behavior:         SnackBarBehavior.floating,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(kRadiusSmall)),
+    ),
+
+    progressIndicatorTheme: const ProgressIndicatorThemeData(
+      color:            kGreenPrimary,
+      linearTrackColor: kLightBgCardBorder,
+    ),
+
+    textTheme: GoogleFonts.poppinsTextTheme(base.textTheme).apply(
+      bodyColor:    kLightTextPrimary,
+      displayColor: kLightTextPrimary,
     ),
   );
 }

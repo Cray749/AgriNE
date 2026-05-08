@@ -74,15 +74,19 @@ class FertilizerResultCard extends StatelessWidget {
           ),
           const SizedBox(height: 10),
 
-          // Big per-ha number
-          Text(
-            '${result.productKgHa}',
-            style: TextStyle(
-              fontFamily: kFontFamily,
-              fontSize: 28,
-              fontWeight: FontWeight.w700,
-              color: c,
-              height: 1.0,
+          // Big per-ha number — FittedBox prevents overflow on 360px-wide cheap Androids
+          FittedBox(
+            fit: BoxFit.scaleDown,
+            alignment: Alignment.centerLeft,
+            child: Text(
+              result.productKgHa.toStringAsFixed(1),
+              style: TextStyle(
+                fontFamily: kFontFamily,
+                fontSize: 28,
+                fontWeight: FontWeight.w700,
+                color: c,
+                height: 1.0,
+              ),
             ),
           ),
           Text(
@@ -102,21 +106,19 @@ class FertilizerResultCard extends StatelessWidget {
               children: [
                 Icon(Icons.agriculture, size: 13, color: kTextSecondary),
                 const SizedBox(width: 4),
-                Text(
-                  'Total: ',
-                  style: TextStyle(
-                    fontFamily: kFontFamily,
-                    fontSize: 12,
-                    color: kTextSecondary,
-                  ),
-                ),
-                Text(
-                  '${result.productKgTotal} kg',
-                  style: TextStyle(
-                    fontFamily: kFontFamily,
-                    fontSize: 13,
-                    fontWeight: FontWeight.w700,
-                    color: kTextHighlight,
+                Expanded(
+                  child: FittedBox(
+                    fit: BoxFit.scaleDown,
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      'Total: ${result.productKgTotal.toStringAsFixed(1)} kg',
+                      style: TextStyle(
+                        fontFamily: kFontFamily,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                        color: kTextHighlight,
+                      ),
+                    ),
                   ),
                 ),
               ],

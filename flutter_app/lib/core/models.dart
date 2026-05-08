@@ -308,3 +308,38 @@ class SoilInputState {
     return 'medium';
   }
 }
+
+
+// ════════════════════════════════════════════════════════════════════════════
+//  CROPPING HISTORY  (stored locally in SharedPreferences)
+// ════════════════════════════════════════════════════════════════════════════
+
+/// One entry in the farmer's cropping history log.
+/// Serialised as a JSON object inside a JSON array string.
+class CropHistoryEntry {
+  final String season; // "Kharif 2025", "Rabi 2025-26"
+  final String crop;   // "Maize", "Kholar"
+  final double yield;  // actual yield achieved in q/ha
+  final String notes;  // optional free text
+
+  const CropHistoryEntry({
+    required this.season,
+    required this.crop,
+    required this.yield,
+    this.notes = '',
+  });
+
+  Map<String, dynamic> toJson() => {
+    'season': season,
+    'crop':   crop,
+    'yield':  yield,
+    'notes':  notes,
+  };
+
+  factory CropHistoryEntry.fromJson(Map<String, dynamic> j) => CropHistoryEntry(
+    season: j['season'] as String,
+    crop:   j['crop']   as String,
+    yield:  (j['yield'] as num).toDouble(),
+    notes:  j['notes']  as String? ?? '',
+  );
+}

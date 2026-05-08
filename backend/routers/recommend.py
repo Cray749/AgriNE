@@ -30,6 +30,7 @@ from ..nutrient_utils import (
     get_phosphorus_details,
     get_potassium_details,
 )
+from ..output_enricher import enrich_output
 import uuid
 from datetime import datetime, timezone
 
@@ -125,23 +126,37 @@ def get_recommendation(req: RecommendRequest) -> RecommendResponse:
             detail=f"Potassium computation failed: {exc}",
         )
 
-    # ── STEP 3: Enrich with human-readable details (nutrient_utils) ────────────
+    # ── STEP 3: Clamp negative FPE values to 0 (CRITICAL — prevents UI crash) ──
+    # output_enricher.enrich_output clamps all negative kg values to 0.0.
+    # Negative values can occur on very high-fertility soils — scientifically
+    # valid (no fertilizer needed) but would crash the Flutter card layout.
+    fn_clamped, fp_clamped, fk_clamped, _ = enrich_output(
+        n_res["FN"], p_res["FP"], k_res["FK"]
+    )
+    n_res["FN"]        = fn_clamped
+    n_res["urea_kg_ha"] = round(fn_clamped / 0.46, 2)
+    p_res["FP"]        = fp_clamped
+    p_res["ssp_kg_ha"]  = round(fp_clamped / 0.16, 2)
+    k_res["FK"]        = fk_clamped
+    k_res["mop_kg_ha"]  = round(fk_clamped / 0.60, 2)
+
+    # ── STEP 4: Enrich with human-readable details (nutrient_utils) ────────────
     # These functions return why / schedule / improvement / conversion strings.
     n_details = get_nitrogen_details(n_res["FN"], n_res["urea_kg_ha"])
     p_details = get_phosphorus_details(p_res["FP"], p_res["ssp_kg_ha"])
     k_details = get_potassium_details(k_res["FK"], k_res["mop_kg_ha"])
 
-    # ── STEP 4: Resolve final fertility class for UI display ────────────────────
+    # ── STEP 5: Resolve final fertility class for UI display ────────────────────
     n_fc = _get_fertility_class(req.nitrogen_input, crop, "N")
     p_fc = _get_fertility_class(req.phosphorus_input, crop, "P")
     k_fc = _get_fertility_class(req.potassium_input, crop, "K")
 
-    # ── STEP 5: Extract commercial product amounts ──────────────────────────────
-    urea = n_res["urea_kg_ha"]   # Urea kg/ha
-    ssp  = p_res["ssp_kg_ha"]    # SSP  kg/ha
-    mop  = k_res["mop_kg_ha"]    # MOP  kg/ha
+    # ── STEP 6: Extract commercial product amounts ──────────────────────────────
+    urea = n_res["urea_kg_ha"]   # Urea kg/ha (clamped ≥ 0)
+    ssp  = p_res["ssp_kg_ha"]    # SSP  kg/ha (clamped ≥ 0)
+    mop  = k_res["mop_kg_ha"]    # MOP  kg/ha (clamped ≥ 0)
 
-    # ── STEP 6: Build application schedule ─────────────────────────────────────
+    # ── STEP 7: Build application schedule ─────────────────────────────────────
     # Rule:  Urea → 50% basal + 25% at 30 DAS + 25% at 60 DAS
     #        SSP  → 100% basal (phosphorus is immobile, always basal)
     #        MOP  → 100% basal
@@ -170,7 +185,7 @@ def get_recommendation(req: RecommendRequest) -> RecommendResponse:
         ),
     ]
 
-    # ── STEP 7: Assemble and return the full response ───────────────────────────
+    # ── STEP 8: Assemble and return the full response ───────────────────────────
     return RecommendResponse(
         crop_display=CROP_DISPLAY_MAP.get(crop, crop.capitalize()),
         target_yield=T,
