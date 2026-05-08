@@ -1,43 +1,43 @@
 # render.yaml — Render Blueprint for AgriSutra NE
-# Deploy all three services from the single repo: mrinalireeti04/agrisutra-ne
+# Deploys two backend services from the single repo.
 #
 # Services:
-#   1. agrisutra-backend  — FastAPI (Web Service)
-#   2. agrisutra-streamlit — Streamlit app (Web Service)
-#   3. agrisutra-flutter  — Flutter web build (Static Site)
+#   1. agrisutra-backend   — FastAPI (the one Flutter app talks to)
+#   2. agrisutra-streamlit — Streamlit web UI for desktop/browser users
 #
-# After pushing this file, go to https://dashboard.render.com
-# → "New" → "Blueprint" → connect this repo.
+# NOTE: The Flutter Android app is distributed as an APK directly.
+#       No static site deployment needed for the Android app.
+#
+# After pushing this file:
+#   → https://dashboard.render.com → "New" → "Blueprint" → connect repo
 
 services:
 
   # ──────────────────────────────────────────────────────────────
-  # 1. FastAPI Backend
+  # 1. FastAPI Backend  ← THIS is what the Flutter app calls
   # ──────────────────────────────────────────────────────────────
   - type: web
     name: agrisutra-backend
     runtime: python
-    region: oregon            # change to "frankfurt" or "singapore" if preferred
+    region: oregon            # change to "singapore" for lower latency from India
     plan: free
     rootDir: .                # run from repo root so `backend` is a package
     buildCommand: pip install -r backend/requirements.txt
     startCommand: uvicorn backend.main:app --host 0.0.0.0 --port $PORT
     healthCheckPath: /health
     envVars:
-      - key: GOOGLE_API_KEY
-        sync: false           # set manually in Render dashboard — DO NOT commit the value
       - key: PYTHON_VERSION
         value: "3.11"
 
   # ──────────────────────────────────────────────────────────────
-  # 2. Streamlit App
+  # 2. Streamlit App  (for boss to use on browser / desktop)
   # ──────────────────────────────────────────────────────────────
   - type: web
     name: agrisutra-streamlit
     runtime: python
     region: oregon
     plan: free
-    rootDir: .
+    rootDir: agrisutra-ne-main
     buildCommand: pip install -r requirements.txt
     startCommand: >
       streamlit run app.py
@@ -47,29 +47,5 @@ services:
       --server.enableCORS false
       --server.enableXsrfProtection false
     envVars:
-      - key: GOOGLE_API_KEY
-        sync: false           # set manually in Render dashboard
       - key: PYTHON_VERSION
         value: "3.11"
-
-  # ──────────────────────────────────────────────────────────────
-  # 3. Flutter Web — Static Site
-  #    IMPORTANT: You must build Flutter web LOCALLY first and
-  #    commit flutter_app/build/web/ to the repo before deploying.
-  #    See DEPLOYMENT_GUIDE.md for exact steps.
-  # ──────────────────────────────────────────────────────────────
-  - type: web
-    name: agrisutra-flutter
-    runtime: static
-    region: oregon
-    plan: free
-    rootDir: flutter_app/build/web   # pre-built output committed to repo
-    staticPublishPath: .
-    headers:
-      - path: /*
-        name: Cache-Control
-        value: no-cache
-    routes:
-      - type: rewrite
-        source: /*
-        destination: /index.html      # required for Flutter web SPA routing
