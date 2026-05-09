@@ -23,6 +23,8 @@ from ..models.schemas import (
     RecommendResponse,
     NutrientResult,
     ApplicationScheduleItem,
+    OrganicAlternatives,
+    WeatherSummary,
 )
 from ..fpe_engine import FPEEngine
 from ..nutrient_utils import (
@@ -31,6 +33,7 @@ from ..nutrient_utils import (
     get_potassium_details,
 )
 from ..output_enricher import enrich_output
+from ..input_enricher import get_weather_context
 import uuid
 from datetime import datetime, timezone
 
@@ -185,7 +188,53 @@ def get_recommendation(req: RecommendRequest) -> RecommendResponse:
         ),
     ]
 
-    # ── STEP 8: Assemble and return the full response ───────────────────────────
+    # ── STEP 8: Organic alternatives for Nitrogen (always computed) ────────────
+    # FYM = FN/5, Vermicompost = FN/15, PSNC (enriched compost) = FN/29 (t/ha)
+    fn = fn_clamped
+    organic = OrganicAlternatives(
+        fym_t_ha=round(fn / 5, 2)  if fn > 0 else 0.0,
+        vermicompost_t_ha=round(fn / 15, 2) if fn > 0 else 0.0,
+        psnc_t_ha=round(fn / 29, 2) if fn > 0 else 0.0,
+        nitrogen_offset_kg_ha=fn,
+    )
+
+    # ── STEP 9: NASA POWER weather context (best-effort, never blocks the response) ──
+    weather: WeatherSummary | None = None
+    try:
+        wx = get_weather_context(req.lat or 25.9, req.lon or 94.3)
+        if wx:
+            rain = wx.get('avg_monthly_rainfall_mm', 0) or 0
+            tmax = wx.get('avg_max_temp_c')
+            tmin = wx.get('avg_min_temp_c')
+
+            # Plain-language advice based on rainfall
+            if rain > 80:
+                advice = (
+                    f"Monthly rainfall is {rain} mm — good moisture. "
+                    "Apply basal dose just before sowing. "
+                    "Top-dress Urea when soil is moist but not waterlogged."
+                )
+            elif rain > 30:
+                advice = (
+                    f"Monthly rainfall is {rain} mm — moderate. "
+                    "Irrigate before top-dressing if no rain in 5 days."
+                )
+            else:
+                advice = (
+                    f"Monthly rainfall is {rain} mm — dry conditions. "
+                    "Ensure irrigation before fertilizer application "
+                    "to prevent nutrient burn."
+                )
+            weather = WeatherSummary(
+                avg_monthly_rainfall_mm=rain,
+                avg_max_temp_c=tmax,
+                avg_min_temp_c=tmin,
+                advice=advice,
+            )
+    except Exception:
+        weather = None   # Silently skip — never block the prescription
+
+    # ── STEP 10: Assemble and return the full response ─────────────────────────────
     return RecommendResponse(
         crop_display=CROP_DISPLAY_MAP.get(crop, crop.capitalize()),
         target_yield=T,
@@ -202,7 +251,7 @@ def get_recommendation(req: RecommendRequest) -> RecommendResponse:
             equation_used=n_res["equation"],
             why=n_details["why"],
             schedule=n_details["schedule"],
-            color_hex="#69F0AE",   # kColorN — Mint green (matches theme.dart)
+            color_hex="#69F0AE",
             icon_name="leaf",
         ),
 
@@ -217,7 +266,7 @@ def get_recommendation(req: RecommendRequest) -> RecommendResponse:
             equation_used=p_res["equation"],
             why=p_details["why"],
             schedule=p_details["schedule"],
-            color_hex="#81D4FA",   # kColorP — Sky blue (matches theme.dart)
+            color_hex="#81D4FA",
             icon_name="seed",
         ),
 
@@ -232,11 +281,13 @@ def get_recommendation(req: RecommendRequest) -> RecommendResponse:
             equation_used=k_res["equation"],
             why=k_details["why"],
             schedule=k_details["schedule"],
-            color_hex="#FFCC80",   # kColorK — Warm amber (matches theme.dart)
+            color_hex="#FFCC80",
             icon_name="grain",
         ),
 
         application_schedule=application_schedule,
+        organic_alternatives=organic,
+        weather_summary=weather,
         recommendation_id=str(uuid.uuid4()),
         generated_at=datetime.now(timezone.utc).isoformat(),
     )

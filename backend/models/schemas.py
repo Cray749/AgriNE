@@ -63,6 +63,10 @@ class RecommendRequest(BaseModel):
     phosphorus_input: SoilInput
     potassium_input: SoilInput
     land_size_acres: Optional[float] = 1.0      # 1 acre ≈ 0.4047 ha
+    # GPS coordinates — used to fetch NASA POWER weather context
+    # Kiphire, Nagaland defaults if omitted
+    lat: Optional[float] = 25.9
+    lon: Optional[float] = 94.3
 
     @model_validator(mode="after")
     def check_target_yield(self) -> "RecommendRequest":
@@ -105,6 +109,30 @@ class ApplicationScheduleItem(BaseModel):
     days_after_sowing: int  # 0, 30, 60 — used by Flutter to sort / display timeline
 
 
+class OrganicAlternatives(BaseModel):
+    """
+    Organic alternatives to meet the nitrogen requirement.
+    Computed as: FYM = FN/5, Vermicompost = FN/15, PSNC = FN/29 (t/ha).
+    These are ONLY for nitrogen — P and K always come from SSP/MOP.
+    """
+    fym_t_ha: float         # Farm Yard Manure in tonnes/ha
+    vermicompost_t_ha: float
+    psnc_t_ha: float        # Poultry Slurry Nutrient Compost
+    nitrogen_offset_kg_ha: float   # How much FN is covered if organic is chosen
+
+
+class WeatherSummary(BaseModel):
+    """
+    Weather context fetched from NASA POWER API via input_enricher.
+    Shown on the results screen to help the farmer decide timing.
+    None if the API call failed or timed out.
+    """
+    avg_monthly_rainfall_mm: Optional[float] = None
+    avg_max_temp_c: Optional[float] = None
+    avg_min_temp_c: Optional[float] = None
+    advice: str = ""   # Short plain-language timing advice based on weather
+
+
 class RecommendResponse(BaseModel):
     """
     Complete response returned to the Flutter results_screen.dart.
@@ -113,14 +141,18 @@ class RecommendResponse(BaseModel):
       1. A header with crop_display, target_yield, land_size_acres
       2. Three NutrientResult cards (nitrogen, phosphorus, potassium)
       3. An ApplicationSchedule table
-      4. A small footer with recommendation_id and generated_at (for sharing / logging)
+      4. Organic alternatives section (if farmer wants organic)
+      5. Weather context banner
+      6. A small footer with recommendation_id and generated_at
     """
-    crop_display: str                           # "Maize" or "Kholar (Legume)"
-    target_yield: float                         # Echo back for confirmation display
-    land_size_acres: float                      # Echo back for confirmation display
+    crop_display: str
+    target_yield: float
+    land_size_acres: float
     nitrogen: NutrientResult
     phosphorus: NutrientResult
     potassium: NutrientResult
     application_schedule: list[ApplicationScheduleItem]
-    recommendation_id: str                      # UUID4 — unique ID for this recommendation
-    generated_at: str                           # ISO 8601 UTC timestamp
+    organic_alternatives: OrganicAlternatives      # Always computed — farmer decides
+    weather_summary: Optional[WeatherSummary] = None
+    recommendation_id: str
+    generated_at: str

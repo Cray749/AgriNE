@@ -109,9 +109,7 @@ class _ResultsScreenState extends State<ResultsScreen>
     final RecommendResponse data =
         ModalRoute.of(context)!.settings.arguments as RecommendResponse;
 
-    return Scaffold(
-      backgroundColor: kBgDark,
-      body: FadeTransition(
+    return Scaffold(      body: FadeTransition(
         opacity: _fadeAnim,
         child: SlideTransition(
           position: _slideAnim,
@@ -167,7 +165,18 @@ class _ResultsScreenState extends State<ResultsScreen>
                 child: _buildScheduleSection(data),
               ),
 
-              // ── Section E: Action buttons ─────────────────────────────────
+              // ── Section E: Weather context banner ────────────────────────
+              if (data.weatherSummary != null)
+                SliverToBoxAdapter(
+                  child: _buildWeatherBanner(data.weatherSummary!),
+                ),
+
+              // ── Section F: Organic alternatives ──────────────────────────
+              SliverToBoxAdapter(
+                child: _buildOrganicSection(data.organicAlternatives, data.landSizeAcres),
+              ),
+
+              // ── Section G: Action buttons ─────────────────────────────────
               SliverToBoxAdapter(
                 child: _buildActionButtons(context, data),
               ),
@@ -551,7 +560,263 @@ class _ResultsScreenState extends State<ResultsScreen>
       ),
     );
   }
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // Section E: Weather Context Banner
+  // ─────────────────────────────────────────────────────────────────────────
+  Widget _buildWeatherBanner(WeatherSummary wx) {
+    final rain = wx.avgMonthlyRainfallMm;
+    IconData rainIcon;
+    Color bannerColor;
+    if (rain == null) {
+      rainIcon = Icons.cloud_outlined;
+      bannerColor = kGreenAccent;
+    } else if (rain > 80) {
+      rainIcon = Icons.water_drop_rounded;
+      bannerColor = const Color(0xFF81D4FA);
+    } else if (rain > 30) {
+      rainIcon = Icons.grain_rounded;
+      bannerColor = kGreenAccent;
+    } else {
+      rainIcon = Icons.wb_sunny_rounded;
+      bannerColor = const Color(0xFFFFCC80);
+    }
+
+    return Padding(
+      padding: kPaddingScreen.copyWith(top: 8, bottom: 0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            '🌦 Weather & Application Timing',
+            style: TextStyle(
+              fontFamily: kFontFamily,
+              fontSize: 18,
+              fontWeight: FontWeight.w700,
+              color: kTextHighlight,
+            ),
+          ),
+          const SizedBox(height: 12),
+          Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: bannerColor.withOpacity(0.08),
+              borderRadius: BorderRadius.circular(kRadiusCard),
+              border: Border.all(color: bannerColor.withOpacity(0.3)),
+            ),
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    Icon(rainIcon, color: bannerColor, size: 28),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          if (rain != null)
+                            Text(
+                              'Avg Rainfall: ${rain.toStringAsFixed(1)} mm/month',
+                              style: TextStyle(
+                                fontFamily: kFontFamily,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                                color: bannerColor,
+                              ),
+                            ),
+                          if (wx.avgMaxTempC != null)
+                            Text(
+                              'Temp: ${wx.avgMinTempC?.toStringAsFixed(1)}°C – ${wx.avgMaxTempC?.toStringAsFixed(1)}°C',
+                              style: TextStyle(
+                                fontFamily: kFontFamily,
+                                fontSize: 12,
+                                color: kTextSecondary,
+                              ),
+                            ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 10),
+                Container(
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: kBgCard,
+                    borderRadius: BorderRadius.circular(kRadiusSmall),
+                  ),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Icon(Icons.tips_and_updates_outlined, color: bannerColor, size: 16),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Text(
+                          wx.advice,
+                          style: TextStyle(
+                            fontFamily: kFontFamily,
+                            fontSize: 13,
+                            color: kTextPrimary,
+                            height: 1.5,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 8),
+        ],
+      ),
+    );
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // Section F: Organic Alternatives
+  // ─────────────────────────────────────────────────────────────────────────
+  Widget _buildOrganicSection(OrganicAlternatives org, double landAcres) {
+    final landHa = landAcres * 0.404686;
+
+    Widget _orgRow(String label, double tHa, String desc) {
+      final total = (tHa * landHa);
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 6),
+        child: Row(
+          children: [
+            Container(
+              width: 4,
+              height: 40,
+              decoration: BoxDecoration(
+                color: kGreenAccent.withOpacity(0.6),
+                borderRadius: BorderRadius.circular(2),
+              ),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(label,
+                      style: TextStyle(
+                        fontFamily: kFontFamily,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        color: kTextPrimary,
+                      )),
+                  Text(desc,
+                      style: TextStyle(
+                        fontFamily: kFontFamily,
+                        fontSize: 11,
+                        color: kTextSecondary,
+                      )),
+                ],
+              ),
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Text(
+                  '${tHa.toStringAsFixed(2)} t/ha',
+                  style: TextStyle(
+                    fontFamily: kFontFamily,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w700,
+                    color: kGreenAccent,
+                  ),
+                ),
+                Text(
+                  'Total: ${total.toStringAsFixed(1)} t',
+                  style: TextStyle(
+                    fontFamily: kFontFamily,
+                    fontSize: 11,
+                    color: kTextSecondary,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      );
+    }
+
+    return Padding(
+      padding: kPaddingScreen.copyWith(top: 8, bottom: 0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            '🌿 Organic Alternatives (for Nitrogen)',
+            style: TextStyle(
+              fontFamily: kFontFamily,
+              fontSize: 18,
+              fontWeight: FontWeight.w700,
+              color: kTextHighlight,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            'Choose ONE organic source to replace chemical Urea.',
+            style: TextStyle(
+              fontFamily: kFontFamily,
+              fontSize: 13,
+              color: kTextSecondary,
+            ),
+          ),
+          const SizedBox(height: 12),
+          Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: kGreenPrimary.withOpacity(0.08),
+              borderRadius: BorderRadius.circular(kRadiusCard),
+              border: Border.all(color: kGreenAccent.withOpacity(0.25)),
+            ),
+            child: Column(
+              children: [
+                _orgRow('Farm Yard Manure (FYM)', org.fymTHa,
+                    'Slow release · Good soil structure'),
+                const Divider(color: Colors.white12, height: 1),
+                _orgRow('Vermicompost', org.vermicompostTHa,
+                    'Higher nutrient density than FYM'),
+                const Divider(color: Colors.white12, height: 1),
+                _orgRow('Enriched Compost (PSNC)', org.psncTHa,
+                    'Poultry Slurry Nutrient Compost'),
+              ],
+            ),
+          ),
+          Container(
+            margin: const EdgeInsets.only(top: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            decoration: BoxDecoration(
+              color: kWarning.withOpacity(0.08),
+              borderRadius: BorderRadius.circular(kRadiusSmall),
+              border: Border.all(color: kWarning.withOpacity(0.3)),
+            ),
+            child: Row(
+              children: [
+                Icon(Icons.info_outline, color: kWarning, size: 15),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    'Tip: Combine organic + inorganic (e.g. half FYM + half Urea) for best yield.',
+                    style: TextStyle(
+                      fontFamily: kFontFamily,
+                      fontSize: 12,
+                      color: kTextSecondary,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 8),
+        ],
+      ),
+    );
+  }
 }
+
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Helper: Info chip for header

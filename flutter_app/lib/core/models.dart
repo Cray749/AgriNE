@@ -91,7 +91,14 @@ class RecommendRequest {
     required this.phosphorusInput,
     required this.potassiumInput,
     this.landSizeAcres = 1.0,
+    this.lat = 25.9,
+    this.lon = 94.3,
   });
+
+  /// GPS coordinates for NASA POWER weather lookup.
+  /// Defaults to Kiphire, Nagaland if not provided.
+  final double lat;
+  final double lon;
 
   Map<String, dynamic> toJson() => {
     'crop':              crop,
@@ -100,6 +107,8 @@ class RecommendRequest {
     'phosphorus_input':  phosphorusInput.toJson(),
     'potassium_input':   potassiumInput.toJson(),
     'land_size_acres':   landSizeAcres,
+    'lat':               lat,
+    'lon':               lon,
   };
 }
 
@@ -203,21 +212,81 @@ class ScheduleItem {
 }
 
 
+/// Mirrors `OrganicAlternatives` in schemas.py.
+///
+/// Always included in the response. The farmer can choose to go organic
+/// (apply FYM/vermicompost instead of Urea) based on these values.
+class OrganicAlternatives {
+  final double fymTHa;              // Farm Yard Manure — tonnes/ha
+  final double vermicompostTHa;     // Vermicompost — tonnes/ha
+  final double psncTHa;             // Enriched Compost (PSNC) — tonnes/ha
+  final double nitrogenOffsetKgHa;  // The FN value this offsets
+
+  const OrganicAlternatives({
+    required this.fymTHa,
+    required this.vermicompostTHa,
+    required this.psncTHa,
+    required this.nitrogenOffsetKgHa,
+  });
+
+  factory OrganicAlternatives.fromJson(Map<String, dynamic> j) =>
+      OrganicAlternatives(
+        fymTHa:             (j['fym_t_ha']              as num).toDouble(),
+        vermicompostTHa:    (j['vermicompost_t_ha']     as num).toDouble(),
+        psncTHa:            (j['psnc_t_ha']             as num).toDouble(),
+        nitrogenOffsetKgHa: (j['nitrogen_offset_kg_ha'] as num).toDouble(),
+      );
+}
+
+
+/// Mirrors `WeatherSummary` in schemas.py.
+///
+/// May be null if the NASA POWER API was unreachable.
+class WeatherSummary {
+  final double? avgMonthlyRainfallMm;
+  final double? avgMaxTempC;
+  final double? avgMinTempC;
+  final String  advice;   // Plain-language timing advice
+
+  const WeatherSummary({
+    this.avgMonthlyRainfallMm,
+    this.avgMaxTempC,
+    this.avgMinTempC,
+    required this.advice,
+  });
+
+  factory WeatherSummary.fromJson(Map<String, dynamic> j) => WeatherSummary(
+    avgMonthlyRainfallMm: j['avg_monthly_rainfall_mm'] == null
+        ? null
+        : (j['avg_monthly_rainfall_mm'] as num).toDouble(),
+    avgMaxTempC: j['avg_max_temp_c'] == null
+        ? null
+        : (j['avg_max_temp_c'] as num).toDouble(),
+    avgMinTempC: j['avg_min_temp_c'] == null
+        ? null
+        : (j['avg_min_temp_c'] as num).toDouble(),
+    advice: j['advice'] as String? ?? '',
+  );
+}
+
+
 /// Mirrors `RecommendResponse` in schemas.py.
 ///
 /// The complete response from POST /recommend/.
 /// Passed as a route argument from input_wizard_screen to results_screen:
 ///   Navigator.pushNamed(context, '/results', arguments: response)
 class RecommendResponse {
-  final String cropDisplay;               // "Maize" or "Kholar (Legume)"
+  final String cropDisplay;
   final double targetYield;
   final double landSizeAcres;
   final NutrientResult nitrogen;
   final NutrientResult phosphorus;
   final NutrientResult potassium;
   final List<ScheduleItem> applicationSchedule;
-  final String recommendationId;          // UUID4 — for logging / sharing
-  final String generatedAt;              // ISO 8601 UTC timestamp
+  final OrganicAlternatives organicAlternatives;  // Always present
+  final WeatherSummary?     weatherSummary;        // null if API was unreachable
+  final String recommendationId;
+  final String generatedAt;
 
   const RecommendResponse({
     required this.cropDisplay,
@@ -227,6 +296,8 @@ class RecommendResponse {
     required this.phosphorus,
     required this.potassium,
     required this.applicationSchedule,
+    required this.organicAlternatives,
+    this.weatherSummary,
     required this.recommendationId,
     required this.generatedAt,
   });
@@ -241,12 +312,16 @@ class RecommendResponse {
     applicationSchedule: (j['application_schedule'] as List<dynamic>)
         .map((item) => ScheduleItem.fromJson(item as Map<String, dynamic>))
         .toList(),
+    organicAlternatives: OrganicAlternatives.fromJson(
+        j['organic_alternatives'] as Map<String, dynamic>),
+    weatherSummary: j['weather_summary'] == null
+        ? null
+        : WeatherSummary.fromJson(j['weather_summary'] as Map<String, dynamic>),
     recommendationId: j['recommendation_id'] as String,
     generatedAt:      j['generated_at']      as String,
   );
 
   /// Convenience: all three nutrient results as an ordered list.
-  /// Used for rendering cards in a loop on the results screen.
   List<NutrientResult> get nutrients => [nitrogen, phosphorus, potassium];
 }
 
