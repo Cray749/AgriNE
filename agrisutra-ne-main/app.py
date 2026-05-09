@@ -23,7 +23,7 @@ def _get_ai_model():
             "Content-Type": "application/json"
         }
         data = {
-            "model": "llama3-70b-8192",
+            "model": "llama-3.3-70b-versatile",
             "messages": [
                 {"role": "system", "content": "You are an expert agricultural scientist. Provide clear, concise, markdown-formatted tables and advice."},
                 {"role": "user", "content": prompt}
