@@ -16,16 +16,24 @@ def _get_ai_model():
       1. Vertex AI + ADC  (if GCP_PROJECT_ID is set in secrets / env)
       2. Gemini API key   (if GEMINI_API_KEY is set in secrets / env)
     """
-    project_id = (st.secrets.get("GCP_PROJECT_ID") or
-                  os.environ.get("GOOGLE_CLOUD_PROJECT") or
-                  os.environ.get("GCP_PROJECT_ID"))
+    def _secret(key, default=None):
+        """Read from st.secrets first, then os.environ. Never crash."""
+        try:
+            val = st.secrets.get(key)
+            if val:
+                return val
+        except Exception:
+            pass
+        return os.environ.get(key, default)
+
+    project_id = _secret("GCP_PROJECT_ID") or _secret("GOOGLE_CLOUD_PROJECT")
 
     if project_id:
         # ── Vertex AI path (uses ADC automatically) ──
         try:
             import vertexai
             from vertexai.generative_models import GenerativeModel as VertexModel
-            location = st.secrets.get("GCP_LOCATION") or os.environ.get("GCP_LOCATION", "us-central1")
+            location = _secret("GCP_LOCATION", "us-central1")
             vertexai.init(project=project_id, location=location)
             model = VertexModel("gemini-1.5-pro")
 
@@ -38,7 +46,7 @@ def _get_ai_model():
             return None, f"Vertex AI init failed: {e}"
 
     # ── Fallback: Gemini API key ──
-    api_key = st.secrets.get("GEMINI_API_KEY") or os.environ.get("GEMINI_API_KEY")
+    api_key = _secret("GEMINI_API_KEY")
     if api_key:
         import google.generativeai as genai
         genai.configure(api_key=api_key)
@@ -113,7 +121,7 @@ st.markdown("""
 html, body, [class*="css"] { font-family:'Inter',sans-serif !important; }
 .stApp { background: radial-gradient(ellipse at top, #0d1f0d 0%, #080e08 100%) !important; color:#e8f5e9 !important; }
 #MainMenu, footer, .stDeployButton, header[data-testid="stHeader"] { display:none !important; }
-.block-container { padding: 0 !important; max-width: 100% !important; }
+.block-container { padding: 1rem 2rem !important; max-width: 100% !important; }
 
 /* ── Header ── */
 .app-header {
@@ -308,14 +316,22 @@ NUTRIENT_META = {
 # SHARED HEADER
 # ─────────────────────────────────────────────────────────────────────────────
 def render_header():
-    st.markdown("""
+    import base64, pathlib
+    logo_path = pathlib.Path(__file__).parent / "icar_logo.png"
+    if logo_path.exists():
+        b64 = base64.b64encode(logo_path.read_bytes()).decode()
+        logo_html = f'<img src="data:image/png;base64,{b64}" style="height:50px;border-radius:8px;" alt="ICAR">'
+    else:
+        logo_html = '<div class="icar-badge">ICAR</div>'
+    st.markdown(f"""
     <div class="app-header">
         <div class="app-header-text">
             <h1>🌾 AgriSutra NE</h1>
             <p>AI-Powered Fertilizer Prescription Engine &nbsp;|&nbsp; STCR/FPE Methodology &nbsp;|&nbsp; Kiphire, Nagaland</p>
         </div>
-        <div style="margin-left:auto">
-            <div class="icar-badge">ICAR · ATARI · Zone VII</div>
+        <div style="margin-left:auto;display:flex;align-items:center;gap:10px;">
+            {logo_html}
+            <div class="icar-badge">ICAR</div>
         </div>
     </div>
     """, unsafe_allow_html=True)
@@ -324,11 +340,12 @@ def render_header():
 # STEP INDICATOR
 # ─────────────────────────────────────────────────────────────────────────────
 def render_step_bar():
-    steps = ["① Crop & Yield", "② Nutrient Hub", "③ Compute", "④ Summary"]
-    cur = st.session_state.step
+    steps = ["① Crop & Yield", "② Nutrient Hub", "③ Summary"]
+    step_map = {1:1, 2:2, 4:3}  # internal step -> display index
+    cur_display = step_map.get(st.session_state.step, 2)
     chips = ""
     for i, label in enumerate(steps, start=1):
-        cls = "active" if i == cur else ("done" if i < cur else "")
+        cls = "active" if i == cur_display else ("done" if i < cur_display else "")
         chips += f'<div class="step-chip {cls}">{label}</div>'
     st.markdown(f'<div class="step-bar">{chips}</div>', unsafe_allow_html=True)
 
@@ -380,45 +397,80 @@ def step1_setup():
 # ─────────────────────────────────────────────────────────────────────────────
 def step2_hub():
     crop_label = "Maize" if "maize" in st.session_state.crop else "Kholar"
+    crop = st.session_state.crop
     T = st.session_state.target_yield
 
     st.markdown(f"""
     <div class="panel">
-        <h3>🧭 Step 2 — Nutrient Selection Hub</h3>
+        <h3>🧭 Step 2 — Nutrient Hub</h3>
         <p style="color:#78909c">Crop: <strong style="color:#cfd8dc">{crop_label}</strong>
         &nbsp;|&nbsp; Target Yield: <strong style="color:#cfd8dc">{T} q/ha</strong></p>
-        <p>Select one nutrient at a time. Compute each independently.</p>
+        <p>Compute each nutrient below. All three must be done to proceed.</p>
     </div>
     """, unsafe_allow_html=True)
 
-    # ── Nutrient status cards ──
-    c1, c2, c3 = st.columns(3)
-    for col, nut_key in zip([c1, c2, c3], ["N", "P", "K"]):
+    # ── Process each nutrient inline ──
+    for nut_key in ["N", "P", "K"]:
         meta = NUTRIENT_META[nut_key]
         done = st.session_state[f"{nut_key}_done"]
         val_key = {"N": "FN", "P": "FP", "K": "FK"}[nut_key]
-        val = st.session_state[val_key]
+        conv_map = {"N": "N_urea", "P": "P_ssp", "K": "K_mop"}
+        conv_lbls = {"N": "Urea", "P": "SSP", "K": "MOP"}
+        eq_map = {"N": "N_eq", "P": "P_eq", "K": "K_eq"}
 
-        card_cls = "nutrient-card done-card" if done else "nutrient-card"
-        if done:
-            badge = f'<div class="nut-val">{val}</div><div class="nut-unit">kg/ha</div>'
-            status_icon = "✅"
-        else:
-            badge = '<div class="nut-pend">⏳ Pending</div>'
-            status_icon = "◯"
+        with st.expander(f"{meta['icon']}  {meta['label']} ({meta['fert']})  {'  ✅ Done' if done else '  ⏳ Pending'}", expanded=not done):
+            if done:
+                val = st.session_state[val_key]
+                conv = st.session_state[conv_map[nut_key]]
+                eq = st.session_state[eq_map[nut_key]]
+                st.markdown(f"""
+                <div class="result-box">
+                    <div class="big-val">{val} <span style="font-size:1.2rem;color:#43a047">kg/ha</span></div>
+                    <div style="margin-top:0.8rem;color:#81c784;font-size:1.1rem;font-weight:700">→ {conv_lbls[nut_key]}: <span style="color:#fff;font-size:1.4rem">{conv} kg/ha</span></div>
+                    <div class="eq-text">{eq}</div>
+                </div>
+                """, unsafe_allow_html=True)
 
-        col.markdown(f"""
-        <div class="{card_cls}">
-            <div class="nut-icon">{meta['icon']}</div>
-            <div class="nut-name">{status_icon} {meta['label']}</div>
-            {badge}
-        </div>
-        """, unsafe_allow_html=True)
+            # Input form (always shown so user can recompute)
+            input_mode = st.radio(
+                "Input method:",
+                ["Fertility Class (Low / Medium / High)", "Direct Soil Test Value"],
+                horizontal=True, key=f"imode_{nut_key}"
+            )
+            fc, raw_val = None, None
+            soil_key = {"N": "SN (kg/ha)", "P": "SP (kg/ha)", "K": "SK (kg/ha)"}[nut_key]
+            default_raw = {"N": 280.0, "P": 20.0, "K": 150.0}[nut_key]
 
-        with col:
-            btn_label = "✏️ Recompute" if done else "▶ Compute"
-            if st.button(btn_label, key=f"btn_hub_{nut_key}", use_container_width=True):
-                go(3, active_nutrient=nut_key)
+            if input_mode.startswith("Fertility"):
+                fc = st.selectbox(f"{meta['label']} Soil Fertility", ["Low", "Medium", "High"], key=f"fc_{nut_key}")
+            else:
+                raw_val = st.number_input(f"{soil_key}", min_value=0.0, step=1.0, value=default_raw, key=f"raw_{nut_key}")
+                fc_display = FPEEngine._resolve_class_from_value(crop, raw_val, nut_key)
+                st.info(f"**Detected Fertility Level:** {fc_display.capitalize()}")
+
+            if st.button(f"⚡ Compute {meta['label']}", type="primary", use_container_width=True, key=f"cmp_{nut_key}"):
+                try:
+                    if nut_key == "N":
+                        res = FPEEngine.compute_N(crop, T, fertility_class=fc, SN=raw_val)
+                        st.session_state.FN = res["FN"]
+                        st.session_state.N_urea = res["urea_kg_ha"]
+                        st.session_state.N_eq = res["equation"]
+                        st.session_state.N_done = True
+                    elif nut_key == "P":
+                        res = FPEEngine.compute_P(crop, T, fertility_class=fc, SP=raw_val)
+                        st.session_state.FP = res["FP"]
+                        st.session_state.P_ssp = res["ssp_kg_ha"]
+                        st.session_state.P_eq = res["equation"]
+                        st.session_state.P_done = True
+                    else:
+                        res = FPEEngine.compute_K(crop, T, fertility_class=fc, SK=raw_val)
+                        st.session_state.FK = res["FK"]
+                        st.session_state.K_mop = res["mop_kg_ha"]
+                        st.session_state.K_eq = res["equation"]
+                        st.session_state.K_done = True
+                    st.rerun()
+                except Exception as e:
+                    st.error(f"Calculation error: {e}")
 
     st.markdown("<br>", unsafe_allow_html=True)
 
@@ -435,9 +487,7 @@ def step2_hub():
             remaining = [NUTRIENT_META[n]["label"] for n in ["N","P","K"] if not st.session_state[f"{n}_done"]]
             st.info(f"Still pending: **{', '.join(remaining)}**. Compute all to unlock the summary.")
 
-# ─────────────────────────────────────────────────────────────────────────────
-# STEP 3 — INDIVIDUAL NUTRIENT PAGE
-# ─────────────────────────────────────────────────────────────────────────────
+# Step 3 is now merged into step 2 above. Keeping stub for router compatibility.
 def step3_nutrient():
     nut = st.session_state.active_nutrient   # "N", "P", or "K"
     meta = NUTRIENT_META[nut]
@@ -729,5 +779,5 @@ render_step_bar()
 step = st.session_state.step
 if   step == 1: step1_setup()
 elif step == 2: step2_hub()
-elif step == 3: step3_nutrient()
+elif step == 3: step2_hub()   # step 3 merged into step 2
 elif step == 4: step4_summary()
