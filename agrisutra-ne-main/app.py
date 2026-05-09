@@ -98,139 +98,166 @@ def get_explainable_summary_table(crop, yield_target, urea, ssp, mop, is_organic
 st.set_page_config(page_title="AgriSutra NE | FPE Advisor", layout="wide", initial_sidebar_state="collapsed")
 
 # ─────────────────────────────────────────────────────────────────────────────
-# CSS — DARK MODE PREMIUM THEME
+# CSS — PREMIUM PRESENTATION THEME (HDMI-ready)
 # ─────────────────────────────────────────────────────────────────────────────
 st.markdown("""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap');
 
-html, body, [class*="css"] {
-    font-family: 'Inter', sans-serif;
-}
-.stApp {
-    background-color: #0f1117;
-    color: #e0e0e0;
-}
+@keyframes fadeInUp  { from { opacity:0; transform:translateY(24px); } to { opacity:1; transform:translateY(0); } }
+@keyframes fadeIn    { from { opacity:0; } to { opacity:1; } }
+@keyframes pulse2    { 0%,100%{opacity:1;} 50%{opacity:0.45;} }
+@keyframes shimmer   { 0%{background-position:-200% center;} 100%{background-position:200% center;} }
+@keyframes glow      { 0%,100%{box-shadow:0 0 8px rgba(105,240,174,.3);} 50%{box-shadow:0 0 24px rgba(105,240,174,.7);} }
+
+html, body, [class*="css"] { font-family:'Inter',sans-serif !important; }
+.stApp { background: radial-gradient(ellipse at top, #0d1f0d 0%, #080e08 100%) !important; color:#e8f5e9 !important; }
+#MainMenu, footer, .stDeployButton, header[data-testid="stHeader"] { display:none !important; }
+.block-container { padding: 0 !important; max-width: 100% !important; }
 
 /* ── Header ── */
 .app-header {
-    text-align: center;
-    padding: 1.5rem 0 0.5rem 0;
-    border-bottom: 1px solid #1e2a1e;
-    margin-bottom: 1.5rem;
+    background: linear-gradient(135deg,#1b5e20 0%,#2e7d32 60%,#1b5e20 100%);
+    padding: 2rem 3rem 1.5rem 3rem;
+    border-bottom: 2px solid #2e7d32;
+    animation: fadeIn 0.7s ease;
+    display: flex; align-items: center; gap: 1.5rem;
 }
-.app-header h1 {
-    color: #69f0ae;
-    font-size: 2.2rem;
-    font-weight: 700;
-    margin: 0;
+.app-header-text h1 {
+    font-size: 2.6rem; font-weight: 900; margin: 0;
+    background: linear-gradient(90deg,#69f0ae,#b9f6ca,#69f0ae);
+    background-size: 200% auto;
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    animation: shimmer 4s linear infinite;
 }
-.app-header p {
-    color: #78909c;
-    font-size: 1rem;
-    margin: 0.25rem 0 0 0;
+.app-header-text p { color:#a5d6a7; font-size:1rem; margin:0.3rem 0 0 0; font-weight:500; }
+.icar-badge {
+    background:rgba(0,0,0,.25); border:1px solid rgba(105,240,174,.3);
+    border-radius:12px; padding:0.5rem 1rem;
+    font-size:0.8rem; color:#81c784; font-weight:700; letter-spacing:1.5px;
+    white-space:nowrap;
 }
 
-/* ── Step Indicator ── */
+/* ── Step Bar ── */
 .step-bar {
-    display: flex;
-    justify-content: center;
-    gap: 12px;
-    margin-bottom: 2rem;
-    flex-wrap: wrap;
+    display:flex; background:#0a120a;
+    border-bottom:2px solid #1a2d1a;
+    animation: fadeIn 0.5s ease;
 }
 .step-chip {
-    padding: 6px 18px;
-    border-radius: 20px;
-    font-size: 0.82rem;
-    font-weight: 600;
-    border: 2px solid #2a3a2a;
-    color: #546e4a;
-    background: #141a14;
+    flex:1; padding:1rem 0.5rem; text-align:center;
+    font-size:0.95rem; font-weight:700; letter-spacing:0.3px;
+    color:#3a5238; border-bottom:3px solid transparent;
+    transition:all 0.35s cubic-bezier(.4,0,.2,1);
+    cursor:default;
 }
 .step-chip.active {
-    border-color: #69f0ae;
-    color: #69f0ae;
-    background: #0d1f0d;
+    color:#69f0ae; border-bottom-color:#69f0ae;
+    background:linear-gradient(180deg,transparent,rgba(105,240,174,.07));
+    animation: glow 2s ease-in-out infinite;
 }
-.step-chip.done {
-    border-color: #388e3c;
-    color: #388e3c;
-    background: #0d1a0d;
-}
+.step-chip.done { color:#43a047; border-bottom-color:#2e7d32; }
 
-/* ── Panel Card ── */
+/* ── Panel ── */
 .panel {
-    background: #1a1d27;
-    border: 1px solid #252d25;
-    border-radius: 14px;
-    padding: 2rem;
-    margin-bottom: 1.5rem;
+    background:linear-gradient(145deg,#121c12,#0e160e);
+    border:1px solid #1e2d1e; border-radius:18px;
+    padding:2.5rem; margin:1.5rem 2rem;
+    animation:fadeInUp 0.5s ease;
+    box-shadow:0 4px 24px rgba(0,0,0,.4);
 }
-.panel h3 {
-    color: #69f0ae;
-    margin-top: 0;
-}
+.panel h3 { color:#69f0ae; margin-top:0; font-size:1.4rem; font-weight:800; }
+.panel h4 { color:#a5d6a7; margin-top:0; }
 
-/* ── Nutrient Badge Cards (hub) ── */
+/* ── Nutrient Cards ── */
 .nutrient-card {
-    background: #141a14;
-    border: 2px solid #1e2d1e;
-    border-radius: 12px;
-    padding: 1.5rem;
-    text-align: center;
-    transition: border-color 0.2s;
+    background:linear-gradient(160deg,#111911,#0c140c);
+    border:2px solid #1e2d1e; border-radius:18px;
+    padding:2rem 1.5rem; text-align:center;
+    transition:all 0.3s cubic-bezier(.4,0,.2,1);
+    animation:fadeInUp 0.5s ease;
+    cursor:pointer;
+}
+.nutrient-card:hover {
+    border-color:#388e3c; transform:translateY(-6px);
+    box-shadow:0 12px 36px rgba(46,125,50,.35);
+    background:linear-gradient(160deg,#142014,#0e180e);
 }
 .nutrient-card.done-card {
-    border-color: #388e3c;
-    background: #0d1a0d;
+    border-color:#43a047; background:linear-gradient(160deg,#0d1f0d,#091509);
+    box-shadow:0 4px 20px rgba(67,160,71,.25);
 }
-.nutrient-card .nut-icon { font-size: 2rem; margin-bottom: 0.4rem; }
-.nutrient-card .nut-name { font-size: 1rem; font-weight: 700; color: #cfd8dc; }
-.nutrient-card .nut-val  { font-size: 1.4rem; font-weight: 700; color: #69f0ae; margin-top: 0.3rem; }
-.nutrient-card .nut-pend { font-size: 0.85rem; color: #546e4a; margin-top: 0.3rem; }
+.nutrient-card .nut-icon { font-size:3.5rem; margin-bottom:0.6rem; }
+.nutrient-card .nut-name { font-size:1.15rem; font-weight:800; color:#cfd8dc; letter-spacing:.5px; }
+.nutrient-card .nut-val  { font-size:2.5rem; font-weight:900; color:#69f0ae; margin-top:0.5rem; letter-spacing:-1px; }
+.nutrient-card .nut-unit { font-size:0.85rem; color:#546e4a; margin-top:-0.2rem; }
+.nutrient-card .nut-pend { font-size:0.9rem; color:#2e4d2e; margin-top:0.5rem; animation:pulse2 2.5s infinite; }
 
-/* ── Result card inside nutrient page ── */
+/* ── Result Box ── */
 .result-box {
-    background: #0d1a0d;
-    border: 1px solid #2e7d32;
-    border-radius: 10px;
-    padding: 1.2rem 1.5rem;
-    margin-top: 1rem;
+    background:linear-gradient(135deg,#091509,#0d1f0d);
+    border:2px solid #2e7d32; border-radius:16px;
+    padding:2rem 2.5rem; margin-top:1.5rem;
+    animation:fadeInUp 0.4s ease;
+    box-shadow:0 0 30px rgba(46,125,50,.2);
 }
 .result-box .big-val {
-    font-size: 2rem;
-    font-weight: 700;
-    color: #69f0ae;
+    font-size:3.5rem; font-weight:900; color:#69f0ae;
+    letter-spacing:-2px; line-height:1;
 }
 .result-box .eq-text {
-    font-size: 0.8rem;
-    color: #78909c;
-    font-family: monospace;
-    margin-top: 0.4rem;
+    font-size:0.82rem; color:#546e4a;
+    font-family:'Courier New',monospace; margin-top:0.8rem;
+    background:#081008; padding:0.5rem 0.8rem; border-radius:6px;
+    display:inline-block;
 }
 
-/* ── Summary card ── */
+/* ── Summary Cards ── */
 .summary-card {
-    background: #141a14;
-    border: 2px solid #2e7d32;
-    border-radius: 14px;
-    padding: 1.5rem;
-    text-align: center;
+    background:linear-gradient(160deg,#111911,#0c170c);
+    border:2px solid #2e7d32; border-radius:18px;
+    padding:2rem 1rem; text-align:center;
+    animation:fadeInUp 0.5s ease;
+    transition:all 0.3s ease;
+    box-shadow:0 4px 20px rgba(46,125,50,.15);
 }
-.summary-card .s-label { color: #90a4ae; font-size: 0.9rem; }
-.summary-card .s-val   { font-size: 2.2rem; font-weight: 700; color: #69f0ae; }
-.summary-card .s-conv  { font-size: 0.85rem; color: #78909c; margin-top: 0.3rem; }
+.summary-card:hover { box-shadow:0 8px 30px rgba(46,125,50,.35); transform:translateY(-4px); }
+.summary-card .s-icon  { font-size:3rem; margin-bottom:0.5rem; }
+.summary-card .s-label { color:#78909c; font-size:0.85rem; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; }
+.summary-card .s-val   { font-size:3.2rem; font-weight:900; color:#69f0ae; letter-spacing:-2px; margin:0.3rem 0; line-height:1; }
+.summary-card .s-unit  { font-size:0.8rem; color:#546e4a; margin-top:-0.2rem; }
+.summary-card .s-conv  { font-size:0.95rem; color:#a5d6a7; margin-top:0.8rem; font-weight:600; }
+.summary-card.p-card   { border-color:#1565c0; }
+.summary-card.p-card .s-val { color:#81d4fa; }
+.summary-card.k-card   { border-color:#e65100; }
+.summary-card.k-card .s-val { color:#ffcc80; }
+
+/* ── Schedule Cards ── */
+.sched-card {
+    background:#0d160d; border:1px solid #1a2e1a;
+    border-radius:14px; padding:1.5rem;
+    text-align:center; animation:fadeInUp 0.5s ease;
+}
+.sched-card .sched-time { font-size:0.78rem; color:#546e4a; font-weight:700; letter-spacing:1px; text-transform:uppercase; }
+.sched-card .sched-dose { font-size:1rem; color:#cfd8dc; margin-top:0.5rem; font-weight:600; line-height:1.5; }
 
 /* ── Divider ── */
-.divider { border-top: 1px solid #252d25; margin: 1.5rem 0; }
+.divider { border-top:1px solid #1a2d1a; margin:1.5rem 0; }
 
 /* ── Buttons ── */
 .stButton > button {
-    border-radius: 8px;
-    font-weight: 600;
-    font-size: 0.95rem;
-    transition: all 0.15s;
+    border-radius:12px !important; font-weight:700 !important;
+    font-size:1rem !important; padding:0.75rem 1.5rem !important;
+    transition:all 0.25s cubic-bezier(.4,0,.2,1) !important;
+    letter-spacing:0.3px !important;
+}
+.stButton > button[kind="primary"] {
+    background:linear-gradient(135deg,#2e7d32,#43a047) !important;
+    border:none !important; color:#fff !important;
+}
+.stButton > button[kind="primary"]:hover {
+    transform:translateY(-3px) !important;
+    box-shadow:0 8px 24px rgba(46,125,50,.5) !important;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -283,8 +310,13 @@ NUTRIENT_META = {
 def render_header():
     st.markdown("""
     <div class="app-header">
-        <h1>🌾 AgriSutra NE — Fertilizer Advisor</h1>
-        <p>Kiphire Region &nbsp;|&nbsp; STCR-Based FPE System &nbsp;|&nbsp; Maize &amp; Kholar</p>
+        <div class="app-header-text">
+            <h1>🌾 AgriSutra NE</h1>
+            <p>AI-Powered Fertilizer Prescription Engine &nbsp;|&nbsp; STCR/FPE Methodology &nbsp;|&nbsp; Kiphire, Nagaland</p>
+        </div>
+        <div style="margin-left:auto">
+            <div class="icar-badge">ICAR · ATARI · Zone VII</div>
+        </div>
     </div>
     """, unsafe_allow_html=True)
 
@@ -292,7 +324,7 @@ def render_header():
 # STEP INDICATOR
 # ─────────────────────────────────────────────────────────────────────────────
 def render_step_bar():
-    steps = ["1. Crop & Yield", "2. Select Nutrient", "3. Compute", "4. Summary"]
+    steps = ["① Crop & Yield", "② Nutrient Hub", "③ Compute", "④ Summary"]
     cur = st.session_state.step
     chips = ""
     for i, label in enumerate(steps, start=1):
@@ -368,8 +400,12 @@ def step2_hub():
         val = st.session_state[val_key]
 
         card_cls = "nutrient-card done-card" if done else "nutrient-card"
-        badge = f'<div class="nut-val">{val} kg/ha</div>' if done else '<div class="nut-pend">⏳ Pending</div>'
-        status_icon = "✅" if done else "○"
+        if done:
+            badge = f'<div class="nut-val">{val}</div><div class="nut-unit">kg/ha</div>'
+            status_icon = "✅"
+        else:
+            badge = '<div class="nut-pend">⏳ Pending</div>'
+            status_icon = "◯"
 
         col.markdown(f"""
         <div class="{card_cls}">
@@ -496,10 +532,13 @@ def step3_nutrient():
         val  = st.session_state[val_map[nut]]
         conv = st.session_state[conv_map[nut]]
         clbl = conv_lbls[nut]
+        eq   = st.session_state[eq_map[nut]]
         st.markdown(f"""
         <div class="result-box">
-            <div class="big-val">{val} kg/ha &nbsp;<span style="font-size:1rem;color:#78909c">({meta['unit']})</span></div>
-            <div style="margin-top:0.5rem; color:#b0bec5;">→ {clbl}: <strong style="color:#fff">{conv} kg/ha</strong></div>
+            <div style="font-size:0.8rem;color:#546e4a;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:0.3rem">✅ Computed</div>
+            <div class="big-val">{val} <span style="font-size:1.2rem;color:#43a047">kg/ha</span></div>
+            <div style="margin-top:0.8rem;color:#81c784;font-size:1.1rem;font-weight:700">→ {clbl}: <span style="color:#fff;font-size:1.4rem">{conv} kg/ha</span></div>
+            <div class="eq-text">{eq}</div>
         </div>
         """, unsafe_allow_html=True)
 
@@ -598,13 +637,14 @@ def step4_summary():
         (c3, "K", adj_FK,  mop_tot, "MOP",   "kg K₂O/ha"),
     ]:
         meta = NUTRIENT_META[nut]
+        extra_cls = "p-card" if nut == "P" else ("k-card" if nut == "K" else "")
         col.markdown(f"""
-        <div class="summary-card">
-            <div style="font-size:2rem">{meta['icon']}</div>
-            <div class="s-label">{meta['label']}</div>
+        <div class="summary-card {extra_cls}">
+            <div class="s-icon">{meta['icon']}</div>
+            <div class="s-label">{meta['label']} · {meta['fert']}</div>
             <div class="s-val">{val}</div>
-            <div class="s-label" style="margin-top:0.1rem">{unit}</div>
-            <div class="s-conv">→ {conv_lbl} for {area_display}: <strong>{conv} kg</strong></div>
+            <div class="s-unit">{unit}</div>
+            <div class="s-conv">📦 {conv_lbl} for {area_display}<br><strong style="font-size:1.3rem">{conv} kg</strong></div>
         </div>
         """, unsafe_allow_html=True)
 
@@ -641,9 +681,9 @@ def step4_summary():
         
     for col, (timing, dose) in zip(sch_cols, schedules):
         col.markdown(f"""
-        <div class="panel" style="text-align:center">
-            <div style="font-size:0.8rem;color:#78909c">{timing}</div>
-            <div style="font-size:0.95rem;color:#e0e0e0;margin-top:0.4rem;font-weight:600">{dose}</div>
+        <div class="sched-card">
+            <div class="sched-time">{timing}</div>
+            <div class="sched-dose">{dose}</div>
         </div>
         """, unsafe_allow_html=True)
 
