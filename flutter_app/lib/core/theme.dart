@@ -56,14 +56,18 @@ const List<Color> kGradientHeader = [
 
 
 // ════════════════════════════════════════════════════════════════════════════
-//  LIGHT PALETTE
+//  LIGHT PALETTE  (primary theme)
 // ════════════════════════════════════════════════════════════════════════════
 
-const Color kLightBgPrimary     = Color(0xFFF1F8E9); // Soft warm white-green
-const Color kLightBgCard        = Color(0xFFFFFFFF);
-const Color kLightBgCardBorder  = Color(0xFFDCEDC8);
-const Color kLightTextPrimary   = Color(0xFF1B2E1A);
-const Color kLightTextSecondary = Color(0xFF558B2F);
+const Color kLightBgPrimary     = Color(0xFFF0F7EE); // Crisp warm white with green tint
+const Color kLightBgSecondary   = Color(0xFFE8F5E9); // Slightly deeper for section breaks
+const Color kLightBgCard        = Color(0xFFFFFFFF); // Pure white cards
+const Color kLightBgCardBorder  = Color(0xFFCDE8C0); // Soft green border
+const Color kLightTextPrimary   = Color(0xFF1A2E1A); // Near-black with green tint
+const Color kLightTextSecondary = Color(0xFF4A7C40); // Medium green for subtitles
+const Color kLightTextMuted     = Color(0xFF8BA88B); // Muted for labels
+const Color kLightAccent        = Color(0xFF2E7D32); // Strong green CTA
+const Color kLightAccentSoft    = Color(0xFF43A047); // Softer green for secondary actions
 
 
 // ════════════════════════════════════════════════════════════════════════════
@@ -132,6 +136,63 @@ extension TextStyleX on TextStyle {
   TextStyle withSize(double s)  => copyWith(fontSize: s);
   TextStyle bold()              => copyWith(fontWeight: FontWeight.w700);
 }
+
+
+// ════════════════════════════════════════════════════════════════════════════
+//  CONTEXT-AWARE COLOR HELPERS
+//  Use these in screens so they work in BOTH light and dark mode.
+// ════════════════════════════════════════════════════════════════════════════
+
+/// Background colour for the scaffold
+Color ctxBg(BuildContext ctx) =>
+    Theme.of(ctx).brightness == Brightness.light ? kLightBgPrimary : kBgDark;
+
+/// Card surface colour
+Color ctxCard(BuildContext ctx) =>
+    Theme.of(ctx).brightness == Brightness.light ? kLightBgCard : kBgCard;
+
+/// Card border colour
+Color ctxCardBorder(BuildContext ctx) =>
+    Theme.of(ctx).brightness == Brightness.light ? kLightBgCardBorder : kBgCardBorder;
+
+/// Primary text colour
+Color ctxTextPrimary(BuildContext ctx) =>
+    Theme.of(ctx).brightness == Brightness.light ? kLightTextPrimary : kTextPrimary;
+
+/// Secondary text colour
+Color ctxTextSecondary(BuildContext ctx) =>
+    Theme.of(ctx).brightness == Brightness.light ? kLightTextSecondary : kTextSecondary;
+
+/// Muted label colour
+Color ctxTextMuted(BuildContext ctx) =>
+    Theme.of(ctx).brightness == Brightness.light ? kLightTextMuted : kTextSecondary;
+
+/// Accent / highlight colour (green CTA)
+Color ctxAccent(BuildContext ctx) =>
+    Theme.of(ctx).brightness == Brightness.light ? kLightAccent : kGreenAccent;
+
+/// Bold heading colour
+Color ctxHeading(BuildContext ctx) =>
+    Theme.of(ctx).brightness == Brightness.light ? kLightTextPrimary : kTextHighlight;
+
+/// Card BoxDecoration that adapts to theme
+BoxDecoration ctxCardDecoration(BuildContext ctx, {Color? borderColor, Color? glowColor}) =>
+    BoxDecoration(
+      color: ctxCard(ctx),
+      borderRadius: BorderRadius.circular(kRadiusCard),
+      border: Border.all(
+        color: borderColor ?? ctxCardBorder(ctx),
+        width: 1.5,
+      ),
+      boxShadow: [
+        BoxShadow(
+          color: (glowColor ?? kGreenPrimary).withOpacity(
+              Theme.of(ctx).brightness == Brightness.light ? 0.08 : 0.25),
+          blurRadius: 12,
+          offset: const Offset(0, 4),
+        ),
+      ],
+    );
 
 
 // ════════════════════════════════════════════════════════════════════════════
@@ -268,7 +329,7 @@ ThemeData buildAppTheme() {
       ),
     ),
 
-    cardTheme: CardTheme(
+    cardTheme: CardThemeData(
       color: kBgCard,
       elevation: 8,
       shadowColor: kGreenAccent.withOpacity(0.2),
@@ -401,7 +462,7 @@ ThemeData buildLightTheme() {
       ),
     ),
 
-    cardTheme: CardTheme(
+    cardTheme: CardThemeData(
       color: kLightBgCard,
       elevation: 4,
       shadowColor: kGreenPrimary.withOpacity(0.15),

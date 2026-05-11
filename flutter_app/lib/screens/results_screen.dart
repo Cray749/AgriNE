@@ -301,12 +301,12 @@ class _ResultsScreenState extends State<ResultsScreen>
           Padding(
             padding: const EdgeInsets.only(bottom: 12),
             child: Text(
-              '🧺 What to Buy',
+              '🧵 What to Buy',
               style: TextStyle(
                 fontFamily: kFontFamily,
                 fontSize: 18,
                 fontWeight: FontWeight.w700,
-                color: kTextHighlight,
+                color: ctxHeading(context),
               ),
             ),
           ),
@@ -339,15 +339,15 @@ class _ResultsScreenState extends State<ResultsScreen>
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: kGreenPrimary.withOpacity(0.1),
+              color: kGreenPrimary.withOpacity(0.08),
               borderRadius: BorderRadius.circular(10),
               border: Border.all(
-                  color: kGreenPrimary.withOpacity(0.3), width: 1),
+                  color: kGreenPrimary.withOpacity(0.2), width: 1),
             ),
             child: Row(
               children: [
-                const Icon(Icons.lightbulb_outline,
-                    color: kGreenAccent, size: 18),
+                Icon(Icons.lightbulb_outline,
+                    color: ctxAccent(context), size: 18),
                 const SizedBox(width: 8),
                 Expanded(
                   child: Text(
@@ -356,7 +356,7 @@ class _ResultsScreenState extends State<ResultsScreen>
                     style: TextStyle(
                       fontFamily: kFontFamily,
                       fontSize: 12,
-                      color: kTextSecondary,
+                      color: ctxTextSecondary(context),
                       height: 1.4,
                     ),
                   ),
@@ -384,7 +384,7 @@ class _ResultsScreenState extends State<ResultsScreen>
               fontFamily: kFontFamily,
               fontSize: 18,
               fontWeight: FontWeight.w700,
-              color: kTextHighlight,
+              color: ctxHeading(context),
             ),
           ),
           const SizedBox(height: 16),
@@ -411,7 +411,7 @@ class _ResultsScreenState extends State<ResultsScreen>
       padding: kPaddingScreen,
       child: Column(
         children: [
-          const Divider(color: kBgCardBorder, height: 32),
+          Divider(color: ctxCardBorder(context), height: 32),
 
           // Share button
           GestureDetector(
@@ -481,13 +481,13 @@ class _ResultsScreenState extends State<ResultsScreen>
               decoration: BoxDecoration(
                 color: Colors.transparent,
                 borderRadius: BorderRadius.circular(kRadiusButton),
-                border: Border.all(color: kBgCardBorder, width: 1.5),
+                border: Border.all(color: ctxCardBorder(context), width: 1.5),
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Icon(Icons.picture_as_pdf_outlined,
-                      color: kTextSecondary, size: 20),
+                      color: ctxTextSecondary(context), size: 20),
                   const SizedBox(width: 10),
                   Text(
                     'Save as PDF',
@@ -495,7 +495,7 @@ class _ResultsScreenState extends State<ResultsScreen>
                       fontFamily: kFontFamily,
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
-                      color: kTextSecondary,
+                      color: ctxTextSecondary(context),
                     ),
                   ),
                   const SizedBox(width: 8),
@@ -541,7 +541,7 @@ class _ResultsScreenState extends State<ResultsScreen>
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Icon(Icons.refresh, color: kGreenAccent, size: 18),
+                  Icon(Icons.refresh, color: ctxAccent(context), size: 18),
                   const SizedBox(width: 8),
                   Text(
                     'New Recommendation',
@@ -549,7 +549,7 @@ class _ResultsScreenState extends State<ResultsScreen>
                       fontFamily: kFontFamily,
                       fontSize: 15,
                       fontWeight: FontWeight.w500,
-                      color: kGreenAccent,
+                      color: ctxAccent(context),
                     ),
                   ),
                 ],
@@ -593,7 +593,7 @@ class _ResultsScreenState extends State<ResultsScreen>
               fontFamily: kFontFamily,
               fontSize: 18,
               fontWeight: FontWeight.w700,
-              color: kTextHighlight,
+              color: ctxHeading(context),
             ),
           ),
           const SizedBox(height: 12),
@@ -703,13 +703,13 @@ class _ResultsScreenState extends State<ResultsScreen>
                         fontFamily: kFontFamily,
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
-                        color: kTextPrimary,
+                        color: ctxTextPrimary(context),
                       )),
                   Text(desc,
                       style: TextStyle(
                         fontFamily: kFontFamily,
                         fontSize: 11,
-                        color: kTextSecondary,
+                        color: ctxTextSecondary(context),
                       )),
                 ],
               ),
@@ -723,7 +723,7 @@ class _ResultsScreenState extends State<ResultsScreen>
                     fontFamily: kFontFamily,
                     fontSize: 14,
                     fontWeight: FontWeight.w700,
-                    color: kGreenAccent,
+                    color: ctxAccent(context),
                   ),
                 ),
                 Text(
@@ -731,7 +731,7 @@ class _ResultsScreenState extends State<ResultsScreen>
                   style: TextStyle(
                     fontFamily: kFontFamily,
                     fontSize: 11,
-                    color: kTextSecondary,
+                    color: ctxTextMuted(context),
                   ),
                 ),
               ],
@@ -752,7 +752,7 @@ class _ResultsScreenState extends State<ResultsScreen>
               fontFamily: kFontFamily,
               fontSize: 18,
               fontWeight: FontWeight.w700,
-              color: kTextHighlight,
+              color: ctxHeading(context),
             ),
           ),
           const SizedBox(height: 4),
@@ -761,25 +761,25 @@ class _ResultsScreenState extends State<ResultsScreen>
             style: TextStyle(
               fontFamily: kFontFamily,
               fontSize: 13,
-              color: kTextSecondary,
+              color: ctxTextSecondary(context),
             ),
           ),
           const SizedBox(height: 12),
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: kGreenPrimary.withOpacity(0.08),
+              color: kGreenPrimary.withOpacity(0.06),
               borderRadius: BorderRadius.circular(kRadiusCard),
-              border: Border.all(color: kGreenAccent.withOpacity(0.25)),
+              border: Border.all(color: kGreenPrimary.withOpacity(0.2)),
             ),
             child: Column(
               children: [
                 _orgRow('Farm Yard Manure (FYM)', org.fymTHa,
                     'Slow release · Good soil structure'),
-                const Divider(color: Colors.white12, height: 1),
+                Divider(color: ctxCardBorder(context), height: 16),
                 _orgRow('Vermicompost', org.vermicompostTHa,
                     'Higher nutrient density than FYM'),
-                const Divider(color: Colors.white12, height: 1),
+                Divider(color: ctxCardBorder(context), height: 16),
                 _orgRow('Enriched Compost (PSNC)', org.psncTHa,
                     'Poultry Slurry Nutrient Compost'),
               ],
@@ -951,10 +951,17 @@ class _ScheduleTimelineRow extends StatelessWidget {
                 padding: const EdgeInsets.all(16),
                 margin: const EdgeInsets.only(top: 2),
                 decoration: BoxDecoration(
-                  color: kBgCard,
+                  color: ctxCard(context),
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
-                      color: _dotColor.withOpacity(0.2), width: 1),
+                      color: _dotColor.withOpacity(0.25), width: 1),
+                  boxShadow: [
+                    BoxShadow(
+                      color: _dotColor.withOpacity(0.06),
+                      blurRadius: 8,
+                      offset: const Offset(0, 3),
+                    ),
+                  ],
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -974,7 +981,7 @@ class _ScheduleTimelineRow extends StatelessWidget {
                       style: TextStyle(
                         fontFamily: kFontFamily,
                         fontSize: 13,
-                        color: kTextPrimary,
+                        color: ctxTextPrimary(context),
                         height: 1.5,
                       ),
                     ),

@@ -39,14 +39,14 @@ class FertilizerResultCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: kBgCard,
+        color: ctxCard(context),
         borderRadius: BorderRadius.circular(kRadiusCard),
-        border: Border.all(color: c.withOpacity(0.3), width: 1),
+        border: Border.all(color: c.withOpacity(0.3), width: 1.5),
         boxShadow: [
           BoxShadow(
-            color: c.withOpacity(0.08),
-            blurRadius: 10,
-            offset: const Offset(0, 3),
+            color: c.withOpacity(0.10),
+            blurRadius: 12,
+            offset: const Offset(0, 4),
           )
         ],
       ),
@@ -94,17 +94,17 @@ class FertilizerResultCard extends StatelessWidget {
             style: TextStyle(
               fontFamily: kFontFamily,
               fontSize: 11,
-              color: kTextSecondary,
+              color: ctxTextMuted(context),
             ),
           ),
 
           if (!isCompact) ...[
             const SizedBox(height: 8),
-            const Divider(color: kBgCardBorder, height: 1),
+            Divider(color: ctxCardBorder(context), height: 1),
             const SizedBox(height: 8),
             Row(
               children: [
-                Icon(Icons.agriculture, size: 13, color: kTextSecondary),
+                Icon(Icons.agriculture, size: 13, color: ctxTextMuted(context)),
                 const SizedBox(width: 4),
                 Expanded(
                   child: FittedBox(
@@ -116,7 +116,7 @@ class FertilizerResultCard extends StatelessWidget {
                         fontFamily: kFontFamily,
                         fontSize: 12,
                         fontWeight: FontWeight.w600,
-                        color: kTextHighlight,
+                        color: ctxHeading(context),
                       ),
                     ),
                   ),

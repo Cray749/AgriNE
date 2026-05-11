@@ -11,7 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ThemeProvider extends ChangeNotifier {
-  bool _isDark = true; // default: dark (better for outdoor/bright sunlight use)
+  bool _isDark = false; // default: light theme
 
   bool get isDark => _isDark;
 

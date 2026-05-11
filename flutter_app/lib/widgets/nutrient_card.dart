@@ -79,12 +79,12 @@ class _NutrientResultCardState extends State<NutrientResultCard>
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
       decoration: BoxDecoration(
-        color: kBgCard,
+        color: ctxCard(context),
         borderRadius: BorderRadius.circular(kRadiusCard),
         border: Border.all(color: nutrientColor.withOpacity(0.35), width: 1.5),
         boxShadow: [
           BoxShadow(
-            color: nutrientColor.withOpacity(0.12),
+            color: nutrientColor.withOpacity(0.10),
             blurRadius: 16,
             offset: const Offset(0, 4),
           ),
@@ -177,7 +177,7 @@ class _NutrientResultCardState extends State<NutrientResultCard>
                         style: TextStyle(
                           fontFamily: kFontFamily,
                           fontSize: 13,
-                          color: kTextSecondary,
+                          color: ctxTextSecondary(context),
                         ),
                       ),
                       Text(
@@ -186,7 +186,7 @@ class _NutrientResultCardState extends State<NutrientResultCard>
                           fontFamily: kFontFamily,
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
-                          color: kTextPrimary,
+                          color: ctxTextPrimary(context),
                         ),
                       ),
                     ],
@@ -213,7 +213,7 @@ class _NutrientResultCardState extends State<NutrientResultCard>
                             fontFamily: kFontFamily,
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
-                            color: kTextSecondary,
+                            color: ctxTextSecondary(context),
                             letterSpacing: 0.5,
                           ),
                         ),
@@ -235,21 +235,22 @@ class _NutrientResultCardState extends State<NutrientResultCard>
                           padding: const EdgeInsets.symmetric(
                               horizontal: 10, vertical: 5),
                           decoration: BoxDecoration(
-                            color: kBgDark,
+                            color: ctxBg(context),
                             borderRadius: BorderRadius.circular(8),
+                            border: Border.all(color: ctxCardBorder(context)),
                           ),
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Icon(Icons.straighten,
-                                  size: 14, color: kTextSecondary),
+                                  size: 14, color: ctxTextSecondary(context)),
                               const SizedBox(width: 6),
                               Text(
                                 'For your ${widget.landSizeAcres} acres: ',
                                 style: TextStyle(
                                   fontFamily: kFontFamily,
                                   fontSize: 13,
-                                  color: kTextSecondary,
+                                  color: ctxTextSecondary(context),
                                 ),
                               ),
                               Text(
@@ -258,7 +259,7 @@ class _NutrientResultCardState extends State<NutrientResultCard>
                                   fontFamily: kFontFamily,
                                   fontSize: 15,
                                   fontWeight: FontWeight.w700,
-                                  color: kTextHighlight,
+                                  color: ctxHeading(context),
                                 ),
                               ),
                             ],
@@ -313,7 +314,7 @@ class _NutrientResultCardState extends State<NutrientResultCard>
                   margin: const EdgeInsets.fromLTRB(16, 0, 16, 16),
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    color: kBgDark,
+                    color: ctxBg(context),
                     borderRadius: BorderRadius.circular(12),
                     border: Border.all(
                         color: nutrientColor.withOpacity(0.15), width: 1),
@@ -329,7 +330,7 @@ class _NutrientResultCardState extends State<NutrientResultCard>
                         body: r.why,
                       ),
                       const SizedBox(height: 12),
-                      const Divider(color: kBgCardBorder, height: 1),
+                      Divider(color: ctxCardBorder(context), height: 1),
                       const SizedBox(height: 12),
 
                       // Schedule
@@ -340,7 +341,7 @@ class _NutrientResultCardState extends State<NutrientResultCard>
                         body: r.schedule,
                       ),
                       const SizedBox(height: 12),
-                      const Divider(color: kBgCardBorder, height: 1),
+                      Divider(color: ctxCardBorder(context), height: 1),
                       const SizedBox(height: 12),
 
                       // Equation
@@ -419,7 +420,7 @@ class _ExpandRow extends StatelessWidget {
           style: TextStyle(
             fontFamily: isMonospace ? 'monospace' : kFontFamily,
             fontSize: isMonospace ? 12 : 13,
-            color: kTextPrimary,
+            color: ctxTextPrimary(context),
             height: 1.5,
           ),
         ),
