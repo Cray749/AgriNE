@@ -90,12 +90,8 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: kBgDark,
-      appBar: AppBar(
-        title: Text('Your Profile', style: kStyleHeadingM),
-        backgroundColor: kBgDark,
-        elevation: 0,
+    return Scaffold(      appBar: AppBar(
+        title: Text('Your Profile', style: kStyleHeadingM),        elevation: 0,
         // No back button — this is part of the one-way onboarding flow
         automaticallyImplyLeading: false,
       ),

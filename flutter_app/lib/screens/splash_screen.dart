@@ -92,9 +92,7 @@ class _SplashScreenState extends State<SplashScreen>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: kBgDark,
-      body: Stack(
+    return Scaffold(      body: Stack(
         children: [
 
           // ── Ambient radial glow in screen centre ─────────────────────────
@@ -172,7 +170,7 @@ class _SplashScreenState extends State<SplashScreen>
                             child: Padding(
                               padding: const EdgeInsets.all(10),
                               child: Image.asset(
-                                'assets/images/icar_logo.png',
+                                'assets/images/icar_logoo.png',
                                 fit: BoxFit.contain,
                                 errorBuilder: (_, __, ___) => const Icon(
                                   Icons.eco_rounded,

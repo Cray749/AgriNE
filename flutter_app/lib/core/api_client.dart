@@ -26,14 +26,14 @@ class ApiClient {
   ApiClient._internal();
 
   // ── Base URL ───────────────────────────────────────────────────────────────
-  // Android emulator uses 10.0.2.2 to reach the host machine's localhost.
-  // Change this to your Railway URL before building the release APK.
-  static const String kBaseUrl = 'http://172.31.34.114:8000';
+  // Production: Render.com free tier
+  static const String kBaseUrl = 'https://agrisutra-backend.onrender.com';
 
   // ── Timeout ────────────────────────────────────────────────────────────────
-  // 30 seconds is generous. FPE math takes < 1 ms; most time is network.
-  // If Railway cold-starts, it can take 5–10 s on the free tier.
-  static const Duration kTimeout = Duration(seconds: 30);
+  // Render free tier cold-starts take 30–90 seconds after inactivity.
+  // 90s timeout ensures the first request always succeeds.
+  // Subsequent requests on the same session are fast (< 2s).
+  static const Duration kTimeout = Duration(seconds: 90);
 
   // ── Headers ────────────────────────────────────────────────────────────────
   static const Map<String, String> _headers = {
@@ -94,10 +94,15 @@ class ApiClient {
       );
     } on Exception catch (e) {
       // Covers TimeoutException, FormatException, etc.
-      throw ApiException(
-        'Request failed: ${e.toString()}',
-        code: 0,
-      );
+      final msg = e.toString();
+      if (msg.contains('TimeoutException') || msg.contains('timeout')) {
+        throw const ApiException(
+          'The server is waking up — this happens once after inactivity.\n\n'
+          'Please wait 30 seconds and try again. ⏳',
+          code: 0,
+        );
+      }
+      throw ApiException('Request failed: $msg', code: 0);
     }
 
     // ── Handle HTTP errors ────────────────────────────────────────────────────

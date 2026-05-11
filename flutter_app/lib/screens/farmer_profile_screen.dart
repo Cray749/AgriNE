@@ -124,12 +124,8 @@ class _FarmerProfileScreenState extends State<FarmerProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: kBgDark,
-      appBar: AppBar(
-        title: Text('My Farm Profile', style: kStyleHeadingM),
-        backgroundColor: kBgDark,
-        leading: IconButton(
+    return Scaffold(      appBar: AppBar(
+        title: Text('My Farm Profile', style: kStyleHeadingM),        leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new_rounded,
               color: kGreenAccent, size: 20),
           onPressed: () => Navigator.pop(context),
