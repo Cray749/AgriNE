@@ -151,12 +151,8 @@ class _InputWizardScreenState extends State<InputWizardScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: kBgDark,
-      appBar: AppBar(
-        title: Text('Fertilizer Wizard', style: kStyleHeadingM),
-        backgroundColor: kBgDark,
-        elevation: 0,
+    return Scaffold(      appBar: AppBar(
+        title: Text('Fertilizer Wizard', style: kStyleHeadingM),        elevation: 0,
         leading: _currentPage > 0
             ? IconButton(
                 icon: const Icon(Icons.arrow_back_ios_new_rounded, color: kGreenAccent, size: 20),
@@ -170,7 +166,7 @@ class _InputWizardScreenState extends State<InputWizardScreen> {
               context.watch<ThemeProvider>().isDark
                   ? Icons.light_mode_outlined
                   : Icons.dark_mode_outlined,
-              color: kGreenAccent,
+              color: ctxAccent(context),
               size: 22,
             ),
             tooltip: 'Toggle theme',
@@ -178,7 +174,8 @@ class _InputWizardScreenState extends State<InputWizardScreen> {
           ),
           // Farmer profile
           IconButton(
-            icon: const Icon(Icons.account_circle_outlined, color: kGreenAccent, size: 22),
+            icon: Icon(Icons.account_circle_outlined,
+                color: ctxAccent(context), size: 22),
             tooltip: 'My Profile',
             onPressed: () => Navigator.pushNamed(context, '/farmer_profile'),
           ),
@@ -667,31 +664,52 @@ class _Page3Review extends StatelessWidget {
   // Loading state — shown while API call is in progress
   Widget _buildLoadingState() {
     return Center(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          // Animated spinning leaf icon
-          TweenAnimationBuilder<double>(
-            tween: Tween(begin: 0, end: 1),
-            duration: const Duration(seconds: 2),
-            builder: (_, val, child) => Transform.rotate(
-              angle: val * 2 * 3.14159,
-              child: child,
+      child: Padding(
+        padding: kPaddingScreen,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Continuously spinning leaf
+            TweenAnimationBuilder<double>(
+              tween: Tween(begin: 0, end: 6.28318), // 2π — full rotation
+              duration: const Duration(seconds: 2),
+              builder: (ctx, val, child) => Transform.rotate(
+                angle: val,
+                child: child,
+              ),
+              onEnd: () {},
+              child: const Icon(Icons.eco_rounded, color: kGreenAccent, size: 64),
             ),
-            onEnd: () {},
-            child: const Icon(Icons.eco_rounded, color: kGreenAccent, size: 64),
-          ),
-          kGapL,
-          Text('Running STCR calculations', style: kStyleHeadingM),
-          kGapS,
-          const _AnimatedDots(),
-          kGapM,
-          Text(
-            'Computing N, P₂O₅ and K₂O requirements\nusing field-tested STCR equations…',
-            style: kStyleBodyM,
-            textAlign: TextAlign.center,
-          ),
-        ],
+            kGapL,
+            Text('Calculating your prescription…', style: kStyleHeadingM,
+                textAlign: TextAlign.center),
+            kGapS,
+            const _AnimatedDots(),
+            kGapL,
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              decoration: BoxDecoration(
+                color: kGreenPrimary.withOpacity(0.15),
+                borderRadius: BorderRadius.circular(kRadiusSmall),
+                border: Border.all(color: kGreenAccent.withOpacity(0.3)),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Icon(Icons.info_outline, color: kGreenAccent, size: 16),
+                  const SizedBox(width: 8),
+                  Flexible(
+                    child: Text(
+                      'First request may take up to 60 seconds\nwhile the server wakes up. Please wait ⏳',
+                      style: kStyleBodyM,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

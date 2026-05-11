@@ -45,9 +45,7 @@ class _LandingScreenState extends State<LandingScreen>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: kBgDark,
-      // No AppBar — hero section bleeds to the top edge (immersive)
+    return Scaffold(      // No AppBar — hero section bleeds to the top edge (immersive)
       extendBodyBehindAppBar: true,
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
@@ -71,12 +69,14 @@ class _LandingScreenState extends State<LandingScreen>
 
   Widget _buildHeroSection() {
     return Container(
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
-          colors: [kBgDark, kBgCard],
-          stops: [0.0, 1.0],
+          colors: Theme.of(context).brightness == Brightness.light
+              ? [kGreenPrimary, kLightBgPrimary]
+              : [kBgDark, kBgCard],
+          stops: const [0.0, 1.0],
         ),
       ),
       child: SafeArea(
@@ -215,7 +215,7 @@ class _LandingScreenState extends State<LandingScreen>
 
     return _AnimatedSection(
       child: Container(
-        color: kBgCard,
+        color: ctxCard(context),
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 36),
         child: Column(
           children: [
@@ -312,7 +312,7 @@ class _LandingScreenState extends State<LandingScreen>
 
     return _AnimatedSection(
       child: Container(
-        color: kBgCard,
+        color: ctxCard(context),
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
         child: Column(
           children: [
@@ -327,14 +327,14 @@ class _LandingScreenState extends State<LandingScreen>
                 child: Container(
                   margin: const EdgeInsets.symmetric(horizontal: 6),
                   padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 8),
-                  decoration: kCardDecoration(borderColor: kGreenPrimary.withOpacity(0.4)),
+                  decoration: ctxCardDecoration(context, borderColor: kGreenPrimary.withOpacity(0.3)),
                   child: Column(
                     children: [
                       Text(b.$1, style: const TextStyle(fontSize: 28)),
                       const SizedBox(height: 8),
                       Text(
                         b.$2,
-                        style: kStyleLabel.copyWith(color: kTextPrimary),
+                        style: kStyleLabel.copyWith(color: ctxTextPrimary(context)),
                         textAlign: TextAlign.center,
                       ),
                     ],
@@ -355,7 +355,9 @@ class _LandingScreenState extends State<LandingScreen>
   Widget _buildFooter() {
     return _AnimatedSection(
       child: Container(
-        color: const Color(0xFF0A0E0C),
+        color: Theme.of(context).brightness == Brightness.light
+            ? kLightBgSecondary
+            : const Color(0xFF0A0E0C),
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
         child: Column(
           children: [
@@ -415,11 +417,11 @@ class _HeroIllustration extends StatelessWidget {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            kGreenPrimary.withOpacity(0.35),
-            kBgCard,
+            kGreenPrimary.withOpacity(0.20),
+            ctxCard(context),
           ],
         ),
-        border: Border.all(color: kBgCardBorder),
+        border: Border.all(color: ctxCardBorder(context)),
       ),
       child: Stack(
         children: [
@@ -497,7 +499,7 @@ class _StepCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: kPaddingCard,
-      decoration: kCardDecoration(),
+      decoration: ctxCardDecoration(context),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -560,7 +562,7 @@ class _FeatureCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(16),
-      decoration: kCardDecoration(),
+      decoration: ctxCardDecoration(context),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -568,7 +570,10 @@ class _FeatureCard extends StatelessWidget {
           kGapS,
           Text(
             data.title,
-            style: kStyleBodyL.copyWith(fontWeight: FontWeight.w600, color: kTextHighlight),
+            style: kStyleBodyL.copyWith(
+              fontWeight: FontWeight.w600,
+              color: ctxHeading(context),
+            ),
           ),
           kGapXS,
           Expanded(
