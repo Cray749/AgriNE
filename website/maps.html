@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Map View | Jurivya NE</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;700&amp;family=Outfit:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+          "on-tertiary-fixed-variant": "#004a78",
+          "surface-container-high": "#d7efd2",
+          "surface-dim": "#c9e1c4",
+          "outline-variant": "#bfcaba",
+          "tertiary-fixed": "#cfe5ff",
+          "secondary-container": "#72f8b5",
+          "background": "#ebffe6",
+          "primary-fixed-dim": "#88d982",
+          "surface-container": "#ddf5d7",
+          "error-container": "#ffdad6",
+          "on-tertiary": "#ffffff",
+          "on-primary-fixed": "#002204",
+          "inverse-surface": "#223521",
+          "on-error-container": "#93000a",
+          "inverse-on-surface": "#dff7da",
+          "on-primary-fixed-variant": "#005312",
+          "on-secondary-fixed-variant": "#005233",
+          "error": "#ba1a1a",
+          "primary-fixed": "#a3f69c",
+          "on-surface-variant": "#40493d",
+          "inverse-primary": "#88d982",
+          "tertiary": "#00598f",
+          "primary": "#0d631b",
+          "tertiary-fixed-dim": "#99cbff",
+          "surface-container-lowest": "#ffffff",
+          "secondary-fixed": "#75fbb8",
+          "surface-tint": "#1b6d24",
+          "surface-bright": "#ebffe6",
+          "on-secondary": "#ffffff",
+          "on-background": "#0d200e",
+          "surface-container-low": "#e2fadd",
+          "primary-container": "#2e7d32",
+          "on-surface": "#0d200e",
+          "secondary": "#006c45",
+          "on-primary-container": "#cbffc2",
+          "on-tertiary-fixed": "#001d34",
+          "surface-variant": "#d1e9cc",
+          "secondary-fixed-dim": "#55de9e",
+          "on-secondary-container": "#007149",
+          "tertiary-container": "#0072b6",
+          "surface-container-highest": "#d1e9cc",
+          "on-secondary-fixed": "#002112",
+          "outline": "#707a6c",
+          "on-primary": "#ffffff",
+          "on-tertiary-container": "#e9f2ff",
+          "surface": "#ebffe6",
+          "on-error": "#ffffff"
+        },
+        "borderRadius": {
+          "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"
+        },
+        "spacing": {
+          "stack-sm": "8px", "margin-mobile": "16px", "gutter": "24px",
+          "stack-md": "16px", "margin-desktop": "48px", "base": "8px",
+          "stack-lg": "32px", "container-max": "1280px"
+        },
+        "fontFamily": {
+          "data-mono": ["JetBrains Mono"], "label-caps": ["Inter"],
+          "headline-lg-mobile": ["Outfit"], "display-lg": ["Outfit"],
+          "body-md": ["Inter"], "body-sm": ["Inter"],
+          "headline-md": ["Outfit"], "headline-lg": ["Outfit"], "body-lg": ["Inter"]
+        },
+        "fontSize": {
+          "data-mono": ["14px", {"lineHeight":"20px","letterSpacing":"0.02em","fontWeight":"500"}],
+          "label-caps": ["12px", {"lineHeight":"16px","letterSpacing":"0.05em","fontWeight":"700"}],
+          "headline-lg-mobile": ["28px", {"lineHeight":"36px","fontWeight":"600"}],
+          "display-lg": ["48px", {"lineHeight":"56px","letterSpacing":"-0.02em","fontWeight":"700"}],
+          "body-md": ["16px", {"lineHeight":"24px","fontWeight":"400"}],
+          "body-sm": ["14px", {"lineHeight":"20px","fontWeight":"400"}],
+          "headline-md": ["24px", {"lineHeight":"32px","fontWeight":"600"}],
+          "headline-lg": ["32px", {"lineHeight":"40px","fontWeight":"600"}],
+          "body-lg": ["18px", {"lineHeight":"28px","fontWeight":"400"}]
+        }
+      }
+    }
+  }
+</script>
+</head>
+<body class="pt-[64px] bg-[#FAFEFA] text-on-surface font-body-md antialiased min-h-screen flex flex-col">
+
+<!-- TopNavBar - Jurivya NE -->
+<header class="bg-surface/90 backdrop-blur-md fixed top-0 w-full border-b border-outline-variant/30 z-50">
+  <div class="flex justify-between items-center px-4 md:px-12 py-3 max-w-[1280px] mx-auto gap-4">
+    <a href="index.html" class="flex items-center gap-2 flex-shrink-0">
+      <img src="logo.png" alt="Jurivya NE" class="h-10 w-auto object-contain"/>
+    </a>
+    <nav class="hidden md:flex items-center gap-0.5 flex-nowrap">
+      <a class="nav-link px-2.5 py-1.5 rounded-md text-sm text-on-surface-variant hover:text-primary hover:bg-surface-container-low/60 transition-all whitespace-nowrap" href="index.html">Home</a>
+      <a class="nav-link px-2.5 py-1.5 rounded-md text-sm text-on-surface-variant hover:text-primary hover:bg-surface-container-low/60 transition-all whitespace-nowrap" href="recommendation.html">Recommendation</a>
+      <a class="nav-link px-2.5 py-1.5 rounded-md text-sm text-on-surface-variant hover:text-primary hover:bg-surface-container-low/60 transition-all whitespace-nowrap" href="science.html">Science</a>
+      <a class="nav-link px-2.5 py-1.5 rounded-md text-sm text-on-surface-variant hover:text-primary hover:bg-surface-container-low/60 transition-all whitespace-nowrap" href="features.html">Features</a>
+      <a class="nav-link px-2.5 py-1.5 rounded-md text-sm text-on-surface-variant hover:text-primary hover:bg-surface-container-low/60 transition-all whitespace-nowrap" href="advisory.html">Advisory</a>
+      <a class="nav-link px-2.5 py-1.5 rounded-md text-sm text-primary font-bold border-b-2 border-primary whitespace-nowrap" href="maps.html">Map View</a>
+      <div class="relative group">
+        <button class="nav-link px-2.5 py-1.5 rounded-md text-sm text-on-surface-variant hover:text-primary hover:bg-surface-container-low/60 transition-all whitespace-nowrap flex items-center gap-1">
+          Resources <span class="material-symbols-outlined" style="font-size:14px;line-height:1;">expand_more</span>
+        </button>
+        <div class="absolute top-full left-0 mt-1 w-44 bg-surface-container-lowest border border-outline-variant/30 rounded-xl shadow-lg py-1 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+          <a href="markets.html" class="flex items-center gap-2 px-4 py-2.5 text-sm text-on-surface-variant hover:text-primary hover:bg-surface-container-low transition-colors whitespace-nowrap">
+            <span class="material-symbols-outlined" style="font-size:16px;">storefront</span>Markets
+          </a>
+          <a href="analytics.html" class="flex items-center gap-2 px-4 py-2.5 text-sm text-on-surface-variant hover:text-primary hover:bg-surface-container-low transition-colors whitespace-nowrap">
+            <span class="material-symbols-outlined" style="font-size:16px;">analytics</span>Analytics
+          </a>
+          <a href="resources.html" class="flex items-center gap-2 px-4 py-2.5 text-sm text-on-surface-variant hover:text-primary hover:bg-surface-container-low transition-colors whitespace-nowrap">
+            <span class="material-symbols-outlined" style="font-size:16px;">library_books</span>All Resources
+          </a>
+        </div>
+      </div>
+      <a id="nav-report-link" class="nav-link px-2.5 py-1.5 rounded-md text-sm text-primary font-bold bg-[#69F0AE]/20 hover:bg-[#69F0AE]/40 transition-all whitespace-nowrap hidden" href="report.html">Regional Report</a>
+    </nav>
+    <div class="flex items-center gap-2 flex-shrink-0">
+      <a href="download.html" class="hidden md:flex bg-[#69F0AE] text-[#1B2E1B] px-4 py-2 rounded-full text-xs font-bold items-center gap-1.5 hover:-translate-y-0.5 transition-transform shadow-sm whitespace-nowrap">
+        <span class="material-symbols-outlined" style="font-size:14px;font-variation-settings:'FILL' 1;">android</span>
+        Download App
+      </a>
+      <button id="mobile-menu-btn" class="md:hidden text-primary p-1">
+        <span class="material-symbols-outlined">menu</span>
+      </button>
+    </div>
+  </div>
+  <!-- Mobile menu -->
+  <div id="mobile-menu" class="hidden md:hidden bg-surface border-t border-outline-variant/20 px-4 py-3 space-y-1">
+    <a href="index.html" class="block py-2 text-on-surface-variant hover:text-primary">Home</a>
+    <a href="recommendation.html" class="block py-2 text-on-surface-variant hover:text-primary">Recommendation</a>
+    <a href="science.html" class="block py-2 text-on-surface-variant hover:text-primary">Science &amp; Methodology</a>
+    <a href="features.html" class="block py-2 text-on-surface-variant hover:text-primary">Features</a>
+    <a href="advisory.html" class="block py-2 text-on-surface-variant hover:text-primary">Advisory</a>
+    <a href="maps.html" class="block py-2 text-primary font-bold">Map View</a>
+    <a href="markets.html" class="block py-2 text-on-surface-variant hover:text-primary">Markets</a>
+    <a href="analytics.html" class="block py-2 text-on-surface-variant hover:text-primary">Analytics</a>
+    <a href="resources.html" class="block py-2 text-on-surface-variant hover:text-primary">Resources</a>
+    <a id="nav-report-mobile" href="report.html" class="hidden py-2 text-primary font-bold block">Regional Report</a>
+    <a href="download.html" class="block py-2 text-secondary font-bold">Download App</a>
+  </div>
+</header>
+
+<main class="flex-grow max-w-container-max mx-auto w-full px-margin-mobile md:px-margin-desktop py-stack-lg flex flex-col gap-stack-lg">
+  <!-- Page Header -->
+  <div class="flex flex-col gap-stack-sm md:w-2/3">
+    <h1 class="font-display-lg text-display-lg text-primary">Regional Map View</h1>
+    <p class="font-body-lg text-body-lg text-on-surface-variant">Explore agricultural suitability and soil nutrient distribution across Northeast India. Select a region for detailed insights.</p>
+  </div>
+
+  <!-- Dashboard Grid -->
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter items-start">
+    <!-- Map Container -->
+    <div class="lg:col-span-8 bg-white rounded-xl border border-[#E8F0E8] overflow-hidden relative min-h-[500px] flex items-center justify-center p-4">
+      <iframe class="w-full h-full object-cover object-center absolute inset-0 z-0 opacity-90" src="https://www.openstreetmap.org/export/embed.html?bbox=89.5%2C23.5%2C97.5%2C29.5&amp;layer=mapnik" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+      <div class="absolute inset-0 z-10 p-gutter flex flex-col justify-between pointer-events-none">
+        <!-- Zoom Controls -->
+        <div class="flex flex-col gap-stack-sm pointer-events-auto w-max">
+          <button class="w-10 h-10 bg-white/85 backdrop-blur-md border border-[#E8F0E8] rounded-lg flex items-center justify-center text-primary hover:bg-surface-container transition-colors">
+            <span class="material-symbols-outlined">add</span>
+          </button>
+          <button class="w-10 h-10 bg-white/85 backdrop-blur-md border border-[#E8F0E8] rounded-lg flex items-center justify-center text-primary hover:bg-surface-container transition-colors">
+            <span class="material-symbols-outlined">remove</span>
+          </button>
+          <button class="w-10 h-10 bg-white/85 backdrop-blur-md border border-[#E8F0E8] rounded-lg flex items-center justify-center text-primary hover:bg-surface-container transition-colors mt-2">
+            <span class="material-symbols-outlined">my_location</span>
+          </button>
+        </div>
+        <!-- Legend -->
+        <div class="bg-white/85 backdrop-blur-md border border-[#E8F0E8] p-stack-md rounded-[16px] pointer-events-auto max-w-[280px]">
+          <h3 class="text-label-caps font-label-caps text-on-surface-variant uppercase mb-3">Suitability Legend</h3>
+          <ul class="space-y-2">
+            <li class="flex items-center gap-2 text-body-sm font-body-sm">
+              <span class="w-3 h-3 rounded-full bg-[#2E7D32]"></span>High Suitability
+            </li>
+            <li class="flex items-center gap-2 text-body-sm font-body-sm">
+              <span class="w-3 h-3 rounded-full bg-[#69F0AE]"></span>Optimal Nitrogen
+            </li>
+            <li class="flex items-center gap-2 text-body-sm font-body-sm">
+              <span class="w-3 h-3 rounded-full bg-[#42A5F5]"></span>Optimal Phosphorus
+            </li>
+            <li class="flex items-center gap-2 text-body-sm font-body-sm">
+              <span class="w-3 h-3 rounded-full bg-[#FFA726]"></span>Optimal Potassium
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="lg:col-span-4 flex flex-col gap-stack-md">
+      <!-- Regional Insights Card -->
+      <div class="bg-white p-gutter rounded-[16px] border border-[#E8F0E8] shadow-sm flex flex-col">
+        <div class="flex items-center justify-between mb-6">
+          <h2 class="text-headline-md font-headline-md text-on-surface">Regional Insights</h2>
+          <span class="material-symbols-outlined text-outline">analytics</span>
+        </div>
+        <div class="bg-surface-container-low rounded-lg p-4 mb-6 border-t-2 border-[#69F0AE]">
+          <p class="text-label-caps font-label-caps text-on-surface-variant uppercase mb-1">Selected Region</p>
+          <p class="text-body-lg font-body-lg text-primary font-medium">Northeast India Overview</p>
+        </div>
+        <div class="flex flex-col gap-4 flex-grow">
+          <div class="flex items-center gap-4">
+            <div class="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center text-primary">
+              <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">landscape</span>
+            </div>
+            <div>
+              <p class="text-label-caps font-label-caps text-on-surface-variant uppercase">Total Arable Land</p>
+              <p class="text-body-md font-body-md text-on-surface font-medium">1.2M ha</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-4">
+            <div class="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center text-primary">
+              <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">eco</span>
+            </div>
+            <div>
+              <p class="text-label-caps font-label-caps text-on-surface-variant uppercase">Primary Crops</p>
+              <p class="text-body-md font-body-md text-on-surface font-medium">Maize, Paddy, Tea</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-4">
+            <div class="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center text-primary">
+              <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">water_drop</span>
+            </div>
+            <div>
+              <p class="text-label-caps font-label-caps text-on-surface-variant uppercase">Avg Annual Rainfall</p>
+              <p class="text-body-md font-body-md text-on-surface font-medium">2500 mm</p>
+            </div>
+          </div>
+        </div>
+        <!-- Generate Detailed Report button -->
+        <a class="mt-8 w-full bg-[#69F0AE] text-[#1B2E1B] py-3 px-4 rounded-lg text-body-md font-medium hover:bg-[#5CE0A0] transition-colors hover:-translate-y-[2px] duration-200 flex justify-center items-center gap-2 cursor-pointer"
+           href="report.html" onclick="sessionStorage.setItem('jurivya_from_map','1')">
+          <span class="material-symbols-outlined">summarize</span> Generate Detailed Report
+        </a>
+      </div>
+
+      <!-- NPK Status Card -->
+      <div class="grid grid-cols-3 gap-2">
+        <div class="bg-[#69F0AE] bg-opacity-20 rounded-[12px] p-3 border border-[#69F0AE] border-opacity-30 text-center">
+          <p class="text-data-mono font-data-mono text-[#1B2E1B] font-bold">N</p>
+          <p class="text-label-caps font-label-caps text-on-surface-variant mt-1">Deficient</p>
+        </div>
+        <div class="bg-[#42A5F5] bg-opacity-20 rounded-[12px] p-3 border border-[#42A5F5] border-opacity-30 text-center">
+          <p class="text-data-mono font-data-mono text-[#001d34] font-bold">P</p>
+          <p class="text-label-caps font-label-caps text-on-surface-variant mt-1">Optimal</p>
+        </div>
+        <div class="bg-[#FFA726] bg-opacity-20 rounded-[12px] p-3 border border-[#FFA726] border-opacity-30 text-center">
+          <p class="text-data-mono font-data-mono text-[#4a2e00] font-bold">K</p>
+          <p class="text-label-caps font-label-caps text-on-surface-variant mt-1">Surplus</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- Footer -->
+<footer class="w-full bg-surface-container-low border-t border-outline-variant mt-auto">
+  <div class="flex flex-col md:flex-row justify-between items-center px-margin-desktop py-stack-lg gap-gutter max-w-container-max mx-auto">
+    <a href="index.html" class="font-headline-md text-headline-md font-bold text-primary flex items-center gap-2">
+      <img src="logo.png" alt="Jurivya NE" class="h-8 w-auto object-contain"/>
+    </a>
+    <p class="font-body-sm text-body-sm text-secondary text-center">© 2024 Jurivya NE · ICAR.</p>
+    <nav class="flex flex-wrap justify-center gap-6">
+      <a class="font-body-sm text-body-sm text-on-surface-variant hover:text-secondary transition-colors" href="index.html">Privacy Policy</a>
+      <a class="font-body-sm text-body-sm text-on-surface-variant hover:text-secondary transition-colors" href="index.html">Terms of Service</a>
+      <a class="font-body-sm text-body-sm text-on-surface-variant hover:text-secondary transition-colors" href="index.html">Contact Us</a>
+    </nav>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var btn=document.getElementById('mobile-menu-btn');
+  if(btn) btn.addEventListener('click',function(){
+    document.getElementById('mobile-menu').classList.toggle('hidden');
+  });
+  if(sessionStorage.getItem('jurivya_from_map')){
+    var d=document.getElementById('nav-report-link');
+    if(d) d.classList.remove('hidden');
+    var m=document.getElementById('nav-report-mobile');
+    if(m) m.classList.remove('hidden');
+  }
+})();
+</script>
+</body></html>

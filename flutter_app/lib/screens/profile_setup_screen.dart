@@ -235,13 +235,13 @@ class _DistrictDropdown extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: kCardDecoration(),
+      decoration: ctxCardDecoration(context),
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
       child: DropdownButtonHideUnderline(
         child: DropdownButton<String>(
           value: value,
           isExpanded: true,
-          dropdownColor: kBgCard,
+          dropdownColor: ctxCard(context),
           icon: const Icon(Icons.keyboard_arrow_down_rounded, color: kGreenAccent),
           style: kStyleBodyL.copyWith(color: kTextHighlight, fontSize: 18),
           items: districts.map((d) => DropdownMenuItem(
@@ -282,7 +282,7 @@ class _LandSizeSlider extends StatelessWidget {
         Container(
           width: double.infinity,
           padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 20),
-          decoration: kNutrientCardDecoration(kGreenAccent),
+          decoration: ctxNutrientCardDecoration(context, kGreenAccent),
           child: Column(
             children: [
               Text(
@@ -355,7 +355,7 @@ class _ProfilePreviewCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: kPaddingCard,
-      decoration: kCardDecoration(borderColor: kGreenPrimary.withOpacity(0.5)),
+      decoration: ctxCardDecoration(context, borderColor: kGreenPrimary.withOpacity(0.5)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -366,7 +366,7 @@ class _ProfilePreviewCard extends StatelessWidget {
               Text('Profile Preview', style: kStyleLabel.copyWith(color: kGreenAccent)),
             ],
           ),
-          const Divider(color: kBgCardBorder, height: 20),
+          Divider(color: ctxCardBorder(context), height: 20),
           _PreviewRow(icon: Icons.person_outline,     label: 'Name',     value: name),
           kGapS,
           _PreviewRow(icon: Icons.location_on_outlined, label: 'District', value: district),

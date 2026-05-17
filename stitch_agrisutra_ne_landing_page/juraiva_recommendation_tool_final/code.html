@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Juraiva - Recommendation Tool</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&amp;family=Inter:wght@400;500;600;700&amp;family=Outfit:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary-fixed-variant": "#004a78",
+                        "surface-container-high": "#d7efd2",
+                        "surface-dim": "#c9e1c4",
+                        "outline-variant": "#bfcaba",
+                        "tertiary-fixed": "#cfe5ff",
+                        "secondary-container": "#72f8b5",
+                        "background": "#ebffe6",
+                        "primary-fixed-dim": "#88d982",
+                        "surface-container": "#ddf5d7",
+                        "error-container": "#ffdad6",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-fixed": "#002204",
+                        "inverse-surface": "#223521",
+                        "on-error-container": "#93000a",
+                        "inverse-on-surface": "#dff7da",
+                        "on-primary-fixed-variant": "#005312",
+                        "on-secondary-fixed-variant": "#005233",
+                        "error": "#ba1a1a",
+                        "primary-fixed": "#a3f69c",
+                        "on-surface-variant": "#40493d",
+                        "inverse-primary": "#88d982",
+                        "tertiary": "#00598f",
+                        "primary": "#0d631b",
+                        "tertiary-fixed-dim": "#99cbff",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary-fixed": "#75fbb8",
+                        "surface-tint": "#1b6d24",
+                        "surface-bright": "#ebffe6",
+                        "on-secondary": "#ffffff",
+                        "on-background": "#0d200e",
+                        "surface-container-low": "#e2fadd",
+                        "primary-container": "#2e7d32",
+                        "on-surface": "#0d200e",
+                        "secondary": "#006c45",
+                        "on-primary-container": "#cbffc2",
+                        "on-tertiary-fixed": "#001d34",
+                        "surface-variant": "#d1e9cc",
+                        "secondary-fixed-dim": "#55de9e",
+                        "on-secondary-container": "#007149",
+                        "tertiary-container": "#0072b6",
+                        "surface-container-highest": "#d1e9cc",
+                        "on-secondary-fixed": "#002112",
+                        "outline": "#707a6c",
+                        "on-primary": "#ffffff",
+                        "on-tertiary-container": "#e9f2ff",
+                        "surface": "#ebffe6",
+                        "on-error": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-sm": "8px",
+                        "margin-mobile": "16px",
+                        "gutter": "24px",
+                        "stack-md": "16px",
+                        "margin-desktop": "48px",
+                        "base": "8px",
+                        "stack-lg": "32px",
+                        "container-max": "1280px"
+                    },
+                    "fontFamily": {
+                        "data-mono": ["JetBrains Mono"],
+                        "label-caps": ["Inter"],
+                        "headline-lg-mobile": ["Outfit"],
+                        "display-lg": ["Outfit"],
+                        "body-md": ["Inter"],
+                        "body-sm": ["Inter"],
+                        "headline-md": ["Outfit"],
+                        "headline-lg": ["Outfit"],
+                        "body-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "data-mono": ["14px", { "lineHeight": "20px", "letterSpacing": "0.02em", "fontWeight": "500" }],
+                        "label-caps": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700" }],
+                        "headline-lg-mobile": ["28px", { "lineHeight": "36px", "fontWeight": "600" }],
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "fontWeight": "600" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen flex flex-col">
+<!-- TopNavBar -->
+<nav class="bg-surface/80 dark:bg-surface-dim/80 backdrop-blur-md fixed top-0 w-full border-b border-outline-variant/30 dark:border-outline/20 flex justify-between items-center px-margin-desktop py-4 max-w-container-max mx-auto z-50">
+<div class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed">Juraiva</div>
+<div class="hidden md:flex gap-gutter items-center">
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors font-body-md text-body-md hover:bg-surface-container-low/50 dark:hover:bg-surface-container-highest/20 transition-all duration-200 px-3 py-2 rounded-md" href="index.html">Home</a>
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors font-body-md text-body-md hover:bg-surface-container-low/50 dark:hover:bg-surface-container-highest/20 transition-all duration-200 px-3 py-2 rounded-md" href="map.html">Map View</a>
+<a class="text-primary dark:text-primary-fixed-dim font-bold border-b-2 border-primary dark:border-primary-fixed-dim pb-1 font-body-md text-body-md hover:bg-surface-container-low/50 dark:hover:bg-surface-container-highest/20 transition-all duration-200 px-3 py-2" href="recommendation.html">Recommendation Tool</a>
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors font-body-md text-body-md hover:bg-surface-container-low/50 dark:hover:bg-surface-container-highest/20 transition-all duration-200 px-3 py-2 rounded-md" href="science.html">Science &amp; Methodology</a>
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors font-body-md text-body-md hover:bg-surface-container-low/50 dark:hover:bg-surface-container-highest/20 transition-all duration-200 px-3 py-2 rounded-md" href="features.html">Features</a>
+</div>
+<button class="bg-[#69F0AE] text-[#1B2E1B] px-6 py-2 rounded-full font-label-caps text-label-caps hover:-translate-y-0.5 transition-transform scale-95 active:scale-90 shadow-sm shadow-[#2E7D3215]">Sign In</button>
+</nav>
+<!-- Main Content -->
+<main class="flex-grow pt-[100px] px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto w-full pb-stack-lg">
+<!-- Header -->
+<div class="mb-stack-lg text-center md:text-left">
+<h1 class="font-display-lg text-display-lg text-primary mb-stack-sm">Recommendation Tool</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant">Welcome to the Nutrient Hub. Generate precise fertilizer prescriptions by synthesizing traditional farming wisdom with our Advanced STCR AI Algorithm.</p>
+</div>
+<!-- Wizard Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<!-- Left Panel: Farm Profile -->
+<div class="lg:col-span-4 bg-surface-container-lowest border border-[#E8F0E8] rounded-xl p-gutter shadow-sm shadow-[#2E7D3215]">
+<h2 class="font-headline-md text-headline-md text-primary mb-stack-md flex items-center gap-2">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">eco</span>
+                    Farm Profile
+                </h2>
+<div class="space-y-stack-md">
+<!-- Location -->
+<div>
+<label class="block font-label-caps text-label-caps text-on-surface-variant mb-2">Location</label>
+<div class="flex items-center justify-between bg-surface-container-low px-4 py-3 rounded-lg border border-outline-variant/50">
+<span class="font-body-md text-body-md">Dimapur, Nagaland</span>
+<span class="material-symbols-outlined text-secondary">location_on</span>
+</div>
+</div>
+<!-- Crop -->
+<div>
+<label class="block font-label-caps text-label-caps text-on-surface-variant mb-2">Target Crop</label>
+<div class="flex items-center justify-between bg-surface-container-low px-4 py-3 rounded-lg border border-outline-variant/50">
+<span class="font-body-md text-body-md">Maize (High Yielding)</span>
+<span class="material-symbols-outlined text-secondary">agriculture</span>
+</div>
+</div>
+<!-- Yield Target -->
+<div>
+<label class="block font-label-caps text-label-caps text-on-surface-variant mb-2">Target Yield (q/ha)</label>
+<div class="flex items-center justify-between bg-surface-container-low px-4 py-3 rounded-lg border border-outline-variant/50">
+<span class="font-body-md text-body-md">45.00</span>
+<span class="material-symbols-outlined text-secondary">moving</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Panel: Nutrient Hub -->
+<div class="lg:col-span-8 bg-surface-container-lowest border border-[#E8F0E8] rounded-xl p-gutter shadow-sm shadow-[#2E7D3215]">
+<div class="flex justify-between items-center mb-stack-md">
+<h2 class="font-headline-md text-headline-md text-primary flex items-center gap-2">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">science</span>
+                        Nutrient Hub
+                    </h2>
+<span class="bg-primary/10 text-primary px-3 py-1 rounded-full font-label-caps text-label-caps flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">psychology</span>
+                        Advanced STCR Algorithm Active
+                    </span>
+</div>
+<div class="space-y-stack-sm mb-stack-lg">
+<!-- Nitrogen Accordion -->
+<details class="group border border-outline-variant/30 rounded-lg overflow-hidden bg-surface" open="">
+<summary class="flex justify-between items-center p-4 cursor-pointer hover:bg-surface-container-low transition-colors list-none [&amp;::-webkit-details-marker]:hidden">
+<div class="flex items-center gap-3">
+<span class="w-8 h-8 rounded-full bg-[#69F0AE] text-[#1B2E1B] flex items-center justify-center font-data-mono text-data-mono font-bold">N</span>
+<span class="font-body-lg text-body-lg font-medium text-primary">Nitrogen Input</span>
+</div>
+<span class="material-symbols-outlined transition-transform group-open:rotate-180">expand_more</span>
+</summary>
+<div class="p-4 bg-surface-container-lowest border-t border-outline-variant/30 grid grid-cols-1 md:grid-cols-2 gap-4">
+<div>
+<label class="block font-label-caps text-label-caps text-on-surface-variant mb-2">Soil Test Value (kg/ha)</label>
+<input class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-4 py-2 font-data-mono text-data-mono focus:border-[#69F0AE] focus:ring-1 focus:ring-[#69F0AE] outline-none" type="number" value="210"/>
+</div>
+<div>
+<label class="block font-label-caps text-label-caps text-on-surface-variant mb-2">Fertilizer Source</label>
+<select class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-4 py-2 font-body-md text-body-md focus:border-[#69F0AE] focus:ring-1 focus:ring-[#69F0AE] outline-none">
+<option>Urea (46% N)</option>
+<option>Ammonium Sulphate (21% N)</option>
+</select>
+</div>
+</div>
+</details>
+<!-- Phosphorus Accordion -->
+<details class="group border border-outline-variant/30 rounded-lg overflow-hidden bg-surface">
+<summary class="flex justify-between items-center p-4 cursor-pointer hover:bg-surface-container-low transition-colors list-none [&amp;::-webkit-details-marker]:hidden">
+<div class="flex items-center gap-3">
+<span class="w-8 h-8 rounded-full bg-tertiary-fixed text-on-tertiary-fixed flex items-center justify-center font-data-mono text-data-mono font-bold">P</span>
+<span class="font-body-lg text-body-lg font-medium text-primary">Phosphorus Input</span>
+</div>
+<span class="material-symbols-outlined transition-transform group-open:rotate-180">expand_more</span>
+</summary>
+<div class="p-4 bg-surface-container-lowest border-t border-outline-variant/30 grid grid-cols-1 md:grid-cols-2 gap-4">
+<div>
+<label class="block font-label-caps text-label-caps text-on-surface-variant mb-2">Soil Test Value (kg/ha)</label>
+<input class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-4 py-2 font-data-mono text-data-mono focus:border-[#69F0AE] focus:ring-1 focus:ring-[#69F0AE] outline-none" type="number" value="18"/>
+</div>
+<div>
+<label class="block font-label-caps text-label-caps text-on-surface-variant mb-2">Fertilizer Source</label>
+<select class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-4 py-2 font-body-md text-body-md focus:border-[#69F0AE] focus:ring-1 focus:ring-[#69F0AE] outline-none">
+<option>SSP (16% P2O5)</option>
+<option>DAP (46% P2O5)</option>
+</select>
+</div>
+</div>
+</details>
+<!-- Potassium Accordion -->
+<details class="group border border-outline-variant/30 rounded-lg overflow-hidden bg-surface">
+<summary class="flex justify-between items-center p-4 cursor-pointer hover:bg-surface-container-low transition-colors list-none [&amp;::-webkit-details-marker]:hidden">
+<div class="flex items-center gap-3">
+<span class="w-8 h-8 rounded-full bg-orange-200 text-orange-900 flex items-center justify-center font-data-mono text-data-mono font-bold">K</span>
+<span class="font-body-lg text-body-lg font-medium text-primary">Potassium Input</span>
+</div>
+<span class="material-symbols-outlined transition-transform group-open:rotate-180">expand_more</span>
+</summary>
+<div class="p-4 bg-surface-container-lowest border-t border-outline-variant/30 grid grid-cols-1 md:grid-cols-2 gap-4">
+<div>
+<label class="block font-label-caps text-label-caps text-on-surface-variant mb-2">Soil Test Value (kg/ha)</label>
+<input class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-4 py-2 font-data-mono text-data-mono focus:border-[#69F0AE] focus:ring-1 focus:ring-[#69F0AE] outline-none" type="number" value="145"/>
+</div>
+<div>
+<label class="block font-label-caps text-label-caps text-on-surface-variant mb-2">Fertilizer Source</label>
+<select class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-4 py-2 font-body-md text-body-md focus:border-[#69F0AE] focus:ring-1 focus:ring-[#69F0AE] outline-none">
+<option>MOP (60% K2O)</option>
+</select>
+</div>
+</div>
+</details>
+</div>
+<div class="flex justify-end">
+<a class="bg-[#69F0AE] text-[#1B2E1B] px-8 py-3 rounded-full font-label-caps text-label-caps font-bold hover:-translate-y-0.5 transition-transform shadow-md shadow-[#2E7D3215] flex items-center gap-2 inline-flex" href="results.html">
+<span class="material-symbols-outlined">analytics</span>
+                        Generate Recommendation
+                    </a>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-low dark:bg-inverse-surface w-full border-t border-outline-variant dark:border-outline flex flex-col md:flex-row justify-between items-center px-margin-desktop py-stack-lg gap-gutter">
+<div class="font-body-sm text-body-sm text-secondary dark:text-secondary-fixed-dim">© 2024 Juraiva. Eco-Minimalism for Northeast India.</div>
+<div class="flex gap-4">
+<a class="font-body-sm text-body-sm text-on-surface-variant dark:text-surface-variant hover:text-secondary dark:hover:text-secondary-fixed transition-colors opacity-80 hover:opacity-100 transition-opacity" href="#">Privacy Policy</a>
+<a class="font-body-sm text-body-sm text-on-surface-variant dark:text-surface-variant hover:text-secondary dark:hover:text-secondary-fixed transition-colors opacity-80 hover:opacity-100 transition-opacity" href="#">Terms of Service</a>
+<a class="font-body-sm text-body-sm text-on-surface-variant dark:text-surface-variant hover:text-secondary dark:hover:text-secondary-fixed transition-colors opacity-80 hover:opacity-100 transition-opacity" href="#">Contact Us</a>
+<a class="font-body-sm text-body-sm text-on-surface-variant dark:text-surface-variant hover:text-secondary dark:hover:text-secondary-fixed transition-colors opacity-80 hover:opacity-100 transition-opacity" href="#">Resources</a>
+</div>
+</footer>
+</body></html>

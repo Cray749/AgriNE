@@ -27,6 +27,8 @@ dependencies:
   url_launcher: ^6.2.6          # Share sheet & external links
 
   share_plus: ^9.0.0
+  geolocator: ^10.1.0
+  flutter_markdown_plus: ^1.0.7  # Render Groq AI markdown response
   
 dev_dependencies:
   flutter_test:

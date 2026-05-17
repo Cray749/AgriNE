@@ -154,7 +154,7 @@ class _SoilInputTileState extends State<SoilInputTile> {
       margin: const EdgeInsets.only(bottom: 16),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: kBgCard,
+        color: ctxCard(context),
         borderRadius: BorderRadius.circular(kRadiusCard),
         border: Border.all(
           color: widget.color.withOpacity(0.35),
@@ -207,7 +207,7 @@ class _SoilInputTileState extends State<SoilInputTile> {
           const SizedBox(height: 8),
           Container(
             decoration: BoxDecoration(
-              color: kBgDark,
+              color: ctxBg(context),
               borderRadius: BorderRadius.circular(kRadiusButton),
             ),
             child: Row(
@@ -328,10 +328,10 @@ class _SoilInputTileState extends State<SoilInputTile> {
                   decoration: BoxDecoration(
                     color: selected
                         ? chipColor.withOpacity(0.15)
-                        : kBgDark,
+                        : ctxBg(context),
                     borderRadius: BorderRadius.circular(10),
                     border: Border.all(
-                      color: selected ? chipColor : kBgCardBorder,
+                      color: selected ? chipColor : ctxCardBorder(context),
                       width: selected ? 1.5 : 1,
                     ),
                   ),
@@ -403,7 +403,7 @@ class _SoilInputTileState extends State<SoilInputTile> {
                 color: kTextSecondary,
                 fontSize: 14),
             filled: true,
-            fillColor: kBgDark,
+            fillColor: ctxBg(context),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
               borderSide: BorderSide(
@@ -412,7 +412,7 @@ class _SoilInputTileState extends State<SoilInputTile> {
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
               borderSide:
-                  BorderSide(color: kBgCardBorder, width: 1),
+                  BorderSide(color: ctxCardBorder(context), width: 1),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),

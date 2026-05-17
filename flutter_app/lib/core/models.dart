@@ -212,30 +212,62 @@ class ScheduleItem {
 }
 
 
-/// Mirrors `OrganicAlternatives` in schemas.py.
-///
-/// Always included in the response. The farmer can choose to go organic
-/// (apply FYM/vermicompost instead of Urea) based on these values.
-class OrganicAlternatives {
-  final double fymTHa;              // Farm Yard Manure — tonnes/ha
-  final double vermicompostTHa;     // Vermicompost — tonnes/ha
-  final double psncTHa;             // Enriched Compost (PSNC) — tonnes/ha
-  final double nitrogenOffsetKgHa;  // The FN value this offsets
+/// Mirrors `OrganicSource` in schemas.py.
+class OrganicSource {
+  final double tHa;
+  final String limitingNutrient;
 
-  const OrganicAlternatives({
-    required this.fymTHa,
-    required this.vermicompostTHa,
-    required this.psncTHa,
-    required this.nitrogenOffsetKgHa,
+  const OrganicSource({
+    required this.tHa,
+    required this.limitingNutrient,
   });
 
-  factory OrganicAlternatives.fromJson(Map<String, dynamic> j) =>
-      OrganicAlternatives(
-        fymTHa:             (j['fym_t_ha']              as num).toDouble(),
-        vermicompostTHa:    (j['vermicompost_t_ha']     as num).toDouble(),
-        psncTHa:            (j['psnc_t_ha']             as num).toDouble(),
-        nitrogenOffsetKgHa: (j['nitrogen_offset_kg_ha'] as num).toDouble(),
+  factory OrganicSource.fromJson(Map<String, dynamic> j) => OrganicSource(
+    tHa: (j['t_ha'] as num).toDouble(),
+    limitingNutrient: j['limiting_nutrient'] as String,
+  );
+}
+
+/// Mirrors `OrganicAlternatives` in schemas.py.
+///
+/// Always included in the response. The farmer can choose to go organic.
+class OrganicAlternatives {
+  final OrganicSource fym;
+  final OrganicSource vermicompost;
+  final OrganicSource psnc;
+
+  const OrganicAlternatives({
+    required this.fym,
+    required this.vermicompost,
+    required this.psnc,
+  });
+
+  factory OrganicAlternatives.fromJson(Map<String, dynamic> j) {
+    // Check if we are receiving the OLD backend format
+    if (j.containsKey('fym_t_ha')) {
+      return OrganicAlternatives(
+        fym: OrganicSource(
+          tHa: (j['fym_t_ha'] as num).toDouble(),
+          limitingNutrient: 'Nitrogen (N)',
+        ),
+        vermicompost: OrganicSource(
+          tHa: (j['vermicompost_t_ha'] as num).toDouble(),
+          limitingNutrient: 'Nitrogen (N)',
+        ),
+        psnc: OrganicSource(
+          tHa: (j['psnc_t_ha'] as num).toDouble(),
+          limitingNutrient: 'Nitrogen (N)',
+        ),
       );
+    }
+    
+    // New format
+    return OrganicAlternatives(
+      fym:          OrganicSource.fromJson(j['fym'] as Map<String, dynamic>),
+      vermicompost: OrganicSource.fromJson(j['vermicompost'] as Map<String, dynamic>),
+      psnc:         OrganicSource.fromJson(j['psnc'] as Map<String, dynamic>),
+    );
+  }
 }
 
 
@@ -288,6 +320,8 @@ class RecommendResponse {
   final String recommendationId;
   final String generatedAt;
 
+  final String? explainableSummary; // AI-driven explainable summary (optional)
+
   const RecommendResponse({
     required this.cropDisplay,
     required this.targetYield,
@@ -298,6 +332,7 @@ class RecommendResponse {
     required this.applicationSchedule,
     required this.organicAlternatives,
     this.weatherSummary,
+    this.explainableSummary,
     required this.recommendationId,
     required this.generatedAt,
   });
@@ -319,6 +354,7 @@ class RecommendResponse {
         : WeatherSummary.fromJson(j['weather_summary'] as Map<String, dynamic>),
     recommendationId: j['recommendation_id'] as String,
     generatedAt:      j['generated_at']      as String,
+    explainableSummary: j['explainable_summary'] as String?,
   );
 
   /// Convenience: all three nutrient results as an ordered list.

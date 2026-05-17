@@ -194,6 +194,19 @@ BoxDecoration ctxCardDecoration(BuildContext ctx, {Color? borderColor, Color? gl
       ],
     );
 
+BoxDecoration ctxNutrientCardDecoration(BuildContext ctx, Color accentColor) => BoxDecoration(
+  color: ctxCard(ctx),
+  borderRadius: BorderRadius.circular(kRadiusCard),
+  border: Border.all(color: accentColor.withOpacity(0.45), width: 1.5),
+  boxShadow: [
+    BoxShadow(
+      color: accentColor.withOpacity(0.15),
+      blurRadius: 20,
+      offset: const Offset(0, 6),
+    ),
+  ],
+);
+
 
 // ════════════════════════════════════════════════════════════════════════════
 //  SPACING & SHAPE
@@ -252,6 +265,12 @@ BoxDecoration kInnerCardDecoration() => BoxDecoration(
   color: kBgDark,
   borderRadius: BorderRadius.circular(kRadiusSmall),
   border: Border.all(color: kBgCardBorder.withOpacity(0.6)),
+);
+
+BoxDecoration ctxInnerCardDecoration(BuildContext ctx) => BoxDecoration(
+  color: ctxBg(ctx),
+  borderRadius: BorderRadius.circular(kRadiusSmall),
+  border: Border.all(color: ctxCardBorder(ctx).withOpacity(0.6)),
 );
 
 

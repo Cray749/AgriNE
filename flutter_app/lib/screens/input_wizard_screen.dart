@@ -98,6 +98,11 @@ class _InputWizardScreenState extends State<InputWizardScreen> {
     setState(() => _isLoading = true);
 
     try {
+      // Always fetch the latest land size from SharedPreferences at submit time
+      // in case the farmer updated their profile between wizard steps
+      final prefs = await SharedPreferences.getInstance();
+      _landSizeAcres = prefs.getDouble('land_size_acres') ?? 1.0;
+
       final request = RecommendRequest(
         crop:             _crop!,
         targetYield:      _targetYield!,
@@ -127,7 +132,7 @@ class _InputWizardScreenState extends State<InputWizardScreen> {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        backgroundColor: kBgCard,
+        backgroundColor: ctxCard(context),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(kRadiusCard)),
         title: Row(children: [
           const Icon(Icons.error_outline, color: kError, size: 22),
@@ -177,7 +182,11 @@ class _InputWizardScreenState extends State<InputWizardScreen> {
             icon: Icon(Icons.account_circle_outlined,
                 color: ctxAccent(context), size: 22),
             tooltip: 'My Profile',
-            onPressed: () => Navigator.pushNamed(context, '/farmer_profile'),
+            onPressed: () async {
+              await Navigator.pushNamed(context, '/farmer_profile');
+              // Reload profile after returning so updated land size is used
+              _loadProfile();
+            },
           ),
           const SizedBox(width: 4),
         ],
@@ -338,7 +347,7 @@ class _Page1CropYield extends StatelessWidget {
             child: ElevatedButton(
               onPressed: onNext,
               style: ElevatedButton.styleFrom(
-                backgroundColor: onNext != null ? kGreenPrimary : kBgCard,
+                backgroundColor: onNext != null ? kGreenPrimary : ctxCard(context),
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -483,7 +492,7 @@ class _Page2SoilInput extends StatelessWidget {
                   child: ElevatedButton(
                     onPressed: onNext,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: onNext != null ? kGreenPrimary : kBgCard,
+                      backgroundColor: onNext != null ? kGreenPrimary : ctxCard(context),
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -567,7 +576,7 @@ class _Page3Review extends StatelessWidget {
           // ── Summary card ───────────────────────────────────────────────
           Container(
             padding: kPaddingCard,
-            decoration: kCardDecoration(borderColor: kGreenAccent.withOpacity(0.3)),
+            decoration: ctxCardDecoration(context, borderColor: kGreenAccent.withOpacity(0.3)),
             child: Column(
               children: [
                 // Top two rows
@@ -785,7 +794,7 @@ class _NutrientInputCardState extends State<_NutrientInputCard> {
     final isValueMode = widget.state.mode == 'value';
 
     return Container(
-      decoration: kNutrientCardDecoration(widget.accentColor),
+      decoration: ctxNutrientCardDecoration(context, widget.accentColor),
       padding: kPaddingCard,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

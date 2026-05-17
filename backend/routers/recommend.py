@@ -24,6 +24,7 @@ from ..models.schemas import (
     NutrientResult,
     ApplicationScheduleItem,
     OrganicAlternatives,
+    OrganicSource,
     WeatherSummary,
 )
 from ..fpe_engine import FPEEngine
@@ -167,35 +168,79 @@ def get_recommendation(req: RecommendRequest) -> RecommendResponse:
     urea_30_das   = round(urea * 0.25, 1)
     urea_60_das   = round(urea * 0.25, 1)
 
-    application_schedule = [
-        ApplicationScheduleItem(
-            timing="At Sowing (Basal)",
-            description=(
-                f"Apply all SSP ({ssp} kg/ha)  +  All MOP ({mop} kg/ha)"
-                f"  +  {urea_basal} kg/ha Urea"
+    if crop.lower() == "maize":
+        application_schedule = [
+            ApplicationScheduleItem(
+                timing="0 day- 50 percent nitrogen as basal (During final land preparation)",
+                description=(
+                    f"Apply all SSP ({ssp} kg/ha)  +  All MOP ({mop} kg/ha)"
+                    f"  +  {urea_basal} kg/ha Urea"
+                ),
+                days_after_sowing=0,
             ),
-            days_after_sowing=0,
-        ),
-        ApplicationScheduleItem(
-            timing="30 Days After Sowing",
-            description=f"{urea_30_das} kg/ha Urea (First top-dressing)",
-            days_after_sowing=30,
-        ),
-        ApplicationScheduleItem(
-            timing="60 Days After Sowing",
-            description=f"{urea_60_das} kg/ha Urea (Second top-dressing)",
-            days_after_sowing=60,
-        ),
-    ]
+            ApplicationScheduleItem(
+                timing="30 day- 25 percent at knee high stage after sowing",
+                description=f"{urea_30_das} kg/ha Urea (First top-dressing)",
+                days_after_sowing=30,
+            ),
+            ApplicationScheduleItem(
+                timing="60 day- Next 25 percent after sowing",
+                description=f"{urea_60_das} kg/ha Urea (Second top-dressing)",
+                days_after_sowing=60,
+            ),
+        ]
+    else:
+        application_schedule = [
+            ApplicationScheduleItem(
+                timing="50% nitrogen as basal (During final land preparation)",
+                description=(
+                    f"Apply all SSP ({ssp} kg/ha)  +  All MOP ({mop} kg/ha)"
+                    f"  +  {urea_basal} kg/ha Urea"
+                ),
+                days_after_sowing=0,
+            ),
+            ApplicationScheduleItem(
+                timing="25% at knee high stage 30 Days after sowing",
+                description=f"{urea_30_das} kg/ha Urea (First top-dressing)",
+                days_after_sowing=30,
+            ),
+            ApplicationScheduleItem(
+                timing="Next 25% at 60 Days after sowing",
+                description=f"{urea_60_das} kg/ha Urea (Second top-dressing)",
+                days_after_sowing=60,
+            ),
+        ]
 
-    # ── STEP 8: Organic alternatives for Nitrogen (always computed) ────────────
-    # FYM = FN/5, Vermicompost = FN/15, PSNC (enriched compost) = FN/29 (t/ha)
+    # ── STEP 8: Organic alternatives for all nutrients (always computed) ───────
     fn = fn_clamped
+    fp = fp_clamped
+    fk = fk_clamped
+
+    # FYM calculations
+    fym_n = fn / 5.0
+    fym_p = fp / 4.6
+    fym_k = fk / 6.0
+    fym_max = max(fym_n, fym_p, fym_k)
+    fym_lim = "Nitrogen (N)" if fym_max == fym_n else ("Phosphorus (P₂O₅)" if fym_max == fym_p else "Potassium (K₂O)")
+
+    # Vermicompost calculations
+    vc_n = fn / 15.0
+    vc_p = fp / 26.1
+    vc_k = fk / 14.6
+    vc_max = max(vc_n, vc_p, vc_k)
+    vc_lim = "Nitrogen (N)" if vc_max == vc_n else ("Phosphorus (P₂O₅)" if vc_max == vc_p else "Potassium (K₂O)")
+
+    # PSNC calculations
+    psnc_n = fn / 29.0
+    psnc_p = fp / 10.9
+    psnc_k = fk / 22.6
+    psnc_max = max(psnc_n, psnc_p, psnc_k)
+    psnc_lim = "Nitrogen (N)" if psnc_max == psnc_n else ("Phosphorus (P₂O₅)" if psnc_max == psnc_p else "Potassium (K₂O)")
+
     organic = OrganicAlternatives(
-        fym_t_ha=round(fn / 5, 2)  if fn > 0 else 0.0,
-        vermicompost_t_ha=round(fn / 15, 2) if fn > 0 else 0.0,
-        psnc_t_ha=round(fn / 29, 2) if fn > 0 else 0.0,
-        nitrogen_offset_kg_ha=fn,
+        fym=OrganicSource(t_ha=round(fym_max, 2), limiting_nutrient=fym_lim),
+        vermicompost=OrganicSource(t_ha=round(vc_max, 2), limiting_nutrient=vc_lim),
+        psnc=OrganicSource(t_ha=round(psnc_max, 2), limiting_nutrient=psnc_lim),
     )
 
     # ── STEP 9: NASA POWER weather context (best-effort, never blocks the response) ──

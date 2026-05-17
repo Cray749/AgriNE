@@ -243,7 +243,7 @@ class _LoginScreenState extends State<LoginScreen>
                   // ── Main card ─────────────────────────────────────────
                   Container(
                     padding: kPaddingCard,
-                    decoration: kCardDecoration(),
+                    decoration: ctxCardDecoration(context),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
@@ -344,12 +344,12 @@ class _LoginScreenState extends State<LoginScreen>
         // Divider with label
         Row(
           children: [
-            const Expanded(child: Divider(color: kBgCardBorder)),
+            Expanded(child: Divider(color: ctxCardBorder(context))),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12),
               child: Text('Enter OTP', style: kStyleBodyM),
             ),
-            const Expanded(child: Divider(color: kBgCardBorder)),
+            Expanded(child: Divider(color: ctxCardBorder(context))),
           ],
         ),
 
@@ -494,10 +494,10 @@ class _OtpBox extends StatelessWidget {
           filled: true,
           fillColor: focusNode.hasFocus
               ? kGreenPrimary.withOpacity(0.18)
-              : kBgDark,
+              : ctxBg(context),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(kRadiusSmall),
-            borderSide: const BorderSide(color: kBgCardBorder, width: 1.5),
+            borderSide: BorderSide(color: ctxCardBorder(context), width: 1.5),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(kRadiusSmall),

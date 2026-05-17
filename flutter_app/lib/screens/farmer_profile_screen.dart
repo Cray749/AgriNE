@@ -98,7 +98,7 @@ class _FarmerProfileScreenState extends State<FarmerProfileScreen> {
                 style: TextStyle(fontFamily: kFontFamily, color: kTextHighlight)),
           ],
         ),
-        backgroundColor: kBgCard,
+        backgroundColor: ctxCard(context),
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(kRadiusSmall)),
       ),
@@ -230,7 +230,7 @@ class _FarmerProfileScreenState extends State<FarmerProfileScreen> {
                   kGapM,
                   Container(
                     padding: kPaddingCard,
-                    decoration: kCardDecoration(
+                    decoration: ctxCardDecoration(context,
                         borderColor: kGreenAccent.withOpacity(0.2)),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -290,7 +290,7 @@ class _FarmerProfileScreenState extends State<FarmerProfileScreen> {
                     Container(
                       width: double.infinity,
                       padding: const EdgeInsets.all(24),
-                      decoration: kCardDecoration(),
+                      decoration: ctxCardDecoration(context),
                       child: Column(
                         children: [
                           const Icon(Icons.history, color: kTextSecondary, size: 40),
@@ -401,7 +401,7 @@ class _HistoryEntryCard extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.fromLTRB(16, 14, 12, 14),
-      decoration: kNutrientCardDecoration(cropColor),
+      decoration: ctxNutrientCardDecoration(context, cropColor),
       child: Row(
         children: [
           Text(
@@ -487,9 +487,9 @@ class _AddHistorySheetState extends State<_AddHistorySheet> {
       margin: const EdgeInsets.fromLTRB(12, 0, 12, 12),
       padding: EdgeInsets.fromLTRB(20, 20, 20, 20 + bottomPad),
       decoration: BoxDecoration(
-        color: kBgCard,
+        color: ctxCard(context),
         borderRadius: BorderRadius.circular(kRadiusCard),
-        border: Border.all(color: kBgCardBorder),
+        border: Border.all(color: ctxCardBorder(context)),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -514,15 +514,15 @@ class _AddHistorySheetState extends State<_AddHistorySheet> {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 14),
             decoration: BoxDecoration(
-              color: kBgDark,
+              color: ctxBg(context),
               borderRadius: BorderRadius.circular(kRadiusSmall),
-              border: Border.all(color: kBgCardBorder),
+              border: Border.all(color: ctxCardBorder(context)),
             ),
             child: DropdownButton<String>(
               value: _selectedSeason,
               isExpanded: true,
               underline: const SizedBox.shrink(),
-              dropdownColor: kBgCard,
+              dropdownColor: ctxCard(context),
               style: TextStyle(
                   fontFamily: kFontFamily, color: kTextPrimary, fontSize: 15),
               items: _seasons
@@ -551,11 +551,11 @@ class _AddHistorySheetState extends State<_AddHistorySheet> {
                       decoration: BoxDecoration(
                         color: selected
                             ? kGreenPrimary.withOpacity(0.3)
-                            : kBgDark,
+                            : ctxBg(context),
                         borderRadius: BorderRadius.circular(kRadiusSmall),
                         border: Border.all(
                             color:
-                                selected ? kGreenAccent : kBgCardBorder),
+                                selected ? kGreenAccent : ctxCardBorder(context)),
                       ),
                       child: Text(
                         c == 'Maize' ? '🌽  Maize' : '🌿  Kholar',

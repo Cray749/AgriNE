@@ -109,16 +109,18 @@ class ApplicationScheduleItem(BaseModel):
     days_after_sowing: int  # 0, 30, 60 — used by Flutter to sort / display timeline
 
 
+class OrganicSource(BaseModel):
+    t_ha: float
+    limiting_nutrient: str
+
 class OrganicAlternatives(BaseModel):
     """
-    Organic alternatives to meet the nitrogen requirement.
-    Computed as: FYM = FN/5, Vermicompost = FN/15, PSNC = FN/29 (t/ha).
-    These are ONLY for nitrogen — P and K always come from SSP/MOP.
+    Organic alternatives to meet the N, P, and K requirements.
+    Calculates requirements for each nutrient, and takes the max.
     """
-    fym_t_ha: float         # Farm Yard Manure in tonnes/ha
-    vermicompost_t_ha: float
-    psnc_t_ha: float        # Poultry Slurry Nutrient Compost
-    nitrogen_offset_kg_ha: float   # How much FN is covered if organic is chosen
+    fym: OrganicSource
+    vermicompost: OrganicSource
+    psnc: OrganicSource
 
 
 class WeatherSummary(BaseModel):
@@ -154,5 +156,6 @@ class RecommendResponse(BaseModel):
     application_schedule: list[ApplicationScheduleItem]
     organic_alternatives: OrganicAlternatives      # Always computed — farmer decides
     weather_summary: Optional[WeatherSummary] = None
+    explainable_summary: Optional[str] = None
     recommendation_id: str
     generated_at: str

@@ -35,7 +35,7 @@ class StepIndicator extends StatelessWidget {
                 duration: const Duration(milliseconds: 300),
                 height: 2,
                 decoration: BoxDecoration(
-                  color: lineCompleted ? kGreenPrimary : kBgCardBorder,
+                  color: lineCompleted ? kGreenPrimary : ctxCardBorder(context),
                   borderRadius: BorderRadius.circular(1),
                 ),
               ),
@@ -59,11 +59,11 @@ class StepIndicator extends StatelessWidget {
                         ? kGreenPrimary
                         : isActive
                             ? kGreenAccent
-                            : kBgCard,
+                            : ctxCard(context),
                     border: Border.all(
                       color: isCompleted || isActive
                           ? Colors.transparent
-                          : kBgCardBorder,
+                          : ctxCardBorder(context),
                       width: 1.5,
                     ),
                     boxShadow: isActive
@@ -85,7 +85,7 @@ class StepIndicator extends StatelessWidget {
                               fontFamily: kFontFamily,
                               fontSize: 13,
                               fontWeight: FontWeight.w700,
-                              color: isActive ? kBgDark : kTextSecondary,
+                              color: isActive ? ctxBg(context) : kTextSecondary,
                             ),
                           ),
                   ),

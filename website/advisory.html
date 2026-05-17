@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Advisory | Jurivya NE</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&amp;family=JetBrains+Mono:wght@500&amp;family=Outfit:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-fixed-variant": "#005233",
+                        "background": "#ebffe6",
+                        "on-secondary": "#ffffff",
+                        "secondary": "#006c45",
+                        "on-error": "#ffffff",
+                        "primary-fixed-dim": "#88d982",
+                        "primary-container": "#2e7d32",
+                        "on-primary": "#ffffff",
+                        "surface-tint": "#1b6d24",
+                        "on-surface-variant": "#40493d",
+                        "outline-variant": "#bfcaba",
+                        "primary-fixed": "#a3f69c",
+                        "on-error-container": "#93000a",
+                        "surface-container-highest": "#d1e9cc",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-high": "#d7efd2",
+                        "inverse-on-surface": "#dff7da",
+                        "on-tertiary-fixed-variant": "#004a78",
+                        "surface-variant": "#d1e9cc",
+                        "secondary-fixed-dim": "#55de9e",
+                        "surface-container-low": "#e2fadd",
+                        "surface-container": "#ddf5d7",
+                        "on-secondary-container": "#007149",
+                        "on-tertiary-container": "#e9f2ff",
+                        "on-primary-fixed": "#002204",
+                        "on-background": "#0d200e",
+                        "inverse-surface": "#223521",
+                        "on-primary-fixed-variant": "#005312",
+                        "primary": "#0d631b",
+                        "secondary-fixed": "#75fbb8",
+                        "on-secondary-fixed": "#002112",
+                        "tertiary-fixed-dim": "#99cbff",
+                        "error": "#ba1a1a",
+                        "on-tertiary-fixed": "#001d34",
+                        "on-primary-container": "#cbffc2",
+                        "surface-bright": "#ebffe6",
+                        "on-surface": "#0d200e",
+                        "surface": "#ebffe6",
+                        "secondary-container": "#72f8b5",
+                        "tertiary": "#00598f",
+                        "on-tertiary": "#ffffff",
+                        "tertiary-fixed": "#cfe5ff",
+                        "inverse-primary": "#88d982",
+                        "error-container": "#ffdad6",
+                        "tertiary-container": "#0072b6",
+                        "surface-dim": "#c9e1c4",
+                        "outline": "#707a6c"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "24px",
+                        "stack-sm": "8px",
+                        "stack-md": "16px",
+                        "margin-mobile": "16px",
+                        "container-max": "1280px",
+                        "margin-desktop": "48px",
+                        "base": "8px",
+                        "stack-lg": "32px"
+                    },
+                    "fontFamily": {
+                        "headline-lg-mobile": ["Outfit"],
+                        "label-caps": ["Inter"],
+                        "headline-md": ["Outfit"],
+                        "display-lg": ["Outfit"],
+                        "headline-lg": ["Outfit"],
+                        "data-mono": ["JetBrains Mono"],
+                        "body-sm": ["Inter"],
+                        "body-md": ["Inter"],
+                        "body-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-lg-mobile": ["28px", { "lineHeight": "36px", "fontWeight": "600" }],
+                        "label-caps": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "fontWeight": "600" }],
+                        "data-mono": ["14px", { "lineHeight": "20px", "letterSpacing": "0.02em", "fontWeight": "500" }],
+                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid #E8F0E8;
+        }
+        .ai-pulse {
+            animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse-ring {
+            0% { transform: scale(0.8); opacity: 0.5; }
+            100% { transform: scale(1.5); opacity: 0; }
+        }
+    </style>
+</head>
+<body class="pt-[64px] bg-background text-on-surface font-body-md antialiased min-h-screen flex flex-col">
+<!-- TopNavBar - Jurivya NE -->
+<header class="bg-surface/90 backdrop-blur-md fixed top-0 w-full border-b border-outline-variant/30 z-50">
+  <div class="flex justify-between items-center px-4 md:px-12 py-3 max-w-[1280px] mx-auto gap-4">
+    <a href="index.html" class="flex items-center gap-2 flex-shrink-0">
+      <img src="logo.png" alt="Jurivya NE" class="h-10 w-auto object-contain"/>
+    </a>
+    <nav class="hidden md:flex items-center gap-0.5 flex-nowrap">
+      <a class="nav-link px-2.5 py-1.5 rounded-md text-sm text-on-surface-variant hover:text-primary hover:bg-surface-container-low/60 transition-all whitespace-nowrap" href="index.html">Home</a>
+      <a class="nav-link px-2.5 py-1.5 rounded-md text-sm text-on-surface-variant hover:text-primary hover:bg-surface-container-low/60 transition-all whitespace-nowrap" href="recommendation.html">Recommendation</a>
+      <a class="nav-link px-2.5 py-1.5 rounded-md text-sm text-on-surface-variant hover:text-primary hover:bg-surface-container-low/60 transition-all whitespace-nowrap" href="science.html">Science</a>
+      <a class="nav-link px-2.5 py-1.5 rounded-md text-sm text-on-surface-variant hover:text-primary hover:bg-surface-container-low/60 transition-all whitespace-nowrap" href="features.html">Features</a>
+      <a class="nav-link px-2.5 py-1.5 rounded-md text-sm text-on-surface-variant hover:text-primary hover:bg-surface-container-low/60 transition-all whitespace-nowrap" href="advisory.html">Advisory</a>
+      <a class="nav-link px-2.5 py-1.5 rounded-md text-sm text-on-surface-variant hover:text-primary hover:bg-surface-container-low/60 transition-all whitespace-nowrap" href="maps.html">Map View</a>
+      <!-- Resources dropdown -->
+      <div class="relative group">
+        <button class="nav-link px-2.5 py-1.5 rounded-md text-sm text-on-surface-variant hover:text-primary hover:bg-surface-container-low/60 transition-all whitespace-nowrap flex items-center gap-1">
+          Resources <span class="material-symbols-outlined" style="font-size:14px;line-height:1;">expand_more</span>
+        </button>
+        <div class="absolute top-full left-0 mt-1 w-44 bg-surface-container-lowest border border-outline-variant/30 rounded-xl shadow-lg py-1 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+          <a href="markets.html" class="flex items-center gap-2 px-4 py-2.5 text-sm text-on-surface-variant hover:text-primary hover:bg-surface-container-low transition-colors whitespace-nowrap">
+            <span class="material-symbols-outlined" style="font-size:16px;">storefront</span>Markets
+          </a>
+          <a href="analytics.html" class="flex items-center gap-2 px-4 py-2.5 text-sm text-on-surface-variant hover:text-primary hover:bg-surface-container-low transition-colors whitespace-nowrap">
+            <span class="material-symbols-outlined" style="font-size:16px;">analytics</span>Analytics
+          </a>
+          <a href="resources.html" class="flex items-center gap-2 px-4 py-2.5 text-sm text-on-surface-variant hover:text-primary hover:bg-surface-container-low transition-colors whitespace-nowrap">
+            <span class="material-symbols-outlined" style="font-size:16px;">library_books</span>All Resources
+          </a>
+        </div>
+      </div>
+      <!-- Regional Report – hidden until triggered from Map View -->
+      <a id="nav-report-link" class="nav-link px-2.5 py-1.5 rounded-md text-sm text-primary font-bold bg-[#69F0AE]/20 hover:bg-[#69F0AE]/40 transition-all whitespace-nowrap hidden" href="report.html">Regional Report</a>
+    </nav>
+    <div class="flex items-center gap-2 flex-shrink-0">
+      <a href="download.html" class="hidden md:flex bg-[#69F0AE] text-[#1B2E1B] px-4 py-2 rounded-full text-xs font-bold items-center gap-1.5 hover:-translate-y-0.5 transition-transform shadow-sm whitespace-nowrap">
+        <span class="material-symbols-outlined" style="font-size:14px;font-variation-settings:'FILL' 1;">android</span>
+        Download App
+      </a>
+      <button id="mobile-menu-btn" class="md:hidden text-primary p-1">
+        <span class="material-symbols-outlined">menu</span>
+      </button>
+    </div>
+  </div>
+  <!-- Mobile menu -->
+  <div id="mobile-menu" class="hidden md:hidden bg-surface border-t border-outline-variant/20 px-4 py-3 space-y-1">
+    <a href="index.html" class="block py-2 text-on-surface-variant hover:text-primary">Home</a>
+    <a href="recommendation.html" class="block py-2 text-on-surface-variant hover:text-primary">Recommendation</a>
+    <a href="science.html" class="block py-2 text-on-surface-variant hover:text-primary">Science &amp; Methodology</a>
+    <a href="features.html" class="block py-2 text-on-surface-variant hover:text-primary">Features</a>
+    <a href="advisory.html" class="block py-2 text-on-surface-variant hover:text-primary">Advisory</a>
+    <a href="maps.html" class="block py-2 text-on-surface-variant hover:text-primary">Map View</a>
+    <a href="markets.html" class="block py-2 text-on-surface-variant hover:text-primary">Markets</a>
+    <a href="analytics.html" class="block py-2 text-on-surface-variant hover:text-primary">Analytics</a>
+    <a href="resources.html" class="block py-2 text-on-surface-variant hover:text-primary">Resources</a>
+    <a id="nav-report-mobile" href="report.html" class="hidden py-2 text-primary font-bold block">Regional Report</a>
+    <a href="download.html" class="block py-2 text-secondary font-bold">Download App</a>
+  </div>
+</header>
+
+<main class="flex-grow w-full max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-stack-lg">
+<!-- Hero / AI Chat Section -->
+<section class="mb-stack-lg md:mb-[64px]">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter items-start">
+<div class="lg:col-span-7 flex flex-col gap-stack-lg">
+<div>
+<h1 class="font-display-lg text-display-lg text-primary mb-stack-sm">Intelligent Agronomy</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">
+                            Science-backed guidance for optimal yields. Ask our specialized AI or browse curated regional protocols.
+                        </p>
+</div>
+<!-- AI Search Interface -->
+<div class="glass-panel rounded-xl p-stack-md relative overflow-hidden group">
+<div class="absolute -top-10 -right-10 w-32 h-32 bg-[#69F0AE]/20 rounded-full blur-3xl group-hover:bg-[#69F0AE]/30 transition-colors duration-500"></div>
+<div class="flex items-center gap-stack-sm border-b border-outline-variant/50 pb-stack-sm mb-stack-sm relative z-10">
+<div class="relative w-8 h-8 flex items-center justify-center">
+<div class="absolute inset-0 bg-[#69F0AE] rounded-full opacity-20 ai-pulse"></div>
+<span class="material-symbols-outlined text-primary text-[20px]" style="font-variation-settings: 'FILL' 1;">psychiatry</span>
+</div>
+<span class="font-label-caps text-label-caps text-primary tracking-widest uppercase">Juraiva AI Assistant</span>
+</div>
+<div class="relative z-10">
+<input class="w-full bg-transparent border-none font-body-lg text-body-lg text-on-surface placeholder-outline focus:ring-0 px-0 py-stack-sm focus:outline-none focus:border-b-2 focus:border-[#69F0AE] transition-all" placeholder="E.g., What is the recommended nitrogen split for high-yield paddy in Assam?" type="text"/>
+</div>
+<div class="flex justify-between items-center mt-stack-md relative z-10">
+<div class="flex gap-stack-sm">
+<button class="px-3 py-1.5 rounded-full border border-outline-variant text-on-surface-variant font-body-sm text-body-sm hover:bg-surface-container transition-colors">Soil Health</button>
+<button class="px-3 py-1.5 rounded-full border border-outline-variant text-on-surface-variant font-body-sm text-body-sm hover:bg-surface-container transition-colors">Pest ID</button>
+</div>
+<button class="bg-[#69F0AE] text-[#1B2E1B] w-10 h-10 rounded-full flex items-center justify-center hover:-translate-y-0.5 transition-transform shadow-[0_4px_12px_rgba(46,125,50,0.15)]">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">send</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Featured Intelligence Overlay -->
+<div class="lg:col-span-5">
+<div class="bg-surface-container-lowest rounded-xl border border-[#E8F0E8] overflow-hidden shadow-sm h-full flex flex-col relative border-t-4 border-t-[#69F0AE]">
+<div class="p-stack-md flex-grow">
+<div class="flex items-center gap-2 mb-stack-md">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">wb_sunny</span>
+<span class="font-label-caps text-label-caps text-secondary">Current Regional Alert</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-stack-sm">Late Blight Risk Elevated</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-stack-lg">
+                                Humidity levels in the Brahmaputra valley have exceeded 85% for 48 hours. Preventive fungicide application recommended for potato crops.
+                            </p>
+<div class="bg-surface p-stack-sm rounded-lg mb-stack-md border border-outline-variant/30">
+<div class="flex justify-between items-center mb-2">
+<span class="font-body-sm text-body-sm text-on-surface-variant">Recommended Action Window</span>
+<span class="font-data-mono text-data-mono text-primary">24-48 hrs</span>
+</div>
+<div class="w-full bg-outline-variant/30 rounded-full h-1.5">
+<div class="bg-error h-1.5 rounded-full" style="width: 80%"></div>
+</div>
+</div>
+</div>
+<div class="bg-surface-container-low p-stack-md border-t border-[#E8F0E8]">
+<a class="font-body-sm text-body-sm text-primary font-medium flex items-center gap-1 hover:underline decoration-secondary underline-offset-4" href="index.html">
+                                View Full Advisory <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Bento Grid Layout for Sections -->
+<section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter mb-stack-lg">
+<!-- Crop Management Guides -->
+<div class="bg-surface-container-lowest rounded-xl border border-[#E8F0E8] overflow-hidden group hover:border-primary-container/30 transition-colors flex flex-col">
+<div class="h-48 bg-surface-variant relative overflow-hidden">
+<img alt="A high-resolution, light-mode aerial shot of lush, geometrically perfect agricultural fields in Northeast India. The image features vibrant, organic greens contrasting with clinical precision, captured under soft, diffused sunlight. The aesthetic blends high-tech minimalism with the raw vitality of nature." class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" data-alt="A high-resolution, light-mode aerial shot of lush, geometrically perfect agricultural fields in Northeast India. The image features vibrant, organic greens contrasting with clinical precision, captured under soft, diffused sunlight. The aesthetic blends high-tech minimalism with the raw vitality of nature." src="https://images.unsplash.com/photo-1596422846543-75c6fc197f07?auto=format&fit=crop&w=1200&q=80"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+<div class="absolute bottom-stack-md left-stack-md text-white">
+<div class="flex items-center gap-2 mb-1">
+<span class="material-symbols-outlined text-[18px]">menu_book</span>
+<span class="font-label-caps text-label-caps">Guides</span>
+</div>
+<h3 class="font-headline-md text-headline-md">Crop Management</h3>
+</div>
+</div>
+<div class="p-stack-md flex-grow flex flex-col justify-between">
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-stack-md">
+                        Standard Operating Procedures for high-yield cultivation, tailored to local soil chronosequences.
+                    </p>
+<div class="flex flex-wrap gap-2">
+<span class="px-2 py-1 bg-surface-container rounded text-on-surface-variant font-data-mono text-[12px]">Paddy</span>
+<span class="px-2 py-1 bg-surface-container rounded text-on-surface-variant font-data-mono text-[12px]">Tea</span>
+<span class="px-2 py-1 bg-surface-container rounded text-on-surface-variant font-data-mono text-[12px]">Maize</span>
+</div>
+</div>
+</div>
+<!-- Pest & Disease Alerts -->
+<div class="bg-surface-container-lowest rounded-xl border border-[#E8F0E8] overflow-hidden group hover:border-error/30 transition-colors flex flex-col">
+<div class="h-48 bg-error-container/20 relative overflow-hidden flex items-center justify-center">
+<span class="material-symbols-outlined text-[64px] text-error/40 group-hover:scale-110 transition-transform duration-500">bug_report</span>
+<div class="absolute bottom-stack-md left-stack-md">
+<div class="flex items-center gap-2 mb-1">
+<span class="material-symbols-outlined text-error text-[18px]">warning</span>
+<span class="font-label-caps text-label-caps text-error">Alerts</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface">Pest &amp; Disease</h3>
+</div>
+</div>
+<div class="p-stack-md flex-grow flex flex-col justify-between">
+<ul class="space-y-3 mb-stack-md">
+<li class="flex items-start gap-2 border-b border-outline-variant/20 pb-2">
+<span class="w-2 h-2 rounded-full bg-error mt-1.5 flex-shrink-0"></span>
+<div>
+<span class="font-body-sm text-body-sm text-on-surface font-medium block">Fall Armyworm Detected</span>
+<span class="font-data-mono text-[11px] text-on-surface-variant">Maize crops • High severity</span>
+</div>
+</li>
+<li class="flex items-start gap-2">
+<span class="w-2 h-2 rounded-full bg-[#FFB300] mt-1.5 flex-shrink-0"></span>
+<div>
+<span class="font-body-sm text-body-sm text-on-surface font-medium block">Tea Mosquito Bug Active</span>
+<span class="font-data-mono text-[11px] text-on-surface-variant">Upper Assam • Moderate</span>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<!-- Sustainable Practices -->
+<div class="bg-surface-container-lowest rounded-xl border border-[#E8F0E8] overflow-hidden group hover:border-secondary/30 transition-colors flex flex-col">
+<div class="h-48 bg-surface-variant relative overflow-hidden">
+<img alt="A serene, light-filled photograph of young seedlings growing in rich, dark soil within a pristine greenhouse environment. The image emphasizes organic rootedness and ecological sustainability, utilizing a color palette of deep browns, vibrant mint greens, and bright whites. The mood is hopeful and scientifically precise." class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" data-alt="A serene, light-filled photograph of young seedlings growing in rich, dark soil within a pristine greenhouse environment. The image emphasizes organic rootedness and ecological sustainability, utilizing a color palette of deep browns, vibrant mint greens, and bright whites. The mood is hopeful and scientifically precise." src="https://images.unsplash.com/photo-1589923188900-85dae523342b?auto=format&fit=crop&w=1200&q=80"/>
+<div class="absolute inset-0 bg-gradient-to-t from-secondary/80 to-transparent mix-blend-multiply"></div>
+<div class="absolute bottom-stack-md left-stack-md text-white">
+<div class="flex items-center gap-2 mb-1">
+<span class="material-symbols-outlined text-[18px]">eco</span>
+<span class="font-label-caps text-label-caps">Practices</span>
+</div>
+<h3 class="font-headline-md text-headline-md">Sustainable Farming</h3>
+</div>
+</div>
+<div class="p-stack-md flex-grow flex flex-col justify-between">
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-stack-md">
+                        Techniques for maintaining soil vitality, water conservation, and long-term ecological balance.
+                    </p>
+<a class="inline-flex items-center gap-1 font-body-sm text-body-sm text-secondary font-medium hover:underline decoration-secondary underline-offset-4 w-fit" href="index.html">
+                        Explore Methods <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</a>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container dark:bg-surface-container-low full-width mt-stack-lg border-t border-outline-variant flat no shadows">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-gutter px-margin-mobile md:px-margin-desktop py-stack-lg max-w-container-max mx-auto font-body-sm text-body-sm text-secondary dark:text-secondary-fixed Transition-all duration-300 ease-in-out">
+<div class="col-span-1 md:col-span-2">
+<a href="index.html" class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed flex items-center gap-2"><span class="material-symbols-outlined text-[#69F0AE]" style="font-variation-settings:'FILL' 1;">eco</span>Jurivya NE</a>
+<p class="text-on-surface-variant mb-stack-md font-body-sm text-body-sm">© 2024 Jurivya NE Agricultural Platforms. Rooted in Northeast India.</p>
+</div>
+<div class="col-span-1">
+<h4 class="font-label-caps text-label-caps mb-stack-sm">Platform</h4>
+<ul class="space-y-2">
+<li><a class="text-on-surface-variant hover:text-secondary transition-colors hover:underline decoration-secondary underline-offset-4" href="index.html">Features</a></li>
+<li><a class="text-on-surface-variant hover:text-secondary transition-colors hover:underline decoration-secondary underline-offset-4" href="index.html">Science &amp; Methodology</a></li>
+<li><a class="text-on-surface-variant hover:text-secondary transition-colors hover:underline decoration-secondary underline-offset-4" href="index.html">Regional Insights</a></li>
+</ul>
+</div>
+<div class="col-span-1">
+<h4 class="font-label-caps text-label-caps mb-stack-sm">Resources</h4>
+<ul class="space-y-2">
+<li><a class="text-on-surface-variant hover:text-secondary transition-colors hover:underline decoration-secondary underline-offset-4" href="index.html">Research Papers</a></li>
+<li><a class="text-on-surface-variant hover:text-secondary transition-colors hover:underline decoration-secondary underline-offset-4" href="index.html">Privacy Policy</a></li>
+<li><a class="text-on-surface-variant hover:text-secondary transition-colors hover:underline decoration-secondary underline-offset-4" href="index.html">Contact Support</a></li>
+</ul>
+</div>
+</div>
+</footer>
+
+<script>
+(function(){
+  // Mobile menu
+  var btn=document.getElementById('mobile-menu-btn');
+  if(btn) btn.addEventListener('click',function(){
+    document.getElementById('mobile-menu').classList.toggle('hidden');
+  });
+  // Show Regional Report link only if navigated from Map View
+  if(sessionStorage.getItem('jurivya_from_map')){
+    var d=document.getElementById('nav-report-link');
+    if(d) d.classList.remove('hidden');
+    var m=document.getElementById('nav-report-mobile');
+    if(m) m.classList.remove('hidden');
+  }
+})();
+</script>
+</body></html>

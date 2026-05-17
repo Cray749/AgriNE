@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Recommendation Tool | Jurivya NE</title>
+<meta name="description" content="Jurivya NE uses the STCR/FPE methodology and AI to deliver precise, localized fertilizer recommendations for farmers in Northeast India."/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@400;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      colors: {
+        "surface-container-high": "#d7efd2",
+        "surface-dim": "#c9e1c4",
+        "outline-variant": "#bfcaba",
+        "tertiary-fixed": "#cfe5ff",
+        "secondary-container": "#72f8b5",
+        "background": "#ebffe6",
+        "primary-fixed-dim": "#88d982",
+        "surface-container": "#ddf5d7",
+        "primary-fixed": "#a3f69c",
+        "on-surface-variant": "#40493d",
+        "inverse-primary": "#88d982",
+        "tertiary": "#00598f",
+        "primary": "#0d631b",
+        "tertiary-fixed-dim": "#99cbff",
+        "surface-container-lowest": "#ffffff",
+        "secondary-fixed": "#75fbb8",
+        "surface-tint": "#1b6d24",
+        "surface-bright": "#ebffe6",
+        "on-secondary": "#ffffff",
+        "on-background": "#0d200e",
+        "surface-container-low": "#e2fadd",
+        "primary-container": "#2e7d32",
+        "on-surface": "#0d200e",
+        "secondary": "#006c45",
+        "on-primary-container": "#cbffc2",
+        "surface-variant": "#d1e9cc",
+        "outline": "#707a6c",
+        "on-primary": "#ffffff",
+        "on-tertiary-fixed": "#001d34",
+        "surface": "#ebffe6",
+        "inverse-surface": "#223521",
+        "on-primary-fixed": "#002204"
+      },
+      spacing: {
+        "stack-sm": "8px", "margin-mobile": "16px", "gutter": "24px",
+        "stack-md": "16px", "margin-desktop": "48px", "base": "8px",
+        "stack-lg": "32px", "container-max": "1280px"
+      },
+      fontFamily: {
+        "data-mono": ["JetBrains Mono"], "label-caps": ["Inter"],
+        "display-lg": ["Outfit"], "body-md": ["Inter"], "body-sm": ["Inter"],
+        "headline-md": ["Outfit"], "headline-lg": ["Outfit"], "body-lg": ["Inter"]
+      },
+      fontSize: {
+        "data-mono": ["14px", { lineHeight: "20px", letterSpacing: "0.02em", fontWeight: "500" }],
+        "label-caps": ["12px", { lineHeight: "16px", letterSpacing: "0.05em", fontWeight: "700" }],
+        "display-lg": ["48px", { lineHeight: "56px", letterSpacing: "-0.02em", fontWeight: "700" }],
+        "body-md": ["16px", { lineHeight: "24px", fontWeight: "400" }],
+        "body-sm": ["14px", { lineHeight: "20px", fontWeight: "400" }],
+        "headline-md": ["24px", { lineHeight: "32px", fontWeight: "600" }],
+        "headline-lg": ["32px", { lineHeight: "40px", fontWeight: "600" }],
+        "body-lg": ["18px", { lineHeight: "28px", fontWeight: "400" }]
+      }
+    }
+  }
+}
+</script>
+<style>
+  .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+  @keyframes float { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-8px);} }
+  @keyframes pulse-slow { 0%,100%{opacity:1;} 50%{opacity:0.6;} }
+  @keyframes counter { from{opacity:0;transform:translateY(10px);} to{opacity:1;transform:translateY(0);} }
+  .float-anim { animation: float 4s ease-in-out infinite; }
+  .hero-stat { animation: counter 0.6s ease forwards; }
+  .nav-link { transition: all 0.2s ease; }
+
+  /* Step panels */
+  .step-panel { display: none; }
+  .step-panel.active { display: block; animation: fadeIn 0.35s ease; }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(14px);} to{opacity:1;transform:translateY(0);} }
+
+  /* Accordion */
+  details > summary { list-style: none; cursor: pointer; }
+  details > summary::-webkit-details-marker { display: none; }
+  details[open] summary .acc-chevron { transform: rotate(180deg); }
+  .acc-chevron { transition: transform 0.25s ease; }
+
+  /* Progress chips */
+  .chip-pending { background:#e2fadd; color:#40493d; border:1px solid #bfcaba; }
+  .chip-done    { background:#69F0AE; color:#1B2E1B; border:1px solid #00C853; }
+
+  /* Focus rings */
+  input[type="number"]:focus, select:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(105,240,174,0.45);
+    border-color: #0d631b !important;
+  }
+
+  /* Schedule left-border colours */
+  .sched-green { border-left: 4px solid #0d631b; }
+  .sched-blue  { border-left: 4px solid #00598f; }
+  .sched-amber { border-left: 4px solid #E65100; }
+
+  /* AI prose */
+  .ai-prose h1,.ai-prose h2,.ai-prose h3 { font-family:'Outfit',sans-serif; font-weight:700; color:#0d631b; margin-bottom:6px; }
+  .ai-prose h1 { font-size:20px; margin-top:0; }
+  .ai-prose h2 { font-size:17px; margin-top:14px; }
+  .ai-prose h3 { font-size:14px; margin-top:10px; }
+  .ai-prose p  { margin-bottom:10px; line-height:1.7; color:#0d200e; }
+  .ai-prose ul,.ai-prose ol { padding-left:18px; margin-bottom:10px; }
+  .ai-prose li { margin-bottom:4px; color:#40493d; line-height:1.55; }
+  .ai-prose strong { color:#0d631b; }
+  .ai-prose em { color:#40493d; font-style:italic; }
+  .ai-prose code { background:#ddf5d7; padding:2px 5px; border-radius:4px; font-family:'JetBrains Mono',monospace; font-size:12px; color:#0d631b; }
+  .ai-prose hr { border:none; border-top:1px solid #bfcaba; margin:14px 0; }
+</style>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen flex flex-col">
+
+<!-- ═══════ TOP NAV (from index.html — active link: Recommendation Tool) ═══════ -->
+<!-- TopNavBar - Jurivya NE -->
+<header class="bg-surface/90 backdrop-blur-md fixed top-0 w-full border-b border-outline-variant/30 z-50">
+  <div class="flex justify-between items-center px-4 md:px-12 py-3 max-w-[1280px] mx-auto gap-4">
+    <a href="index.html" class="flex items-center gap-2 flex-shrink-0">
+      <img src="logo.png" alt="Jurivya NE" class="h-10 w-auto object-contain"/>
+    </a>
+    <nav class="hidden md:flex items-center gap-0.5 flex-nowrap">
+      <a class="nav-link px-2.5 py-1.5 rounded-md text-sm text-on-surface-variant hover:text-primary hover:bg-surface-container-low/60 transition-all whitespace-nowrap" href="index.html">Home</a>
+      <a class="nav-link px-2.5 py-1.5 rounded-md text-sm text-on-surface-variant hover:text-primary hover:bg-surface-container-low/60 transition-all whitespace-nowrap" href="recommendation.html">Recommendation</a>
+      <a class="nav-link px-2.5 py-1.5 rounded-md text-sm text-on-surface-variant hover:text-primary hover:bg-surface-container-low/60 transition-all whitespace-nowrap" href="science.html">Science</a>
+      <a class="nav-link px-2.5 py-1.5 rounded-md text-sm text-on-surface-variant hover:text-primary hover:bg-surface-container-low/60 transition-all whitespace-nowrap" href="features.html">Features</a>
+      <a class="nav-link px-2.5 py-1.5 rounded-md text-sm text-on-surface-variant hover:text-primary hover:bg-surface-container-low/60 transition-all whitespace-nowrap" href="advisory.html">Advisory</a>
+      <a class="nav-link px-2.5 py-1.5 rounded-md text-sm text-on-surface-variant hover:text-primary hover:bg-surface-container-low/60 transition-all whitespace-nowrap" href="maps.html">Map View</a>
+      <!-- Resources dropdown -->
+      <div class="relative group">
+        <button class="nav-link px-2.5 py-1.5 rounded-md text-sm text-on-surface-variant hover:text-primary hover:bg-surface-container-low/60 transition-all whitespace-nowrap flex items-center gap-1">
+          Resources <span class="material-symbols-outlined" style="font-size:14px;line-height:1;">expand_more</span>
+        </button>
+        <div class="absolute top-full left-0 mt-1 w-44 bg-surface-container-lowest border border-outline-variant/30 rounded-xl shadow-lg py-1 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+          <a href="markets.html" class="flex items-center gap-2 px-4 py-2.5 text-sm text-on-surface-variant hover:text-primary hover:bg-surface-container-low transition-colors whitespace-nowrap">
+            <span class="material-symbols-outlined" style="font-size:16px;">storefront</span>Markets
+          </a>
+          <a href="analytics.html" class="flex items-center gap-2 px-4 py-2.5 text-sm text-on-surface-variant hover:text-primary hover:bg-surface-container-low transition-colors whitespace-nowrap">
+            <span class="material-symbols-outlined" style="font-size:16px;">analytics</span>Analytics
+          </a>
+          <a href="resources.html" class="flex items-center gap-2 px-4 py-2.5 text-sm text-on-surface-variant hover:text-primary hover:bg-surface-container-low transition-colors whitespace-nowrap">
+            <span class="material-symbols-outlined" style="font-size:16px;">library_books</span>All Resources
+          </a>
+        </div>
+      </div>
+      <!-- Regional Report – hidden until triggered from Map View -->
+      <a id="nav-report-link" class="nav-link px-2.5 py-1.5 rounded-md text-sm text-primary font-bold bg-[#69F0AE]/20 hover:bg-[#69F0AE]/40 transition-all whitespace-nowrap hidden" href="report.html">Regional Report</a>
+    </nav>
+    <div class="flex items-center gap-2 flex-shrink-0">
+      <a href="download.html" class="hidden md:flex bg-[#69F0AE] text-[#1B2E1B] px-4 py-2 rounded-full text-xs font-bold items-center gap-1.5 hover:-translate-y-0.5 transition-transform shadow-sm whitespace-nowrap">
+        <span class="material-symbols-outlined" style="font-size:14px;font-variation-settings:'FILL' 1;">android</span>
+        Download App
+      </a>
+      <button id="mobile-menu-btn" class="md:hidden text-primary p-1">
+        <span class="material-symbols-outlined">menu</span>
+      </button>
+    </div>
+  </div>
+  <!-- Mobile menu -->
+  <div id="mobile-menu" class="hidden md:hidden bg-surface border-t border-outline-variant/20 px-4 py-3 space-y-1">
+    <a href="index.html" class="block py-2 text-on-surface-variant hover:text-primary">Home</a>
+    <a href="recommendation.html" class="block py-2 text-on-surface-variant hover:text-primary">Recommendation</a>
+    <a href="science.html" class="block py-2 text-on-surface-variant hover:text-primary">Science &amp; Methodology</a>
+    <a href="features.html" class="block py-2 text-on-surface-variant hover:text-primary">Features</a>
+    <a href="advisory.html" class="block py-2 text-on-surface-variant hover:text-primary">Advisory</a>
+    <a href="maps.html" class="block py-2 text-on-surface-variant hover:text-primary">Map View</a>
+    <a href="markets.html" class="block py-2 text-on-surface-variant hover:text-primary">Markets</a>
+    <a href="analytics.html" class="block py-2 text-on-surface-variant hover:text-primary">Analytics</a>
+    <a href="resources.html" class="block py-2 text-on-surface-variant hover:text-primary">Resources</a>
+    <a id="nav-report-mobile" href="report.html" class="hidden py-2 text-primary font-bold block">Regional Report</a>
+    <a href="download.html" class="block py-2 text-secondary font-bold">Download App</a>
+  </div>
+</header>
+
+
+<!-- ═══════════════════════════════════════ MAIN ═══════════════════════════════════════ -->
+<main class="flex-grow pt-[64px]">
+  <div class="max-w-[900px] mx-auto px-margin-mobile md:px-margin-desktop py-stack-lg">
+
+    <!-- Page header -->
+    <div class="mb-8">
+      <span class="inline-flex items-center gap-2 bg-[#69F0AE]/20 text-primary px-4 py-1.5 rounded-full font-label-caps text-label-caps border border-[#69F0AE]/40 mb-3">
+        <span class="w-2 h-2 rounded-full bg-[#69F0AE] animate-pulse inline-block"></span>
+        STCR / FPE Algorithm · Northeast India
+      </span>
+      <h1 class="font-display-lg text-[32px] md:text-[40px] leading-tight text-primary font-bold mb-2">Fertilizer Recommendation Tool</h1>
+      <p class="font-body-md text-body-md text-on-surface-variant max-w-2xl">Enter your farm profile, soil data, and receive a science-backed N-P-K prescription with an application schedule.</p>
+    </div>
+
+    <!-- ─── STEPPER ─── -->
+    <div class="flex items-center mb-8 select-none" id="stepper-bar">
+      <div class="flex items-center gap-2">
+        <div id="sdot1" class="w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-all bg-primary text-on-primary shadow-md">1</div>
+        <span id="slbl1" class="font-label-caps text-label-caps text-primary hidden sm:inline">Farm Profile</span>
+      </div>
+      <div class="flex-1 h-[2px] mx-2 bg-outline-variant/40 rounded"></div>
+      <div class="flex items-center gap-2">
+        <div id="sdot2" class="w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-all bg-surface-container text-on-surface-variant border border-outline-variant">2</div>
+        <span id="slbl2" class="font-label-caps text-label-caps text-on-surface-variant hidden sm:inline">Nutrient Hub</span>
+      </div>
+      <div class="flex-1 h-[2px] mx-2 bg-outline-variant/40 rounded"></div>
+      <div class="flex items-center gap-2">
+        <div id="sdot3" class="w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-all bg-surface-container text-on-surface-variant border border-outline-variant">3</div>
+        <span id="slbl3" class="font-label-caps text-label-caps text-on-surface-variant hidden sm:inline">Results</span>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════════════════
+         STEP 1 — FARM PROFILE
+    ══════════════════════════════════════════════════════════════════════ -->
+    <div id="step1" class="step-panel active">
+      <div class="bg-surface-container-lowest border border-[#E8F0E8] rounded-xl p-6 md:p-8 shadow-sm">
+
+        <div class="flex items-center gap-3 mb-6">
+          <div class="w-10 h-10 bg-[#69F0AE]/20 rounded-lg flex items-center justify-center flex-shrink-0">
+            <span class="material-symbols-outlined text-primary" style="font-variation-settings:'FILL' 1;">agriculture</span>
+          </div>
+          <div>
+            <h2 class="font-headline-md text-headline-md text-on-surface">Farm Profile</h2>
+            <p class="font-body-sm text-body-sm text-on-surface-variant">Basic information about your crop and field.</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+
+          <!-- Crop -->
+          <div class="md:col-span-2">
+            <label class="block font-label-caps text-label-caps text-on-surface-variant mb-1.5">CROP SELECTION</label>
+            <div class="relative">
+              <select id="f-crop"
+                class="w-full bg-surface-container-low border border-outline-variant rounded-lg px-4 py-3 font-body-md text-body-md text-on-surface appearance-none cursor-pointer pr-10 transition-all">
+                <option value="Maize (Local)">Maize (Local)</option>
+                <option value="Maize (Hybrid)">Maize (Hybrid)</option>
+                <option value="Kholar">Kholar</option>
+              </select>
+              <span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none text-[20px]">expand_more</span>
+            </div>
+          </div>
+
+          <!-- Target Yield -->
+          <div>
+            <label class="block font-label-caps text-label-caps text-on-surface-variant mb-1.5">TARGET YIELD <span class="normal-case font-normal">(q/ha)</span></label>
+            <input type="number" id="f-yield" value="40" min="1" max="500" step="0.5"
+              class="w-full bg-surface-container-low border border-outline-variant rounded-lg px-4 py-3 font-data-mono text-data-mono text-on-surface transition-all"/>
+          </div>
+
+          <!-- Land Area -->
+          <div>
+            <label class="block font-label-caps text-label-caps text-on-surface-variant mb-1.5">LAND AREA <span class="normal-case font-normal">(ha)</span></label>
+            <input type="number" id="f-area" value="1.0" min="0.01" max="10000" step="0.01"
+              class="w-full bg-surface-container-low border border-outline-variant rounded-lg px-4 py-3 font-data-mono text-data-mono text-on-surface transition-all"/>
+          </div>
+
+          <!-- Latitude -->
+          <div>
+            <label class="block font-label-caps text-label-caps text-on-surface-variant mb-1.5">LATITUDE <span class="normal-case font-normal">(°N)</span></label>
+            <input type="number" id="f-lat" value="25.9" min="-90" max="90" step="0.0001"
+              class="w-full bg-surface-container-low border border-outline-variant rounded-lg px-4 py-3 font-data-mono text-data-mono text-on-surface transition-all"/>
+          </div>
+
+          <!-- Longitude -->
+          <div>
+            <label class="block font-label-caps text-label-caps text-on-surface-variant mb-1.5">LONGITUDE <span class="normal-case font-normal">(°E)</span></label>
+            <input type="number" id="f-lon" value="94.3" min="-180" max="180" step="0.0001"
+              class="w-full bg-surface-container-low border border-outline-variant rounded-lg px-4 py-3 font-data-mono text-data-mono text-on-surface transition-all"/>
+          </div>
+        </div>
+
+        <!-- GPS info -->
+        <div class="mt-4 flex items-center gap-2 bg-[#cfe5ff]/30 rounded-lg p-3 border border-[#cfe5ff]/50">
+          <span class="material-symbols-outlined text-tertiary text-[18px]" style="font-variation-settings:'FILL' 1;">satellite_alt</span>
+          <span class="font-body-sm text-body-sm text-tertiary">GPS coordinates are used for NASA POWER weather data retrieval.</span>
+        </div>
+
+        <div class="mt-6 flex justify-end">
+          <button onclick="goToStep2()"
+            class="inline-flex items-center gap-2 bg-primary text-on-primary font-bold px-8 py-3 rounded-lg hover:-translate-y-0.5 transition-all shadow-[0_4px_14px_0_rgba(13,99,27,0.2)] active:translate-y-0">
+            Confirm &amp; Proceed
+            <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">arrow_forward</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════════════════
+         STEP 2 — NUTRIENT HUB
+    ══════════════════════════════════════════════════════════════════════ -->
+    <div id="step2" class="step-panel">
+
+      <!-- Progress chips -->
+      <div class="flex items-center gap-3 mb-4 flex-wrap">
+        <span class="font-label-caps text-label-caps text-on-surface-variant mr-1">Progress:</span>
+        <span id="chip-n" class="chip-pending inline-flex items-center gap-1.5 px-3 py-1 rounded-full font-label-caps text-[11px]">⏳ N — Nitrogen</span>
+        <span id="chip-p" class="chip-pending inline-flex items-center gap-1.5 px-3 py-1 rounded-full font-label-caps text-[11px]">⏳ P — Phosphorus</span>
+        <span id="chip-k" class="chip-pending inline-flex items-center gap-1.5 px-3 py-1 rounded-full font-label-caps text-[11px]">⏳ K — Potassium</span>
+      </div>
+
+      <!-- Farm summary bar -->
+      <div class="bg-surface-container-lowest border border-[#E8F0E8] rounded-xl px-5 py-3 mb-5 flex flex-wrap items-center gap-x-5 gap-y-2">
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-primary text-[17px]" style="font-variation-settings:'FILL' 1;">agriculture</span>
+          <span class="font-body-sm text-body-sm text-on-surface-variant">Crop:</span>
+          <span class="font-body-sm text-body-sm text-on-surface font-semibold" id="s2-crop">—</span>
+        </div>
+        <div class="w-px h-4 bg-outline-variant/50 hidden sm:block"></div>
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-primary text-[17px]" style="font-variation-settings:'FILL' 1;">target</span>
+          <span class="font-body-sm text-body-sm text-on-surface-variant">Target:</span>
+          <span class="font-data-mono text-data-mono text-primary font-bold" id="s2-yield">—</span>
+          <span class="font-body-sm text-body-sm text-on-surface-variant">q/ha</span>
+        </div>
+        <div class="w-px h-4 bg-outline-variant/50 hidden sm:block"></div>
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-primary text-[17px]" style="font-variation-settings:'FILL' 1;">landscape</span>
+          <span class="font-body-sm text-body-sm text-on-surface-variant">Area:</span>
+          <span class="font-data-mono text-data-mono text-primary font-bold" id="s2-area">—</span>
+          <span class="font-body-sm text-body-sm text-on-surface-variant">ha</span>
+        </div>
+      </div>
+
+      <!-- ─── N Accordion ─── -->
+      <details id="acc-n" class="bg-surface-container-lowest border border-[#E8F0E8] rounded-xl mb-3 overflow-hidden" open>
+        <summary class="flex items-center justify-between px-5 py-4 hover:bg-surface-container/30 transition-colors">
+          <div class="flex items-center gap-3">
+            <span class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-[#69F0AE] text-[#1B2E1B] font-bold font-data-mono text-[14px]">N</span>
+            <div>
+              <p class="font-body-md text-body-md text-on-surface font-semibold leading-tight">Nitrogen</p>
+              <p class="font-body-sm text-[12px] text-on-surface-variant">Applied as Urea (46% N)</p>
+            </div>
+          </div>
+          <span class="material-symbols-outlined text-on-surface-variant acc-chevron">expand_more</span>
+        </summary>
+        <div class="border-t border-[#E8F0E8] px-5 pb-5">
+          <div class="flex gap-5 mt-4 mb-4">
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="radio" name="n-mode" value="fc" checked onchange="toggleMode('n','fc')" class="accent-primary w-4 h-4"/>
+              <span class="font-body-sm text-body-sm text-on-surface">Fertility Class</span>
+            </label>
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="radio" name="n-mode" value="st" onchange="toggleMode('n','st')" class="accent-primary w-4 h-4"/>
+              <span class="font-body-sm text-body-sm text-on-surface">Soil Test Value</span>
+            </label>
+          </div>
+          <div id="n-fc-block">
+            <label class="block font-label-caps text-label-caps text-on-surface-variant mb-1.5">FERTILITY CLASS</label>
+            <select id="n-fc" class="w-full bg-surface-container-low border border-outline-variant rounded-lg px-4 py-2.5 font-body-sm text-body-sm text-on-surface appearance-none">
+              <option value="low">Low</option>
+              <option value="medium" selected>Medium</option>
+              <option value="high">High</option>
+            </select>
+          </div>
+          <div id="n-st-block" class="hidden">
+            <label class="block font-label-caps text-label-caps text-on-surface-variant mb-1.5">SOIL TEST VALUE <span class="normal-case font-normal">(kg/ha)</span></label>
+            <input type="number" id="n-sv" value="280" min="0" step="1"
+              class="w-full bg-surface-container-low border border-outline-variant rounded-lg px-4 py-2.5 font-data-mono text-data-mono text-on-surface"/>
+          </div>
+          <button onclick="computeNutrient('n')"
+            class="mt-4 inline-flex items-center gap-2 bg-primary text-on-primary font-bold px-6 py-2.5 rounded-lg hover:-translate-y-0.5 transition-all text-sm shadow-sm active:translate-y-0">
+            <span class="material-symbols-outlined text-[17px]" style="font-variation-settings:'FILL' 1;">calculate</span>
+            Compute N
+          </button>
+          <div id="n-result" class="hidden mt-4"></div>
+        </div>
+      </details>
+
+      <!-- ─── P Accordion ─── -->
+      <details id="acc-p" class="bg-surface-container-lowest border border-[#E8F0E8] rounded-xl mb-3 overflow-hidden">
+        <summary class="flex items-center justify-between px-5 py-4 hover:bg-surface-container/30 transition-colors">
+          <div class="flex items-center gap-3">
+            <span class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-[#cfe5ff] text-[#001d34] font-bold font-data-mono text-[14px]">P</span>
+            <div>
+              <p class="font-body-md text-body-md text-on-surface font-semibold leading-tight">Phosphorus</p>
+              <p class="font-body-sm text-[12px] text-on-surface-variant">Applied as SSP (16% P₂O₅)</p>
+            </div>
+          </div>
+          <span class="material-symbols-outlined text-on-surface-variant acc-chevron">expand_more</span>
+        </summary>
+        <div class="border-t border-[#E8F0E8] px-5 pb-5">
+          <div class="flex gap-5 mt-4 mb-4">
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="radio" name="p-mode" value="fc" checked onchange="toggleMode('p','fc')" class="accent-primary w-4 h-4"/>
+              <span class="font-body-sm text-body-sm text-on-surface">Fertility Class</span>
+            </label>
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="radio" name="p-mode" value="st" onchange="toggleMode('p','st')" class="accent-primary w-4 h-4"/>
+              <span class="font-body-sm text-body-sm text-on-surface">Soil Test Value</span>
+            </label>
+          </div>
+          <div id="p-fc-block">
+            <label class="block font-label-caps text-label-caps text-on-surface-variant mb-1.5">FERTILITY CLASS</label>
+            <select id="p-fc" class="w-full bg-surface-container-low border border-outline-variant rounded-lg px-4 py-2.5 font-body-sm text-body-sm text-on-surface appearance-none">
+              <option value="low">Low</option>
+              <option value="medium" selected>Medium</option>
+              <option value="high">High</option>
+            </select>
+          </div>
+          <div id="p-st-block" class="hidden">
+            <label class="block font-label-caps text-label-caps text-on-surface-variant mb-1.5">SOIL TEST VALUE <span class="normal-case font-normal">(kg/ha Olsen-P)</span></label>
+            <input type="number" id="p-sv" value="20" min="0" step="0.1"
+              class="w-full bg-surface-container-low border border-outline-variant rounded-lg px-4 py-2.5 font-data-mono text-data-mono text-on-surface"/>
+          </div>
+          <button onclick="computeNutrient('p')"
+            class="mt-4 inline-flex items-center gap-2 bg-[#00598f] text-white font-bold px-6 py-2.5 rounded-lg hover:-translate-y-0.5 transition-all text-sm shadow-sm active:translate-y-0">
+            <span class="material-symbols-outlined text-[17px]" style="font-variation-settings:'FILL' 1;">calculate</span>
+            Compute P
+          </button>
+          <div id="p-result" class="hidden mt-4"></div>
+        </div>
+      </details>
+
+      <!-- ─── K Accordion ─── -->
+      <details id="acc-k" class="bg-surface-container-lowest border border-[#E8F0E8] rounded-xl mb-5 overflow-hidden">
+        <summary class="flex items-center justify-between px-5 py-4 hover:bg-surface-container/30 transition-colors">
+          <div class="flex items-center gap-3">
+            <span class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-[#FFCC80] text-[#E65100] font-bold font-data-mono text-[14px]">K</span>
+            <div>
+              <p class="font-body-md text-body-md text-on-surface font-semibold leading-tight">Potassium</p>
+              <p class="font-body-sm text-[12px] text-on-surface-variant">Applied as MOP (60% K₂O)</p>
+            </div>
+          </div>
+          <span class="material-symbols-outlined text-on-surface-variant acc-chevron">expand_more</span>
+        </summary>
+        <div class="border-t border-[#E8F0E8] px-5 pb-5">
+          <div class="flex gap-5 mt-4 mb-4">
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="radio" name="k-mode" value="fc" checked onchange="toggleMode('k','fc')" class="accent-primary w-4 h-4"/>
+              <span class="font-body-sm text-body-sm text-on-surface">Fertility Class</span>
+            </label>
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="radio" name="k-mode" value="st" onchange="toggleMode('k','st')" class="accent-primary w-4 h-4"/>
+              <span class="font-body-sm text-body-sm text-on-surface">Soil Test Value</span>
+            </label>
+          </div>
+          <div id="k-fc-block">
+            <label class="block font-label-caps text-label-caps text-on-surface-variant mb-1.5">FERTILITY CLASS</label>
+            <select id="k-fc" class="w-full bg-surface-container-low border border-outline-variant rounded-lg px-4 py-2.5 font-body-sm text-body-sm text-on-surface appearance-none">
+              <option value="low">Low</option>
+              <option value="medium" selected>Medium</option>
+              <option value="high">High</option>
+            </select>
+          </div>
+          <div id="k-st-block" class="hidden">
+            <label class="block font-label-caps text-label-caps text-on-surface-variant mb-1.5">SOIL TEST VALUE <span class="normal-case font-normal">(kg/ha)</span></label>
+            <input type="number" id="k-sv" value="150" min="0" step="1"
+              class="w-full bg-surface-container-low border border-outline-variant rounded-lg px-4 py-2.5 font-data-mono text-data-mono text-on-surface"/>
+          </div>
+          <button onclick="computeNutrient('k')"
+            class="mt-4 inline-flex items-center gap-2 bg-[#E65100] text-white font-bold px-6 py-2.5 rounded-lg hover:-translate-y-0.5 transition-all text-sm shadow-sm active:translate-y-0">
+            <span class="material-symbols-outlined text-[17px]" style="font-variation-settings:'FILL' 1;">calculate</span>
+            Compute K
+          </button>
+          <div id="k-result" class="hidden mt-4"></div>
+        </div>
+      </details>
+
+      <!-- Nav row -->
+      <div class="flex items-center justify-between gap-4 flex-wrap">
+        <button onclick="goToStep1()"
+          class="inline-flex items-center gap-2 border border-outline-variant text-on-surface-variant font-bold px-6 py-3 rounded-lg hover:bg-surface-container/40 transition-all text-sm">
+          <span class="material-symbols-outlined text-[18px]">arrow_back</span>
+          Back
+        </button>
+        <button id="btn-generate" onclick="goToStep3()" disabled
+          class="inline-flex items-center gap-2 bg-primary text-on-primary font-bold px-8 py-3 rounded-lg transition-all shadow-[0_4px_14px_0_rgba(13,99,27,0.2)] disabled:opacity-40 disabled:cursor-not-allowed disabled:shadow-none enabled:hover:-translate-y-0.5 active:enabled:translate-y-0">
+          Generate Recommendation
+          <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">rocket_launch</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════════════════
+         STEP 3 — RESULTS
+    ══════════════════════════════════════════════════════════════════════ -->
+    <div id="step3" class="step-panel">
+
+      <!-- Header -->
+      <div class="flex items-center gap-3 mb-5">
+        <div class="w-10 h-10 bg-[#69F0AE]/20 rounded-lg flex items-center justify-center flex-shrink-0">
+          <span class="material-symbols-outlined text-primary" style="font-variation-settings:'FILL' 1;">task_alt</span>
+        </div>
+        <div>
+          <h2 class="font-headline-md text-headline-md text-on-surface">Fertilizer Recommendation</h2>
+          <p class="font-body-sm text-body-sm text-on-surface-variant" id="r-subtitle">—</p>
+        </div>
+      </div>
+
+      <!-- ─── 3 Summary Cards ─── -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-5">
+
+        <!-- N -->
+        <div class="bg-surface-container-lowest border border-[#E8F0E8] rounded-xl p-5">
+          <div class="flex items-center justify-between mb-3">
+            <span class="inline-flex items-center justify-center w-7 h-7 rounded-md bg-[#69F0AE] text-[#1B2E1B] font-bold font-data-mono text-[13px]">N</span>
+            <span class="font-body-sm text-[12px] text-on-surface-variant">Urea · 46% N</span>
+          </div>
+          <p class="font-label-caps text-label-caps text-on-surface-variant mb-0.5">NITROGEN (kg/ha)</p>
+          <p class="font-data-mono text-[22px] font-bold text-primary leading-tight" id="r-n-ha">—</p>
+          <div class="mt-3 pt-3 border-t border-[#E8F0E8]">
+            <p class="font-label-caps text-label-caps text-on-surface-variant mb-0.5">UREA (kg/ha)</p>
+            <p class="font-data-mono text-[18px] font-bold text-on-surface leading-tight" id="r-urea-ha">—</p>
+            <p class="font-body-sm text-[12px] text-on-surface-variant mt-1.5">Total farm: <span class="font-semibold text-on-surface" id="r-urea-total">—</span> kg</p>
+          </div>
+        </div>
+
+        <!-- P -->
+        <div class="bg-surface-container-lowest border border-[#E8F0E8] rounded-xl p-5">
+          <div class="flex items-center justify-between mb-3">
+            <span class="inline-flex items-center justify-center w-7 h-7 rounded-md bg-[#cfe5ff] text-[#001d34] font-bold font-data-mono text-[13px]">P</span>
+            <span class="font-body-sm text-[12px] text-on-surface-variant">SSP · 16% P₂O₅</span>
+          </div>
+          <p class="font-label-caps text-label-caps text-on-surface-variant mb-0.5">P₂O₅ (kg/ha)</p>
+          <p class="font-data-mono text-[22px] font-bold text-[#00598f] leading-tight" id="r-p-ha">—</p>
+          <div class="mt-3 pt-3 border-t border-[#E8F0E8]">
+            <p class="font-label-caps text-label-caps text-on-surface-variant mb-0.5">SSP (kg/ha)</p>
+            <p class="font-data-mono text-[18px] font-bold text-on-surface leading-tight" id="r-ssp-ha">—</p>
+            <p class="font-body-sm text-[12px] text-on-surface-variant mt-1.5">Total farm: <span class="font-semibold text-on-surface" id="r-ssp-total">—</span> kg</p>
+          </div>
+        </div>
+
+        <!-- K -->
+        <div class="bg-surface-container-lowest border border-[#E8F0E8] rounded-xl p-5">
+          <div class="flex items-center justify-between mb-3">
+            <span class="inline-flex items-center justify-center w-7 h-7 rounded-md bg-[#FFCC80] text-[#E65100] font-bold font-data-mono text-[13px]">K</span>
+            <span class="font-body-sm text-[12px] text-on-surface-variant">MOP · 60% K₂O</span>
+          </div>
+          <p class="font-label-caps text-label-caps text-on-surface-variant mb-0.5">K₂O (kg/ha)</p>
+          <p class="font-data-mono text-[22px] font-bold text-[#E65100] leading-tight" id="r-k-ha">—</p>
+          <div class="mt-3 pt-3 border-t border-[#E8F0E8]">
+            <p class="font-label-caps text-label-caps text-on-surface-variant mb-0.5">MOP (kg/ha)</p>
+            <p class="font-data-mono text-[18px] font-bold text-on-surface leading-tight" id="r-mop-ha">—</p>
+            <p class="font-body-sm text-[12px] text-on-surface-variant mt-1.5">Total farm: <span class="font-semibold text-on-surface" id="r-mop-total">—</span> kg</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ─── Organic Toggle ─── -->
+      <div class="bg-surface-container-lowest border border-[#E8F0E8] rounded-xl p-5 mb-5">
+        <div class="flex items-center justify-between flex-wrap gap-3">
+          <div class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-secondary text-[22px]" style="font-variation-settings:'FILL' 1;">compost</span>
+            <span class="font-body-md text-body-md text-on-surface font-semibold">Include Organic Amendments?</span>
+          </div>
+          <div class="flex gap-5">
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="radio" name="organic" value="yes" onchange="toggleOrganic(true)" class="accent-primary w-4 h-4"/>
+              <span class="font-body-sm text-body-sm text-on-surface">Yes</span>
+            </label>
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="radio" name="organic" value="no" checked onchange="toggleOrganic(false)" class="accent-primary w-4 h-4"/>
+              <span class="font-body-sm text-body-sm text-on-surface">No</span>
+            </label>
+          </div>
+        </div>
+        <div id="organic-panel" class="hidden mt-4 pt-4 border-t border-[#E8F0E8]">
+          <p class="font-body-sm text-body-sm text-on-surface-variant mb-3">Organic sources as partial N substitutes:</p>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div class="bg-surface-container rounded-lg p-3 border border-[#E8F0E8]">
+              <p class="font-label-caps text-label-caps text-secondary mb-1">FYM</p>
+              <p class="font-data-mono text-[15px] font-bold text-on-surface" id="r-fym">—</p>
+              <p class="font-body-sm text-[11px] text-on-surface-variant mt-0.5">= FN ÷ 5 t/ha</p>
+            </div>
+            <div class="bg-surface-container rounded-lg p-3 border border-[#E8F0E8]">
+              <p class="font-label-caps text-label-caps text-secondary mb-1">Vermicompost</p>
+              <p class="font-data-mono text-[15px] font-bold text-on-surface" id="r-vc">—</p>
+              <p class="font-body-sm text-[11px] text-on-surface-variant mt-0.5">= FN ÷ 15 t/ha</p>
+            </div>
+            <div class="bg-surface-container rounded-lg p-3 border border-[#E8F0E8]">
+              <p class="font-label-caps text-label-caps text-secondary mb-1">PSNC</p>
+              <p class="font-data-mono text-[15px] font-bold text-on-surface" id="r-psnc">—</p>
+              <p class="font-body-sm text-[11px] text-on-surface-variant mt-0.5">= FN ÷ 29 t/ha</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ─── Application Schedule ─── -->
+      <div class="bg-surface-container-lowest border border-[#E8F0E8] rounded-xl p-5 mb-5">
+        <div class="flex items-center gap-3 mb-4">
+          <span class="material-symbols-outlined text-primary text-[22px]" style="font-variation-settings:'FILL' 1;">calendar_month</span>
+          <h3 class="font-headline-md text-[16px] text-on-surface font-semibold">Application Schedule</h3>
+        </div>
+        <div id="schedule-container" class="space-y-3"></div>
+      </div>
+
+      <!-- ─── Action Buttons ─── -->
+      <div class="flex flex-wrap gap-3 mb-5">
+        <button onclick="shareWhatsApp()"
+          class="inline-flex items-center gap-2 bg-[#25D366] text-white font-bold px-6 py-2.5 rounded-lg hover:-translate-y-0.5 transition-all text-sm shadow-sm active:translate-y-0">
+          <svg class="w-4 h-4 fill-current flex-shrink-0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+            <path d="M12 0C5.373 0 0 5.373 0 12c0 2.098.546 4.07 1.497 5.777L.057 23.882l6.22-1.44A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.804 9.804 0 01-5.023-1.381l-.36-.214-3.733.864.93-3.618-.235-.372A9.78 9.78 0 012.182 12C2.182 6.58 6.58 2.182 12 2.182S21.818 6.58 21.818 12 17.42 21.818 12 21.818z"/>
+          </svg>
+          Share via WhatsApp
+        </button>
+
+        <button onclick="triggerAISummary()"
+          class="inline-flex items-center gap-2 bg-surface-container-lowest border border-primary text-primary font-bold px-6 py-2.5 rounded-lg hover:-translate-y-0.5 hover:bg-surface-container transition-all text-sm shadow-sm active:translate-y-0">
+          <span class="material-symbols-outlined text-[17px]" style="font-variation-settings:'FILL' 1;">auto_awesome</span>
+          Generate AI Summary
+        </button>
+
+        <button onclick="resetAll()"
+          class="inline-flex items-center gap-2 border border-outline-variant text-on-surface-variant font-bold px-6 py-2.5 rounded-lg hover:bg-surface-container/40 transition-all text-sm ml-auto active:translate-y-0">
+          <span class="material-symbols-outlined text-[17px]">refresh</span>
+          Start New
+        </button>
+      </div>
+
+      <!-- ─── AI Summary Panel ─── -->
+      <div id="ai-panel" class="hidden bg-surface-container-lowest border border-[#E8F0E8] rounded-xl p-6 mb-6">
+        <div class="flex items-center gap-3 mb-4">
+          <span class="material-symbols-outlined text-primary text-[20px]" style="font-variation-settings:'FILL' 1;">auto_awesome</span>
+          <h3 class="font-headline-md text-[16px] text-on-surface font-semibold">AI-Generated Advisory</h3>
+          <span id="ai-loading-badge" class="hidden inline-flex items-center gap-1.5 bg-[#69F0AE]/20 text-primary px-3 py-0.5 rounded-full font-label-caps text-[11px] border border-[#69F0AE]/40">
+            <span class="w-1.5 h-1.5 rounded-full bg-[#69F0AE] animate-pulse inline-block"></span> Generating…
+          </span>
+        </div>
+        <div id="ai-content" class="ai-prose"></div>
+      </div>
+
+    </div><!-- /step3 -->
+  </div><!-- /container -->
+</main>
+
+<!-- ═══════ FOOTER (from index.html) ═══════ -->
+<footer class="bg-surface-container-low w-full border-t border-outline-variant mt-auto">
+  <div class="flex flex-col md:flex-row justify-between items-center px-margin-mobile md:px-margin-desktop py-stack-lg gap-gutter max-w-[1280px] mx-auto">
+    <div>
+      <div class="font-headline-md text-headline-md font-bold text-primary mb-1">Jurivya NE</div>
+      <p class="font-body-sm text-body-sm text-on-surface-variant">Built by ICAR · Powered by STCR Science</p>
+    </div>
+    <ul class="flex flex-wrap gap-4 justify-center">
+      <li><a href="index.html" class="font-body-sm text-body-sm text-on-surface-variant hover:text-secondary transition-colors">Home</a></li>
+      <li><a href="recommendation.html" class="font-body-sm text-body-sm text-on-surface-variant hover:text-secondary transition-colors">Recommendation Tool</a></li>
+      <li><a href="science.html" class="font-body-sm text-body-sm text-on-surface-variant hover:text-secondary transition-colors">Science</a></li>
+      <li><a href="features.html" class="font-body-sm text-body-sm text-on-surface-variant hover:text-secondary transition-colors">Features</a></li>
+      <li><a href="download.html" class="font-body-sm text-body-sm text-on-surface-variant hover:text-secondary transition-colors">Download</a></li>
+    </ul>
+    <p class="font-body-sm text-body-sm text-on-surface-variant">© 2024 Jurivya NE. Eco-Minimalism for Northeast India.</p>
+  </div>
+</footer>
+
+<!-- ═══════════════════════════════════════ APP SCRIPT ═══════════════════════════════════ -->
+<script>
+/* ─── Mobile nav ─── */
+document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+  document.getElementById('mobile-menu').classList.toggle('hidden');
+});
+
+/* ─── State ─── */
+const APP = {
+  crop:'', T:0, area:0, lat:0, lon:0,
+  fn:0, fp:0, fk:0,
+  urea:0, ssp:0, mop:0,
+  nDone:false, pDone:false, kDone:false,
+  isOrganic:false
+};
+
+/* ─── Stepper ─── */
+function setStep(n) {
+  ['step1','step2','step3'].forEach((id,i) => {
+    document.getElementById(id).classList.toggle('active', i+1 === n);
+  });
+  for (let i=1; i<=3; i++) {
+    const dot = document.getElementById('sdot'+i);
+    const lbl = document.getElementById('slbl'+i);
+    if (i < n) {
+      dot.className = 'w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-all bg-[#69F0AE] text-[#1B2E1B]';
+      dot.textContent = '✓';
+      lbl.className = 'font-label-caps text-label-caps text-primary hidden sm:inline';
+    } else if (i === n) {
+      dot.className = 'w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-all bg-primary text-on-primary shadow-md';
+      dot.textContent = String(i);
+      lbl.className = 'font-label-caps text-label-caps text-primary hidden sm:inline';
+    } else {
+      dot.className = 'w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-all bg-surface-container text-on-surface-variant border border-outline-variant';
+      dot.textContent = String(i);
+      lbl.className = 'font-label-caps text-label-caps text-on-surface-variant hidden sm:inline';
+    }
+  }
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function goToStep1() { setStep(1); }
+
+function goToStep2() {
+  const crop = document.getElementById('f-crop').value;
+  const T    = parseFloat(document.getElementById('f-yield').value);
+  const area = parseFloat(document.getElementById('f-area').value);
+  const lat  = parseFloat(document.getElementById('f-lat').value);
+  const lon  = parseFloat(document.getElementById('f-lon').value);
+
+  if (!crop || isNaN(T) || T <= 0 || isNaN(area) || area <= 0) {
+    alert('Please fill in all Farm Profile fields with valid positive values.');
+    return;
+  }
+  Object.assign(APP, { crop, T, area, lat, lon, nDone:false, pDone:false, kDone:false });
+
+  document.getElementById('s2-crop').textContent  = crop;
+  document.getElementById('s2-yield').textContent = T;
+  document.getElementById('s2-area').textContent  = area;
+
+  // Clear previous results
+  ['n','p','k'].forEach(nu => {
+    const el = document.getElementById(nu+'-result');
+    el.classList.add('hidden');
+    el.innerHTML = '';
+  });
+  updateChips();
+  updateGenBtn();
+  setStep(2);
+}
+
+function goToStep3() {
+  if (!APP.nDone || !APP.pDone || !APP.kDone) return;
+  buildResults();
+  setStep(3);
+}
+
+/* ─── Mode toggle ─── */
+function toggleMode(nu, mode) {
+  document.getElementById(nu+'-fc-block').classList.toggle('hidden', mode !== 'fc');
+  document.getElementById(nu+'-st-block').classList.toggle('hidden', mode !== 'st');
+}
+
+/* ─── Compute ─── */
+function computeNutrient(nu) {
+  const mode    = document.querySelector(`input[name="${nu}-mode"]:checked`).value;
+  const fc      = mode === 'fc' ? document.getElementById(nu+'-fc').value : null;
+  const svEl    = document.getElementById(nu+'-sv');
+  const soilVal = mode === 'st' ? parseFloat(svEl.value) : null;
+
+  if (mode === 'st' && isNaN(soilVal)) {
+    alert('Please enter a valid soil test value.'); return;
+  }
+
+  let result;
+  try {
+    if (nu === 'n') result = FPEEngine.computeN(APP.crop, APP.T, fc, soilVal);
+    else if (nu === 'p') result = FPEEngine.computeP(APP.crop, APP.T, fc, soilVal);
+    else result = FPEEngine.computeK(APP.crop, APP.T, fc, soilVal);
+  } catch(e) {
+    alert('FPE Engine error: ' + e.message); return;
+  }
+
+  if (nu === 'n') { APP.fn = result.FN; APP.urea = result.urea; }
+  if (nu === 'p') { APP.fp = result.FP; APP.ssp  = result.ssp;  }
+  if (nu === 'k') { APP.fk = result.FK; APP.mop  = result.mop;  }
+  APP[nu+'Done'] = true;
+  updateChips();
+  updateGenBtn();
+
+  /* Render result card */
+  const cfg = {
+    n:{ bg:'#69F0AE', fg:'#1B2E1B', label:'N Result', fert:'Urea',  valCls:'text-primary'   },
+    p:{ bg:'#cfe5ff', fg:'#001d34', label:'P Result', fert:'SSP',   valCls:'text-[#00598f]' },
+    k:{ bg:'#FFCC80', fg:'#E65100', label:'K Result', fert:'MOP',   valCls:'text-[#E65100]' },
+  }[nu];
+
+  const el = document.getElementById(nu+'-result');
+  const nutVal  = nu==='n' ? result.FN  : nu==='p' ? result.FP  : result.FK;
+  const fertVal = nu==='n' ? result.urea: nu==='p' ? result.ssp : result.mop;
+  el.innerHTML = `
+    <div class="bg-surface-container rounded-xl border border-[#E8F0E8] p-4">
+      <div class="grid grid-cols-2 gap-4 mb-3">
+        <div>
+          <span class="inline-flex items-center px-2 py-0.5 rounded-md font-bold font-data-mono text-[12px] mb-2"
+            style="background:${cfg.bg};color:${cfg.fg}">${cfg.label}</span>
+          <p class="font-label-caps text-label-caps text-on-surface-variant mb-0.5">NUTRIENT DOSE</p>
+          <p class="font-data-mono text-[20px] font-bold ${cfg.valCls}">${nutVal.toFixed(1)} kg/ha</p>
+        </div>
+        <div>
+          <p class="font-label-caps text-label-caps text-on-surface-variant mb-0.5 mt-7">${cfg.fert} REQUIRED</p>
+          <p class="font-data-mono text-[20px] font-bold text-on-surface">${fertVal.toFixed(1)} kg/ha</p>
+        </div>
+      </div>
+      <div class="pt-3 border-t border-[#E8F0E8]">
+        <p class="font-label-caps text-label-caps text-on-surface-variant mb-1.5">EQUATION</p>
+        <code class="font-data-mono text-[12px] text-on-surface bg-surface-container-high px-3 py-2 rounded-lg block leading-relaxed break-all">${escHtml(result.eq)}</code>
+      </div>
+    </div>`;
+  el.classList.remove('hidden');
+
+  /* Auto-advance accordion */
+  if (nu === 'n' && !APP.pDone) {
+    document.getElementById('acc-n').removeAttribute('open');
+    document.getElementById('acc-p').setAttribute('open','');
+  } else if (nu === 'p' && !APP.kDone) {
+    document.getElementById('acc-p').removeAttribute('open');
+    document.getElementById('acc-k').setAttribute('open','');
+  }
+}
+
+function updateChips() {
+  const map   = {n:'chip-n', p:'chip-p', k:'chip-k'};
+  const names = {n:'N — Nitrogen', p:'P — Phosphorus', k:'K — Potassium'};
+  ['n','p','k'].forEach(nu => {
+    const el   = document.getElementById(map[nu]);
+    const done = APP[nu+'Done'];
+    el.className = done
+      ? 'chip-done inline-flex items-center gap-1.5 px-3 py-1 rounded-full font-label-caps text-[11px]'
+      : 'chip-pending inline-flex items-center gap-1.5 px-3 py-1 rounded-full font-label-caps text-[11px]';
+    el.textContent = (done ? '✅ ' : '⏳ ') + names[nu];
+  });
+}
+
+function updateGenBtn() {
+  document.getElementById('btn-generate').disabled = !(APP.nDone && APP.pDone && APP.kDone);
+}
+
+/* ─── Build Results ─── */
+function buildResults() {
+  const { crop, T, area, fn, fp, fk, urea, ssp, mop } = APP;
+
+  document.getElementById('r-subtitle').textContent =
+    `${crop} · Target: ${T} q/ha · Area: ${area} ha`;
+
+  setText('r-n-ha',    fn.toFixed(1)   + ' kg/ha');
+  setText('r-urea-ha', urea.toFixed(1) + ' kg/ha');
+  setText('r-urea-total', (urea*area).toFixed(1));
+
+  setText('r-p-ha',    fp.toFixed(1)  + ' kg/ha');
+  setText('r-ssp-ha',  ssp.toFixed(1) + ' kg/ha');
+  setText('r-ssp-total', (ssp*area).toFixed(1));
+
+  setText('r-k-ha',    fk.toFixed(1)  + ' kg/ha');
+  setText('r-mop-ha',  mop.toFixed(1) + ' kg/ha');
+  setText('r-mop-total', (mop*area).toFixed(1));
+
+  /* Reset organic */
+  APP.isOrganic = false;
+  document.getElementById('organic-panel').classList.add('hidden');
+  document.querySelectorAll('input[name="organic"]').forEach(r => { r.checked = r.value==='no'; });
+
+  buildSchedule();
+
+  /* Reset AI panel */
+  document.getElementById('ai-panel').classList.add('hidden');
+  document.getElementById('ai-content').innerHTML = '';
+  document.getElementById('ai-loading-badge').classList.add('hidden');
+}
+
+/* ─── Organic ─── */
+function toggleOrganic(on) {
+  APP.isOrganic = on;
+  const panel = document.getElementById('organic-panel');
+  if (on) {
+    setText('r-fym',  (APP.fn/5).toFixed(2)  + ' t/ha');
+    setText('r-vc',   (APP.fn/15).toFixed(2) + ' t/ha');
+    setText('r-psnc', (APP.fn/29).toFixed(2) + ' t/ha');
+    panel.classList.remove('hidden');
+  } else {
+    panel.classList.add('hidden');
+  }
+}
+
+/* ─── Schedule ─── */
+function buildSchedule() {
+  const { crop, urea, ssp, mop } = APP;
+  const container = document.getElementById('schedule-container');
+  container.innerHTML = '';
+  const isKholar = crop === 'Kholar';
+
+  if (isKholar) {
+    container.appendChild(makeSchedCard({
+      borderCls: 'sched-green',
+      icon: 'compost',
+      title: 'Basal Application',
+      badge: 'At Sowing',
+      lines: [
+        `Urea: ${urea.toFixed(1)} kg/ha (100%)`,
+        `SSP: ${ssp.toFixed(1)} kg/ha (100%)`,
+        `MOP: ${mop.toFixed(1)} kg/ha (100%)`
+      ]
+    }));
+  } else {
+    const u50 = (urea*0.50).toFixed(1);
+    const u25 = (urea*0.25).toFixed(1);
+
+    container.appendChild(makeSchedCard({
+      borderCls: 'sched-green',
+      icon: 'compost',
+      title: 'Basal Application',
+      badge: 'At Sowing',
+      lines: [
+        `Urea: ${u50} kg/ha (50%)`,
+        `SSP: ${ssp.toFixed(1)} kg/ha (100%)`,
+        `MOP: ${mop.toFixed(1)} kg/ha (100%)`
+      ]
+    }));
+    container.appendChild(makeSchedCard({
+      borderCls: 'sched-blue',
+      icon: 'water_drop',
+      title: '1st Top Dressing',
+      badge: '30 DAS',
+      lines: [`Urea: ${u25} kg/ha (25%)`]
+    }));
+    container.appendChild(makeSchedCard({
+      borderCls: 'sched-amber',
+      icon: 'wb_sunny',
+      title: '2nd Top Dressing',
+      badge: '60 DAS',
+      lines: [`Urea: ${u25} kg/ha (25%)`]
+    }));
+  }
+}
+
+function makeSchedCard({ borderCls, icon, title, badge, lines }) {
+  const d = document.createElement('div');
+  d.className = `${borderCls} bg-surface-container-low rounded-lg px-4 py-3 border border-[#E8F0E8]`;
+  d.innerHTML = `
+    <div class="flex items-start gap-3">
+      <span class="material-symbols-outlined text-primary text-[20px] mt-0.5 flex-shrink-0" style="font-variation-settings:'FILL' 1;">${icon}</span>
+      <div class="flex-1 min-w-0">
+        <div class="flex items-center justify-between flex-wrap gap-1 mb-1.5">
+          <span class="font-body-sm text-body-sm font-semibold text-on-surface">${title}</span>
+          <span class="font-label-caps text-[10px] text-on-surface-variant bg-surface-container px-2 py-0.5 rounded">${badge}</span>
+        </div>
+        ${lines.map(l=>`<p class="font-data-mono text-[13px] text-on-surface">${escHtml(l)}</p>`).join('')}
+      </div>
+    </div>`;
+  return d;
+}
+
+/* ─── WhatsApp ─── */
+function shareWhatsApp() {
+  const { crop, T, area, fn, fp, fk, urea, ssp, mop, isOrganic } = APP;
+  let t = `🌾 *Jurivya NE — Fertilizer Recommendation*\n\n`;
+  t += `*Crop:* ${crop}\n*Target Yield:* ${T} q/ha\n*Farm Area:* ${area} ha\n\n`;
+  t += `📊 *NPK Doses (per ha):*\n`;
+  t += `  • N: ${fn.toFixed(1)} kg/ha → Urea: ${urea.toFixed(1)} kg/ha\n`;
+  t += `  • P: ${fp.toFixed(1)} kg/ha → SSP: ${ssp.toFixed(1)} kg/ha\n`;
+  t += `  • K: ${fk.toFixed(1)} kg/ha → MOP: ${mop.toFixed(1)} kg/ha\n\n`;
+  t += `🏗️ *Total for ${area} ha:*\n`;
+  t += `  Urea: ${(urea*area).toFixed(1)} kg | SSP: ${(ssp*area).toFixed(1)} kg | MOP: ${(mop*area).toFixed(1)} kg\n`;
+  if (isOrganic) {
+    t += `\n🌿 *Organic Amendments (per ha):*\n`;
+    t += `  FYM: ${(fn/5).toFixed(2)} t/ha\n`;
+    t += `  Vermicompost: ${(fn/15).toFixed(2)} t/ha\n`;
+    t += `  PSNC: ${(fn/29).toFixed(2)} t/ha\n`;
+  }
+  t += `\n_Generated by Jurivya NE (STCR/FPE methodology)_`;
+  window.open('https://wa.me/?text=' + encodeURIComponent(t), '_blank');
+}
+
+/* ─── AI Summary ─── */
+async function triggerAISummary() {
+  const { crop, T, urea, ssp, mop, isOrganic, fn } = APP;
+  const fym  = isOrganic ? fn/5  : 0;
+  const vc   = isOrganic ? fn/15 : 0;
+  const psnc = isOrganic ? fn/29 : 0;
+
+  const panel   = document.getElementById('ai-panel');
+  const badge   = document.getElementById('ai-loading-badge');
+  const content = document.getElementById('ai-content');
+
+  panel.classList.remove('hidden');
+  badge.classList.remove('hidden');
+  content.innerHTML = '';
+
+  try {
+    const text = await getAISummary(crop, T, urea, ssp, mop, isOrganic, fym, vc, psnc, null);
+    content.innerHTML = markdownToHtml(text);
+  } catch(e) {
+    content.innerHTML = `<p style="color:#b91c1c">Failed to generate summary: ${escHtml(String(e.message))}</p>`;
+  } finally {
+    badge.classList.add('hidden');
+  }
+}
+
+/* ─── Fallback getAISummary (overridden by fpe.js) ─── */
+async function getAISummary(crop, yld, urea, ssp, mop, isOrganic, fym, vc, psnc, extra) {
+  const org = isOrganic
+    ? `\n\n**Organic Amendments**\n- FYM: ${fym.toFixed(2)} t/ha\n- Vermicompost: ${vc.toFixed(2)} t/ha\n- PSNC: ${psnc.toFixed(2)} t/ha`
+    : '';
+  return `## Fertilizer Advisory Summary\n\n**Crop:** ${crop} | **Target Yield:** ${yld} q/ha\n\n### Recommended Doses (per ha)\n- Urea: **${urea.toFixed(1)} kg/ha**\n- SSP: **${ssp.toFixed(1)} kg/ha**\n- MOP: **${mop.toFixed(1)} kg/ha**${org}\n\n### Advisory Notes\nApply fertilizers in recommended splits for maximum nitrogen use efficiency. Ensure adequate soil moisture at the time of top-dressing. Incorporate basal dose before final land preparation.\n\n---\n_Recommendation computed using the STCR/FPE algorithm. Consult your local KVK for site-specific validation._`;
+}
+
+/* ─── Fallback markdownToHtml (overridden by fpe.js if it provides one) ─── */
+function markdownToHtml(md) {
+  if (typeof window._fpeMarkdownToHtml === 'function') return window._fpeMarkdownToHtml(md);
+  let s = md
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g,'<em>$1</em>')
+    .replace(/`(.+?)`/g,'<code>$1</code>')
+    .replace(/^### (.+)$/gm,'<h3>$1</h3>')
+    .replace(/^## (.+)$/gm,'<h2>$1</h2>')
+    .replace(/^# (.+)$/gm,'<h1>$1</h1>')
+    .replace(/^---$/gm,'<hr/>')
+    .replace(/^\s*[-*] (.+)$/gm,'<li>$1</li>');
+  // Wrap consecutive <li> in <ul>
+  s = s.replace(/(<li>[\s\S]*?<\/li>)(\n<li>[\s\S]*?<\/li>)*/g, m => '<ul>' + m + '</ul>');
+  // Paragraphs
+  s = s.replace(/\n{2,}/g,'</p><p>').replace(/\n/g,'<br/>');
+  return '<p>' + s + '</p>';
+}
+
+/* ─── Reset ─── */
+function resetAll() {
+  Object.assign(APP, { nDone:false, pDone:false, kDone:false, fn:0, fp:0, fk:0, urea:0, ssp:0, mop:0, isOrganic:false });
+  document.getElementById('f-crop').selectedIndex = 0;
+  document.getElementById('f-yield').value = '40';
+  document.getElementById('f-area').value  = '1.0';
+  document.getElementById('f-lat').value   = '25.9';
+  document.getElementById('f-lon').value   = '94.3';
+  ['n','p','k'].forEach(nu => {
+    document.querySelector(`input[name="${nu}-mode"][value="fc"]`).checked = true;
+    toggleMode(nu,'fc');
+    const el = document.getElementById(nu+'-result');
+    el.classList.add('hidden'); el.innerHTML = '';
+  });
+  document.getElementById('acc-n').setAttribute('open','');
+  document.getElementById('acc-p').removeAttribute('open');
+  document.getElementById('acc-k').removeAttribute('open');
+  setStep(1);
+}
+
+/* ─── Utility ─── */
+function setText(id, val) { document.getElementById(id).textContent = val; }
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+/* Expose for fpe.js interop */
+window.markdownToHtml = markdownToHtml;
+</script>
+
+<script src="fpe.js"></script>
+<script>
+(function(){
+  // Mobile menu
+  var btn=document.getElementById('mobile-menu-btn');
+  if(btn) btn.addEventListener('click',function(){
+    document.getElementById('mobile-menu').classList.toggle('hidden');
+  });
+  // Show Regional Report link only if navigated from Map View
+  if(sessionStorage.getItem('jurivya_from_map')){
+    var d=document.getElementById('nav-report-link');
+    if(d) d.classList.remove('hidden');
+    var m=document.getElementById('nav-report-mobile');
+    if(m) m.classList.remove('hidden');
+  }
+})();
+</script>
+</body>
+</html>

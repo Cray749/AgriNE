@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Resources | Jurivya NE</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500&amp;family=Outfit:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-fixed-variant": "#005233",
+                        "background": "#ebffe6",
+                        "on-secondary": "#ffffff",
+                        "secondary": "#006c45",
+                        "on-error": "#ffffff",
+                        "primary-fixed-dim": "#88d982",
+                        "primary-container": "#2e7d32",
+                        "on-primary": "#ffffff",
+                        "surface-tint": "#1b6d24",
+                        "on-surface-variant": "#40493d",
+                        "outline-variant": "#bfcaba",
+                        "primary-fixed": "#a3f69c",
+                        "on-error-container": "#93000a",
+                        "surface-container-highest": "#d1e9cc",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-high": "#d7efd2",
+                        "inverse-on-surface": "#dff7da",
+                        "on-tertiary-fixed-variant": "#004a78",
+                        "surface-variant": "#d1e9cc",
+                        "secondary-fixed-dim": "#55de9e",
+                        "surface-container-low": "#e2fadd",
+                        "surface-container": "#ddf5d7",
+                        "on-secondary-container": "#007149",
+                        "on-tertiary-container": "#e9f2ff",
+                        "on-primary-fixed": "#002204",
+                        "on-background": "#0d200e",
+                        "inverse-surface": "#223521",
+                        "on-primary-fixed-variant": "#005312",
+                        "primary": "#0d631b",
+                        "secondary-fixed": "#75fbb8",
+                        "on-secondary-fixed": "#002112",
+                        "tertiary-fixed-dim": "#99cbff",
+                        "error": "#ba1a1a",
+                        "on-tertiary-fixed": "#001d34",
+                        "on-primary-container": "#cbffc2",
+                        "surface-bright": "#ebffe6",
+                        "on-surface": "#0d200e",
+                        "surface": "#ebffe6",
+                        "secondary-container": "#72f8b5",
+                        "tertiary": "#00598f",
+                        "on-tertiary": "#ffffff",
+                        "tertiary-fixed": "#cfe5ff",
+                        "inverse-primary": "#88d982",
+                        "error-container": "#ffdad6",
+                        "tertiary-container": "#0072b6",
+                        "surface-dim": "#c9e1c4",
+                        "outline": "#707a6c"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "24px",
+                        "stack-sm": "8px",
+                        "stack-md": "16px",
+                        "margin-mobile": "16px",
+                        "container-max": "1280px",
+                        "margin-desktop": "48px",
+                        "base": "8px",
+                        "stack-lg": "32px"
+                    },
+                    "fontFamily": {
+                        "headline-lg-mobile": ["Outfit"],
+                        "label-caps": ["Inter"],
+                        "headline-md": ["Outfit"],
+                        "display-lg": ["Outfit"],
+                        "headline-lg": ["Outfit"],
+                        "data-mono": ["JetBrains Mono"],
+                        "body-sm": ["Inter"],
+                        "body-md": ["Inter"],
+                        "body-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-lg-mobile": ["28px", { "lineHeight": "36px", "fontWeight": "600" }],
+                        "label-caps": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "fontWeight": "600" }],
+                        "data-mono": ["14px", { "lineHeight": "20px", "letterSpacing": "0.02em", "fontWeight": "500" }],
+                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            background-color: #ebffe6; /* background */
+            color: #0d200e; /* on-background */
+        }
+    </style>
+</head>
+<body class="pt-[64px] antialiased min-h-screen flex flex-col">
+<!-- TopNavBar - Jurivya NE -->
+<header class="bg-surface/90 backdrop-blur-md fixed top-0 w-full border-b border-outline-variant/30 z-50">
+  <div class="flex justify-between items-center px-4 md:px-12 py-3 max-w-[1280px] mx-auto gap-4">
+    <a href="index.html" class="flex items-center gap-2 flex-shrink-0">
+      <img src="logo.png" alt="Jurivya NE" class="h-10 w-auto object-contain"/>
+    </a>
+    <nav class="hidden md:flex items-center gap-0.5 flex-nowrap">
+      <a class="nav-link px-2.5 py-1.5 rounded-md text-sm text-on-surface-variant hover:text-primary hover:bg-surface-container-low/60 transition-all whitespace-nowrap" href="index.html">Home</a>
+      <a class="nav-link px-2.5 py-1.5 rounded-md text-sm text-on-surface-variant hover:text-primary hover:bg-surface-container-low/60 transition-all whitespace-nowrap" href="recommendation.html">Recommendation</a>
+      <a class="nav-link px-2.5 py-1.5 rounded-md text-sm text-on-surface-variant hover:text-primary hover:bg-surface-container-low/60 transition-all whitespace-nowrap" href="science.html">Science</a>
+      <a class="nav-link px-2.5 py-1.5 rounded-md text-sm text-on-surface-variant hover:text-primary hover:bg-surface-container-low/60 transition-all whitespace-nowrap" href="features.html">Features</a>
+      <a class="nav-link px-2.5 py-1.5 rounded-md text-sm text-on-surface-variant hover:text-primary hover:bg-surface-container-low/60 transition-all whitespace-nowrap" href="advisory.html">Advisory</a>
+      <a class="nav-link px-2.5 py-1.5 rounded-md text-sm text-on-surface-variant hover:text-primary hover:bg-surface-container-low/60 transition-all whitespace-nowrap" href="maps.html">Map View</a>
+      <!-- Resources dropdown -->
+      <div class="relative group">
+        <button class="nav-link px-2.5 py-1.5 rounded-md text-sm text-on-surface-variant hover:text-primary hover:bg-surface-container-low/60 transition-all whitespace-nowrap flex items-center gap-1">
+          Resources <span class="material-symbols-outlined" style="font-size:14px;line-height:1;">expand_more</span>
+        </button>
+        <div class="absolute top-full left-0 mt-1 w-44 bg-surface-container-lowest border border-outline-variant/30 rounded-xl shadow-lg py-1 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+          <a href="markets.html" class="flex items-center gap-2 px-4 py-2.5 text-sm text-on-surface-variant hover:text-primary hover:bg-surface-container-low transition-colors whitespace-nowrap">
+            <span class="material-symbols-outlined" style="font-size:16px;">storefront</span>Markets
+          </a>
+          <a href="analytics.html" class="flex items-center gap-2 px-4 py-2.5 text-sm text-on-surface-variant hover:text-primary hover:bg-surface-container-low transition-colors whitespace-nowrap">
+            <span class="material-symbols-outlined" style="font-size:16px;">analytics</span>Analytics
+          </a>
+          <a href="resources.html" class="flex items-center gap-2 px-4 py-2.5 text-sm text-on-surface-variant hover:text-primary hover:bg-surface-container-low transition-colors whitespace-nowrap">
+            <span class="material-symbols-outlined" style="font-size:16px;">library_books</span>All Resources
+          </a>
+        </div>
+      </div>
+      <!-- Regional Report – hidden until triggered from Map View -->
+      <a id="nav-report-link" class="nav-link px-2.5 py-1.5 rounded-md text-sm text-primary font-bold bg-[#69F0AE]/20 hover:bg-[#69F0AE]/40 transition-all whitespace-nowrap hidden" href="report.html">Regional Report</a>
+    </nav>
+    <div class="flex items-center gap-2 flex-shrink-0">
+      <a href="download.html" class="hidden md:flex bg-[#69F0AE] text-[#1B2E1B] px-4 py-2 rounded-full text-xs font-bold items-center gap-1.5 hover:-translate-y-0.5 transition-transform shadow-sm whitespace-nowrap">
+        <span class="material-symbols-outlined" style="font-size:14px;font-variation-settings:'FILL' 1;">android</span>
+        Download App
+      </a>
+      <button id="mobile-menu-btn" class="md:hidden text-primary p-1">
+        <span class="material-symbols-outlined">menu</span>
+      </button>
+    </div>
+  </div>
+  <!-- Mobile menu -->
+  <div id="mobile-menu" class="hidden md:hidden bg-surface border-t border-outline-variant/20 px-4 py-3 space-y-1">
+    <a href="index.html" class="block py-2 text-on-surface-variant hover:text-primary">Home</a>
+    <a href="recommendation.html" class="block py-2 text-on-surface-variant hover:text-primary">Recommendation</a>
+    <a href="science.html" class="block py-2 text-on-surface-variant hover:text-primary">Science &amp; Methodology</a>
+    <a href="features.html" class="block py-2 text-on-surface-variant hover:text-primary">Features</a>
+    <a href="advisory.html" class="block py-2 text-on-surface-variant hover:text-primary">Advisory</a>
+    <a href="maps.html" class="block py-2 text-on-surface-variant hover:text-primary">Map View</a>
+    <a href="markets.html" class="block py-2 text-on-surface-variant hover:text-primary">Markets</a>
+    <a href="analytics.html" class="block py-2 text-on-surface-variant hover:text-primary">Analytics</a>
+    <a href="resources.html" class="block py-2 text-on-surface-variant hover:text-primary">Resources</a>
+    <a id="nav-report-mobile" href="report.html" class="hidden py-2 text-primary font-bold block">Regional Report</a>
+    <a href="download.html" class="block py-2 text-secondary font-bold">Download App</a>
+  </div>
+</header>
+
+<!-- Search & Filter Bar -->
+<section class="bg-surface-container-lowest border border-outline-variant/50 rounded-xl p-4 flex flex-col md:flex-row gap-4 items-center shadow-sm">
+<div class="relative w-full md:flex-1">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline" data-icon="search">search</span>
+<input class="w-full bg-surface-container-lowest border-b-2 border-outline-variant focus:border-primary border-t-0 border-x-0 rounded-none px-12 py-3 font-body-md text-body-md text-on-surface focus:ring-0 transition-colors placeholder:text-outline-variant" placeholder="Search research, papers, schemes..." type="text"/>
+</div>
+<div class="flex gap-2 w-full md:w-auto overflow-x-auto pb-2 md:pb-0 scrollbar-hide">
+<button class="whitespace-nowrap px-4 py-2 rounded-lg bg-surface-container-highest text-on-surface font-body-md text-body-md hover:bg-surface-variant transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-sm" data-icon="tune">tune</span> Filters
+                </button>
+<button class="whitespace-nowrap px-4 py-2 rounded-full border border-outline-variant text-on-surface font-body-sm text-body-sm hover:bg-surface-container-low transition-colors">Soil Science</button>
+<button class="whitespace-nowrap px-4 py-2 rounded-full border border-outline-variant text-on-surface font-body-sm text-body-sm hover:bg-surface-container-low transition-colors">Market Reports</button>
+<button class="whitespace-nowrap px-4 py-2 rounded-full border border-outline-variant text-on-surface font-body-sm text-body-sm hover:bg-surface-container-low transition-colors">Government Schemes</button>
+</div>
+</section>
+<!-- Bento Grid / Resources -->
+<section class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<!-- Featured Resource (Spans more columns) -->
+<article class="md:col-span-8 bg-surface-container-lowest rounded-xl border border-outline-variant/50 overflow-hidden group hover:shadow-md transition-all duration-300 flex flex-col md:flex-row">
+<div class="md:w-2/5 h-48 md:h-auto bg-surface-variant relative overflow-hidden">
+<img alt="Soil sample" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A macro shot of rich, dark loamy soil cradled in a farmer's cupped hands against a blurred backdrop of a lush green agricultural field. High-key natural lighting emphasizes the organic texture of the earth. The aesthetic is clean, vibrant, and rooted in eco-minimalism, conveying trust and vitality in a Northeast Indian farming context." src="https://images.unsplash.com/photo-1589923188900-85dae523342b?auto=format&fit=crop&w=1200&q=80"/>
+<div class="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full flex items-center gap-1 font-label-caps text-label-caps text-secondary shadow-sm">
+<span class="material-symbols-outlined text-sm" data-icon="science">science</span>
+                        ICAR Standard
+                    </div>
+</div>
+<div class="md:w-3/5 p-6 flex flex-col justify-between">
+<div>
+<div class="flex items-center gap-2 mb-3">
+<span class="bg-[#69F0AE]/20 text-[#1b6d24] px-2 py-1 rounded font-data-mono text-[12px] uppercase tracking-wider">Soil Health</span>
+<span class="text-outline text-body-sm font-body-sm flex items-center gap-1"><span class="material-symbols-outlined text-sm" data-icon="calendar_today">calendar_today</span> Oct 2023</span>
+</div>
+<h2 class="font-headline-md text-headline-md text-on-surface mb-2 group-hover:text-primary transition-colors">Optimizing Nitrogen Retention in Acidic Soils of Northeast India</h2>
+<p class="font-body-md text-body-md text-on-surface-variant line-clamp-3">A comprehensive review of organic amendments and their impact on nitrogen volatility in the highly leached acidic soils prevalent in the Brahmaputra valley. Includes empirical data from 20 field stations.</p>
+</div>
+<div class="mt-6 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-surface-container-highest flex items-center justify-center text-primary font-bold text-sm">JS</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Dr. J. Sharma</span>
+</div>
+<button class="text-primary hover:text-surface-tint font-body-md text-body-md flex items-center gap-1 transition-colors">
+                            Read Paper <span class="material-symbols-outlined" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</div>
+</article>
+<!-- Secondary Resource -->
+<article class="md:col-span-4 bg-surface-container-lowest rounded-xl border border-outline-variant/50 p-6 flex flex-col hover:-translate-y-1 transition-transform duration-300">
+<div class="flex justify-between items-start mb-4">
+<div class="bg-surface-container p-3 rounded-lg text-primary">
+<span class="material-symbols-outlined" data-icon="description">description</span>
+</div>
+<span class="bg-[#0072b6]/10 text-[#0072b6] px-2 py-1 rounded font-data-mono text-[12px] uppercase tracking-wider">Policy</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-2">PM-Kisan Scheme Guidelines 2024</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6 flex-grow">Updated operational guidelines for the Pradhan Mantri Kisan Samman Nidhi scheme, detailing eligibility criteria and application workflows for regional officers.</p>
+<div class="pt-4 border-t border-outline-variant/30 flex justify-between items-center">
+<span class="font-body-sm text-body-sm text-outline flex items-center gap-1"><span class="material-symbols-outlined text-sm" data-icon="download">download</span> 2.4 MB PDF</span>
+<button class="text-primary hover:bg-surface-container-low p-2 rounded-full transition-colors"><span class="material-symbols-outlined" data-icon="file_download">file_download</span></button>
+</div>
+</article>
+<!-- Video Resource -->
+<article class="md:col-span-4 bg-surface-container-lowest rounded-xl border border-outline-variant/50 overflow-hidden flex flex-col group">
+<div class="h-48 relative overflow-hidden bg-surface-variant">
+<img alt="Tractor in field" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A wide, bright shot of a modern tractor working a verdant agricultural field under a clear blue sky. The composition emphasizes precision farming technology integrating with natural landscapes. The color palette is vibrant greens and earthy browns, fitting an eco-minimalist SaaS platform for agriculture." src="https://images.unsplash.com/photo-1464226184884-fa280b87c399?auto=format&fit=crop&w=1200&q=80"/>
+<div class="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors flex items-center justify-center">
+<div class="w-12 h-12 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center text-primary shadow-lg">
+<span class="material-symbols-outlined" data-icon="play_arrow">play_arrow</span>
+</div>
+</div>
+<div class="absolute bottom-2 right-2 bg-black/70 text-white font-data-mono text-[12px] px-2 py-1 rounded">12:45</div>
+</div>
+<div class="p-5 flex flex-col flex-grow">
+<span class="text-outline text-body-sm font-body-sm mb-2">Educational Video</span>
+<h3 class="font-body-lg text-body-lg font-semibold text-on-surface mb-2">Calibrating Drip Irrigation Systems</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2">A practical walkthrough on setting up and calibrating micro-irrigation systems for optimal water use efficiency.</p>
+</div>
+</article>
+<!-- Data Report Resource -->
+<article class="md:col-span-4 bg-surface-container-lowest rounded-xl border border-outline-variant/50 p-6 flex flex-col relative overflow-hidden group">
+<div class="absolute top-0 left-0 w-full h-1 bg-[#f59e0b]"></div> <!-- Accent border for K (Potassium) / Market Data -->
+<div class="flex justify-between items-start mb-4">
+<div class="bg-surface-container p-3 rounded-lg text-[#f59e0b]">
+<span class="material-symbols-outlined" data-icon="bar_chart">bar_chart</span>
+</div>
+<span class="bg-[#f59e0b]/10 text-[#b45309] px-2 py-1 rounded font-data-mono text-[12px] uppercase tracking-wider">Market Data</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-2">Q3 Commodity Price Trends</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6 flex-grow">Analysis of price fluctuations for major cash crops in the Assam region, incorporating meteorological impact data.</p>
+<div class="pt-4 border-t border-outline-variant/30 flex justify-between items-center">
+<span class="font-body-sm text-body-sm text-outline flex items-center gap-1"><span class="material-symbols-outlined text-sm" data-icon="insert_drive_file">insert_drive_file</span> CSV Dataset</span>
+<button class="text-primary hover:bg-surface-container-low p-2 rounded-full transition-colors"><span class="material-symbols-outlined" data-icon="arrow_forward">arrow_forward</span></button>
+</div>
+</article>
+<!-- Academic Resource -->
+<article class="md:col-span-4 bg-surface-container-lowest rounded-xl border border-outline-variant/50 p-6 flex flex-col hover:-translate-y-1 transition-transform duration-300">
+<div class="flex justify-between items-start mb-4">
+<div class="bg-surface-container p-3 rounded-lg text-primary">
+<span class="material-symbols-outlined" data-icon="menu_book">menu_book</span>
+</div>
+<span class="bg-[#69F0AE]/20 text-[#1b6d24] px-2 py-1 rounded font-data-mono text-[12px] uppercase tracking-wider">Research</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-2">Mycorrhizal Fungi in Tea Plantations</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6 flex-grow">A study on the symbiotic relationships enhancing nutrient uptake in mature Camellia sinensis root systems.</p>
+<div class="pt-4 border-t border-outline-variant/30 flex justify-between items-center">
+<span class="font-body-sm text-body-sm text-outline flex items-center gap-1">Peer Reviewed</span>
+<button class="text-primary hover:text-surface-tint font-body-sm text-body-sm font-semibold transition-colors">View Abstract</button>
+</div>
+</article>
+</section>
+<!-- Pagination -->
+<div class="flex justify-center items-center gap-2 mt-8">
+<button class="p-2 rounded-lg text-outline hover:bg-surface-container-lowest transition-colors disabled:opacity-50"><span class="material-symbols-outlined" data-icon="chevron_left">chevron_left</span></button>
+<button class="w-10 h-10 rounded-lg bg-primary text-on-primary font-body-md text-body-md font-semibold flex items-center justify-center">1</button>
+<button class="w-10 h-10 rounded-lg bg-surface-container-lowest text-on-surface border border-outline-variant/50 hover:bg-surface-container-low font-body-md text-body-md flex items-center justify-center transition-colors">2</button>
+<button class="w-10 h-10 rounded-lg bg-surface-container-lowest text-on-surface border border-outline-variant/50 hover:bg-surface-container-low font-body-md text-body-md flex items-center justify-center transition-colors">3</button>
+<span class="text-outline mx-1">...</span>
+<button class="w-10 h-10 rounded-lg bg-surface-container-lowest text-on-surface border border-outline-variant/50 hover:bg-surface-container-low font-body-md text-body-md flex items-center justify-center transition-colors">12</button>
+<button class="p-2 rounded-lg text-on-surface hover:bg-surface-container-lowest transition-colors"><span class="material-symbols-outlined" data-icon="chevron_right">chevron_right</span></button>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container font-body-sm text-body-sm font-label-caps text-label-caps full-width mt-stack-lg border-t border-outline-variant flat no shadows transition-all duration-300 ease-in-out px-margin-mobile md:px-margin-desktop py-stack-lg w-full">
+<div class="max-w-container-max mx-auto grid grid-cols-1 md:grid-cols-4 gap-gutter">
+<div class="col-span-1 md:col-span-1 mb-6 md:mb-0">
+<a href="index.html" class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed flex items-center gap-2"><span class="material-symbols-outlined text-[#69F0AE]" style="font-variation-settings:'FILL' 1;">eco</span>Jurivya NE</a>
+<p class="text-on-surface-variant">© 2024 Jurivya NE Agricultural Platforms. Rooted in Northeast India.</p>
+</div>
+<div class="col-span-1 flex flex-col gap-3">
+<a class="text-on-surface-variant hover:text-secondary transition-colors hover:underline decoration-secondary underline-offset-4" href="index.html">Science &amp; Methodology</a>
+<a class="text-on-surface-variant hover:text-secondary transition-colors hover:underline decoration-secondary underline-offset-4" href="index.html">Features</a>
+</div>
+<div class="col-span-1 flex flex-col gap-3">
+<a class="text-on-surface-variant hover:text-secondary transition-colors hover:underline decoration-secondary underline-offset-4" href="index.html">Regional Insights</a>
+<a class="text-primary font-bold hover:underline decoration-secondary underline-offset-4" href="index.html">Research Papers</a>
+</div>
+<div class="col-span-1 flex flex-col gap-3">
+<a class="text-on-surface-variant hover:text-secondary transition-colors hover:underline decoration-secondary underline-offset-4" href="index.html">Privacy Policy</a>
+<a class="text-on-surface-variant hover:text-secondary transition-colors hover:underline decoration-secondary underline-offset-4" href="index.html">Contact Support</a>
+</div>
+</div>
+</footer>
+
+<script>
+(function(){
+  // Mobile menu
+  var btn=document.getElementById('mobile-menu-btn');
+  if(btn) btn.addEventListener('click',function(){
+    document.getElementById('mobile-menu').classList.toggle('hidden');
+  });
+  // Show Regional Report link only if navigated from Map View
+  if(sessionStorage.getItem('jurivya_from_map')){
+    var d=document.getElementById('nav-report-link');
+    if(d) d.classList.remove('hidden');
+    var m=document.getElementById('nav-report-mobile');
+    if(m) m.classList.remove('hidden');
+  }
+})();
+</script>
+</body></html>

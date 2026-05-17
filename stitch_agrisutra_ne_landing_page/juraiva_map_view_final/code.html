@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Juraiva - Interactive Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;700&amp;family=Outfit:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-tertiary-fixed-variant": "#004a78",
+                      "surface-container-high": "#d7efd2",
+                      "surface-dim": "#c9e1c4",
+                      "outline-variant": "#bfcaba",
+                      "tertiary-fixed": "#cfe5ff",
+                      "secondary-container": "#72f8b5",
+                      "background": "#ebffe6",
+                      "primary-fixed-dim": "#88d982",
+                      "surface-container": "#ddf5d7",
+                      "error-container": "#ffdad6",
+                      "on-tertiary": "#ffffff",
+                      "on-primary-fixed": "#002204",
+                      "inverse-surface": "#223521",
+                      "on-error-container": "#93000a",
+                      "inverse-on-surface": "#dff7da",
+                      "on-primary-fixed-variant": "#005312",
+                      "on-secondary-fixed-variant": "#005233",
+                      "error": "#ba1a1a",
+                      "primary-fixed": "#a3f69c",
+                      "on-surface-variant": "#40493d",
+                      "inverse-primary": "#88d982",
+                      "tertiary": "#00598f",
+                      "primary": "#0d631b",
+                      "tertiary-fixed-dim": "#99cbff",
+                      "surface-container-lowest": "#ffffff",
+                      "secondary-fixed": "#75fbb8",
+                      "surface-tint": "#1b6d24",
+                      "surface-bright": "#ebffe6",
+                      "on-secondary": "#ffffff",
+                      "on-background": "#0d200e",
+                      "surface-container-low": "#e2fadd",
+                      "primary-container": "#2e7d32",
+                      "on-surface": "#0d200e",
+                      "secondary": "#006c45",
+                      "on-primary-container": "#cbffc2",
+                      "on-tertiary-fixed": "#001d34",
+                      "surface-variant": "#d1e9cc",
+                      "secondary-fixed-dim": "#55de9e",
+                      "on-secondary-container": "#007149",
+                      "tertiary-container": "#0072b6",
+                      "surface-container-highest": "#d1e9cc",
+                      "on-secondary-fixed": "#002112",
+                      "outline": "#707a6c",
+                      "on-primary": "#ffffff",
+                      "on-tertiary-container": "#e9f2ff",
+                      "surface": "#ebffe6",
+                      "on-error": "#ffffff"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "stack-sm": "8px",
+                      "margin-mobile": "16px",
+                      "gutter": "24px",
+                      "stack-md": "16px",
+                      "margin-desktop": "48px",
+                      "base": "8px",
+                      "stack-lg": "32px",
+                      "container-max": "1280px"
+              },
+              "fontFamily": {
+                      "data-mono": [
+                              "JetBrains Mono"
+                      ],
+                      "label-caps": [
+                              "Inter"
+                      ],
+                      "headline-lg-mobile": [
+                              "Outfit"
+                      ],
+                      "display-lg": [
+                              "Outfit"
+                      ],
+                      "body-md": [
+                              "Inter"
+                      ],
+                      "body-sm": [
+                              "Inter"
+                      ],
+                      "headline-md": [
+                              "Outfit"
+                      ],
+                      "headline-lg": [
+                              "Outfit"
+                      ],
+                      "body-lg": [
+                              "Inter"
+                      ]
+              },
+              "fontSize": {
+                      "data-mono": [
+                              "14px",
+                              {
+                                      "lineHeight": "20px",
+                                      "letterSpacing": "0.02em",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "label-caps": [
+                              "12px",
+                              {
+                                      "lineHeight": "16px",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "headline-lg-mobile": [
+                              "28px",
+                              {
+                                      "lineHeight": "36px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "display-lg": [
+                              "48px",
+                              {
+                                      "lineHeight": "56px",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "24px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "body-sm": [
+                              "14px",
+                              {
+                                      "lineHeight": "20px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-md": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-lg": [
+                              "32px",
+                              {
+                                      "lineHeight": "40px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "400"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+</head>
+<body class="bg-[#FAFEFA] text-on-surface font-body-md antialiased min-h-screen flex flex-col pt-20">
+<!-- TopNavBar -->
+<header class="bg-surface/80 dark:bg-surface-dim/80 backdrop-blur-md fixed top-0 w-full z-50 border-b border-outline-variant/30 dark:border-outline/20">
+<div class="flex justify-between items-center px-margin-desktop py-4 max-w-container-max mx-auto z-50">
+<div class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed tracking-tight">
+                Juraiva
+            </div>
+<nav class="hidden md:flex gap-gutter items-center">
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors hover:bg-surface-container-low/50 dark:hover:bg-surface-container-highest/20 transition-all duration-200 px-3 py-2 rounded-lg font-body-md text-body-md scale-95 active:scale-90 transition-transform" href="#">Home</a>
+<a class="text-primary dark:text-primary-fixed-dim font-bold border-b-2 border-primary dark:border-primary-fixed-dim pb-1 px-3 py-2 rounded-lg font-body-md text-body-md hover:bg-surface-container-low/50 dark:hover:bg-surface-container-highest/20 transition-all duration-200 scale-95 active:scale-90 transition-transform" href="#">Map View</a>
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors hover:bg-surface-container-low/50 dark:hover:bg-surface-container-highest/20 transition-all duration-200 px-3 py-2 rounded-lg font-body-md text-body-md scale-95 active:scale-90 transition-transform" href="#">Recommendation Tool</a>
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors hover:bg-surface-container-low/50 dark:hover:bg-surface-container-highest/20 transition-all duration-200 px-3 py-2 rounded-lg font-body-md text-body-md scale-95 active:scale-90 transition-transform" href="#">Analytics</a>
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors hover:bg-surface-container-low/50 dark:hover:bg-surface-container-highest/20 transition-all duration-200 px-3 py-2 rounded-lg font-body-md text-body-md scale-95 active:scale-90 transition-transform" href="#">Advisory</a>
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors hover:bg-surface-container-low/50 dark:hover:bg-surface-container-highest/20 transition-all duration-200 px-3 py-2 rounded-lg font-body-md text-body-md scale-95 active:scale-90 transition-transform" href="#">Markets</a>
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors hover:bg-surface-container-low/50 dark:hover:bg-surface-container-highest/20 transition-all duration-200 px-3 py-2 rounded-lg font-body-md text-body-md scale-95 active:scale-90 transition-transform" href="#">Resources</a>
+</nav>
+<div class="hidden md:block">
+<button class="font-body-md text-body-md bg-[#69F0AE] text-[#1B2E1B] px-6 py-2 rounded-full font-medium hover:-translate-y-0.5 transition-transform shadow-[0_4px_12px_#2E7D3215]">Sign In</button>
+</div>
+<!-- Mobile Menu Icon (Simplified for static view) -->
+<button class="md:hidden text-primary p-2">
+<span class="material-symbols-outlined">menu</span>
+</button>
+</div>
+</header>
+<main class="flex-grow max-w-container-max mx-auto w-full px-margin-mobile md:px-margin-desktop py-stack-lg flex flex-col gap-stack-lg">
+<!-- Header Section -->
+<div class="flex flex-col gap-stack-sm md:w-2/3">
+<h1 class="font-display-lg text-display-lg text-primary">Regional Map View</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant">Explore agricultural suitability and soil nutrient distribution across Northeast India. Select a region for detailed insights.</p>
+</div>
+<!-- Dashboard Layout Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter items-start">
+<!-- Map Container (Main Area) -->
+<div class="lg:col-span-8 bg-[#FFFFFF] rounded-xl border border-[#E8F0E8] overflow-hidden relative min-h-[500px] flex items-center justify-center p-4"><img alt="Map View of Northeast India" class="w-full h-full object-cover object-center absolute inset-0 z-0 opacity-90" src="https://lh3.googleusercontent.com/aida/ADBb0ugCWdUNDnt5fbkX37EAx1SseLLDl-gLhoXVWEeXS1jPQtcmLKaUKcMFHTN14WLC2ZECE-PCaeIzqlbiLb6XA__me5c4-uhWjgxwFZVLKVWKuKbNYq-eajHgCqAmMsQCasXCX1xlT3sCNW1oCGJkd4S5AUwC-Jy9Gonyq3JaIJsMmBCyVzz_HdduEk8owQEBHGhNkV-BSaPtU6EiDEFWTCcQJPai2wYcX8phWWOkwQ7BT9i4WPdaLLxuIJi3"/>
+<div class="absolute inset-0 z-10 p-gutter flex flex-col justify-between pointer-events-none">
+<div class="flex flex-col gap-stack-sm pointer-events-auto w-max">
+<button class="w-10 h-10 bg-white/85 backdrop-blur-md border border-[#E8F0E8] rounded-lg flex items-center justify-center text-primary hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined">add</span>
+</button>
+<button class="w-10 h-10 bg-white/85 backdrop-blur-md border border-[#E8F0E8] rounded-lg flex items-center justify-center text-primary hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined">remove</span>
+</button>
+<button class="w-10 h-10 bg-white/85 backdrop-blur-md border border-[#E8F0E8] rounded-lg flex items-center justify-center text-primary hover:bg-surface-container transition-colors mt-2">
+<span class="material-symbols-outlined">my_location</span>
+</button>
+</div>
+<div class="bg-white/85 backdrop-blur-md border border-[#E8F0E8] p-stack-md rounded-[16px] pointer-events-auto max-w-[280px]">
+<h3 class="text-label-caps font-label-caps text-on-surface-variant uppercase mb-3">Suitability Legend</h3>
+<ul class="space-y-2">
+<li class="flex items-center gap-2 text-body-sm font-body-sm">
+<span class="w-3 h-3 rounded-full bg-[#2E7D32]"></span> High Suitability
+                        </li>
+<li class="flex items-center gap-2 text-body-sm font-body-sm">
+<span class="w-3 h-3 rounded-full bg-[#69F0AE]"></span> Optimal Nitrogen
+                        </li>
+<li class="flex items-center gap-2 text-body-sm font-body-sm">
+<span class="w-3 h-3 rounded-full bg-[#42A5F5]"></span> Optimal Phosphorus
+                        </li>
+<li class="flex items-center gap-2 text-body-sm font-body-sm">
+<span class="w-3 h-3 rounded-full bg-[#FFA726]"></span> Optimal Potassium
+                        </li>
+</ul>
+</div>
+</div></div>
+<!-- Sidebar (Insights) -->
+<div class="lg:col-span-4 flex flex-col gap-stack-md"><div class="bg-white p-gutter rounded-[16px] border border-[#E8F0E8] shadow-sm flex flex-col h-full mb-stack-md">
+<div class="flex items-center justify-between mb-6">
+<h2 class="text-headline-md font-headline-md text-on-surface">Regional Insights</h2>
+<span class="material-symbols-outlined text-outline">analytics</span>
+</div>
+<div class="bg-surface-container-low rounded-lg p-4 mb-6 border-t-2 border-[#69F0AE]">
+<p class="text-label-caps font-label-caps text-on-surface-variant uppercase mb-1">Selected Region</p>
+<p class="text-body-lg font-body-lg text-primary font-medium">Northeast India Overview</p>
+</div>
+<div class="flex flex-col gap-4 flex-grow">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">landscape</span>
+</div>
+<div>
+<p class="text-label-caps font-label-caps text-on-surface-variant uppercase">Total Arable Land</p>
+<p class="text-body-md font-body-md text-on-surface font-medium">1.2M ha</p>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">eco</span>
+</div>
+<div>
+<p class="text-label-caps font-label-caps text-on-surface-variant uppercase">Primary Crops</p>
+<p class="text-body-md font-body-md text-on-surface font-medium">Maize, Paddy, Tea</p>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">water_drop</span>
+</div>
+<div>
+<p class="text-label-caps font-label-caps text-on-surface-variant uppercase">Avg Annual Rainfall</p>
+<p class="text-body-md font-body-md text-on-surface font-medium">2500 mm</p>
+</div>
+</div>
+</div>
+<a class="mt-8 w-full bg-[#69F0AE] text-[#1B2E1B] py-3 px-4 rounded-lg text-body-md font-body-md font-medium hover:bg-[#5CE0A0] transition-colors hover:-translate-y-[2px] duration-200 flex justify-center items-center gap-2" href="{{DATA:SCREEN:SCREEN_33}}">
+<span class="material-symbols-outlined">summarize</span> Generate Detailed Report
+                </a>
+</div>
+<div class="grid grid-cols-3 gap-2">
+<div class="bg-[#69F0AE] bg-opacity-20 rounded-[12px] p-3 border border-[#69F0AE] border-opacity-30 text-center">
+<p class="text-data-mono font-data-mono text-[#1B2E1B] font-bold">N</p>
+<p class="text-label-caps font-label-caps text-on-surface-variant mt-1">Deficient</p>
+</div>
+<div class="bg-[#42A5F5] bg-opacity-20 rounded-[12px] p-3 border border-[#42A5F5] border-opacity-30 text-center">
+<p class="text-data-mono font-data-mono text-[#001d34] font-bold">P</p>
+<p class="text-label-caps font-label-caps text-on-surface-variant mt-1">Optimal</p>
+</div>
+<div class="bg-[#FFA726] bg-opacity-20 rounded-[12px] p-3 border border-[#FFA726] border-opacity-30 text-center">
+<p class="text-data-mono font-data-mono text-[#4a2e00] font-bold">K</p>
+<p class="text-label-caps font-label-caps text-on-surface-variant mt-1">Surplus</p>
+</div>
+</div></div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="w-full bg-surface-container-low dark:bg-inverse-surface border-t border-outline-variant dark:border-outline mt-auto">
+<div class="flex flex-col md:flex-row justify-between items-center px-margin-desktop py-stack-lg gap-gutter max-w-container-max mx-auto">
+<div class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed">
+                Juraiva
+            </div>
+<p class="font-body-sm text-body-sm text-secondary dark:text-secondary-fixed-dim text-center md:text-left">
+                © 2024 Juraiva. Eco-Minimalism for Northeast India.
+            </p>
+<nav class="flex flex-wrap justify-center gap-6">
+<a class="font-body-sm text-body-sm text-on-surface-variant dark:text-surface-variant hover:text-secondary dark:hover:text-secondary-fixed transition-colors opacity-80 hover:opacity-100 transition-opacity" href="#">Privacy Policy</a>
+<a class="font-body-sm text-body-sm text-on-surface-variant dark:text-surface-variant hover:text-secondary dark:hover:text-secondary-fixed transition-colors opacity-80 hover:opacity-100 transition-opacity" href="#">Terms of Service</a>
+<a class="font-body-sm text-body-sm text-on-surface-variant dark:text-surface-variant hover:text-secondary dark:hover:text-secondary-fixed transition-colors opacity-80 hover:opacity-100 transition-opacity" href="#">Contact Us</a>
+<a class="font-body-sm text-body-sm text-on-surface-variant dark:text-surface-variant hover:text-secondary dark:hover:text-secondary-fixed transition-colors opacity-80 hover:opacity-100 transition-opacity" href="#">Resources</a>
+</nav>
+</div>
+</footer>
+</body></html>

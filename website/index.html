@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Jurivya NE | AI-Powered Fertilizer Advisory for Northeast India</title>
+<meta name="description" content="Jurivya NE uses the STCR/FPE methodology and AI to deliver precise, localized fertilizer recommendations for farmers in Northeast India."/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@400;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      colors: {
+        "surface-container-high": "#d7efd2",
+        "surface-dim": "#c9e1c4",
+        "outline-variant": "#bfcaba",
+        "tertiary-fixed": "#cfe5ff",
+        "secondary-container": "#72f8b5",
+        "background": "#ebffe6",
+        "primary-fixed-dim": "#88d982",
+        "surface-container": "#ddf5d7",
+        "primary-fixed": "#a3f69c",
+        "on-surface-variant": "#40493d",
+        "inverse-primary": "#88d982",
+        "tertiary": "#00598f",
+        "primary": "#0d631b",
+        "tertiary-fixed-dim": "#99cbff",
+        "surface-container-lowest": "#ffffff",
+        "secondary-fixed": "#75fbb8",
+        "surface-tint": "#1b6d24",
+        "surface-bright": "#ebffe6",
+        "on-secondary": "#ffffff",
+        "on-background": "#0d200e",
+        "surface-container-low": "#e2fadd",
+        "primary-container": "#2e7d32",
+        "on-surface": "#0d200e",
+        "secondary": "#006c45",
+        "on-primary-container": "#cbffc2",
+        "surface-variant": "#d1e9cc",
+        "outline": "#707a6c",
+        "on-primary": "#ffffff",
+        "on-tertiary-fixed": "#001d34",
+        "surface": "#ebffe6",
+        "inverse-surface": "#223521",
+        "on-primary-fixed": "#002204"
+      },
+      spacing: {
+        "stack-sm": "8px", "margin-mobile": "16px", "gutter": "24px",
+        "stack-md": "16px", "margin-desktop": "48px", "base": "8px",
+        "stack-lg": "32px", "container-max": "1280px"
+      },
+      fontFamily: {
+        "data-mono": ["JetBrains Mono"], "label-caps": ["Inter"],
+        "display-lg": ["Outfit"], "body-md": ["Inter"], "body-sm": ["Inter"],
+        "headline-md": ["Outfit"], "headline-lg": ["Outfit"], "body-lg": ["Inter"]
+      },
+      fontSize: {
+        "data-mono": ["14px", { lineHeight: "20px", letterSpacing: "0.02em", fontWeight: "500" }],
+        "label-caps": ["12px", { lineHeight: "16px", letterSpacing: "0.05em", fontWeight: "700" }],
+        "display-lg": ["48px", { lineHeight: "56px", letterSpacing: "-0.02em", fontWeight: "700" }],
+        "body-md": ["16px", { lineHeight: "24px", fontWeight: "400" }],
+        "body-sm": ["14px", { lineHeight: "20px", fontWeight: "400" }],
+        "headline-md": ["24px", { lineHeight: "32px", fontWeight: "600" }],
+        "headline-lg": ["32px", { lineHeight: "40px", fontWeight: "600" }],
+        "body-lg": ["18px", { lineHeight: "28px", fontWeight: "400" }]
+      }
+    }
+  }
+}
+</script>
+<style>
+  .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+  @keyframes float { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-8px);} }
+  @keyframes pulse-slow { 0%,100%{opacity:1;} 50%{opacity:0.6;} }
+  @keyframes counter { from{opacity:0;transform:translateY(10px);} to{opacity:1;transform:translateY(0);} }
+  .float-anim { animation: float 4s ease-in-out infinite; }
+  .hero-stat { animation: counter 0.6s ease forwards; }
+  .nav-link { transition: all 0.2s ease; }
+</style>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen flex flex-col">
+
+<!-- TopNavBar - Jurivya NE -->
+<header class="bg-surface/90 backdrop-blur-md fixed top-0 w-full border-b border-outline-variant/30 z-50">
+  <div class="flex justify-between items-center px-4 md:px-12 py-3 max-w-[1280px] mx-auto gap-4">
+    <a href="index.html" class="flex items-center gap-2 flex-shrink-0">
+      <img src="logo.png" alt="Jurivya NE" class="h-10 w-auto object-contain"/>
+    </a>
+    <nav class="hidden md:flex items-center gap-0.5 flex-nowrap">
+      <a class="nav-link px-2.5 py-1.5 rounded-md text-sm text-on-surface-variant hover:text-primary hover:bg-surface-container-low/60 transition-all whitespace-nowrap" href="index.html">Home</a>
+      <a class="nav-link px-2.5 py-1.5 rounded-md text-sm text-on-surface-variant hover:text-primary hover:bg-surface-container-low/60 transition-all whitespace-nowrap" href="recommendation.html">Recommendation</a>
+      <a class="nav-link px-2.5 py-1.5 rounded-md text-sm text-on-surface-variant hover:text-primary hover:bg-surface-container-low/60 transition-all whitespace-nowrap" href="science.html">Science</a>
+      <a class="nav-link px-2.5 py-1.5 rounded-md text-sm text-on-surface-variant hover:text-primary hover:bg-surface-container-low/60 transition-all whitespace-nowrap" href="features.html">Features</a>
+      <a class="nav-link px-2.5 py-1.5 rounded-md text-sm text-on-surface-variant hover:text-primary hover:bg-surface-container-low/60 transition-all whitespace-nowrap" href="advisory.html">Advisory</a>
+      <a class="nav-link px-2.5 py-1.5 rounded-md text-sm text-on-surface-variant hover:text-primary hover:bg-surface-container-low/60 transition-all whitespace-nowrap" href="maps.html">Map View</a>
+      <!-- Resources dropdown -->
+      <div class="relative group">
+        <button class="nav-link px-2.5 py-1.5 rounded-md text-sm text-on-surface-variant hover:text-primary hover:bg-surface-container-low/60 transition-all whitespace-nowrap flex items-center gap-1">
+          Resources <span class="material-symbols-outlined" style="font-size:14px;line-height:1;">expand_more</span>
+        </button>
+        <div class="absolute top-full left-0 mt-1 w-44 bg-surface-container-lowest border border-outline-variant/30 rounded-xl shadow-lg py-1 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+          <a href="markets.html" class="flex items-center gap-2 px-4 py-2.5 text-sm text-on-surface-variant hover:text-primary hover:bg-surface-container-low transition-colors whitespace-nowrap">
+            <span class="material-symbols-outlined" style="font-size:16px;">storefront</span>Markets
+          </a>
+          <a href="analytics.html" class="flex items-center gap-2 px-4 py-2.5 text-sm text-on-surface-variant hover:text-primary hover:bg-surface-container-low transition-colors whitespace-nowrap">
+            <span class="material-symbols-outlined" style="font-size:16px;">analytics</span>Analytics
+          </a>
+          <a href="resources.html" class="flex items-center gap-2 px-4 py-2.5 text-sm text-on-surface-variant hover:text-primary hover:bg-surface-container-low transition-colors whitespace-nowrap">
+            <span class="material-symbols-outlined" style="font-size:16px;">library_books</span>All Resources
+          </a>
+        </div>
+      </div>
+      <!-- Regional Report – hidden until triggered from Map View -->
+      <a id="nav-report-link" class="nav-link px-2.5 py-1.5 rounded-md text-sm text-primary font-bold bg-[#69F0AE]/20 hover:bg-[#69F0AE]/40 transition-all whitespace-nowrap hidden" href="report.html">Regional Report</a>
+    </nav>
+    <div class="flex items-center gap-2 flex-shrink-0">
+      <a href="download.html" class="hidden md:flex bg-[#69F0AE] text-[#1B2E1B] px-4 py-2 rounded-full text-xs font-bold items-center gap-1.5 hover:-translate-y-0.5 transition-transform shadow-sm whitespace-nowrap">
+        <span class="material-symbols-outlined" style="font-size:14px;font-variation-settings:'FILL' 1;">android</span>
+        Download App
+      </a>
+      <button id="mobile-menu-btn" class="md:hidden text-primary p-1">
+        <span class="material-symbols-outlined">menu</span>
+      </button>
+    </div>
+  </div>
+  <!-- Mobile menu -->
+  <div id="mobile-menu" class="hidden md:hidden bg-surface border-t border-outline-variant/20 px-4 py-3 space-y-1">
+    <a href="index.html" class="block py-2 text-on-surface-variant hover:text-primary">Home</a>
+    <a href="recommendation.html" class="block py-2 text-on-surface-variant hover:text-primary">Recommendation</a>
+    <a href="science.html" class="block py-2 text-on-surface-variant hover:text-primary">Science &amp; Methodology</a>
+    <a href="features.html" class="block py-2 text-on-surface-variant hover:text-primary">Features</a>
+    <a href="advisory.html" class="block py-2 text-on-surface-variant hover:text-primary">Advisory</a>
+    <a href="maps.html" class="block py-2 text-on-surface-variant hover:text-primary">Map View</a>
+    <a href="markets.html" class="block py-2 text-on-surface-variant hover:text-primary">Markets</a>
+    <a href="analytics.html" class="block py-2 text-on-surface-variant hover:text-primary">Analytics</a>
+    <a href="resources.html" class="block py-2 text-on-surface-variant hover:text-primary">Resources</a>
+    <a id="nav-report-mobile" href="report.html" class="hidden py-2 text-primary font-bold block">Regional Report</a>
+    <a href="download.html" class="block py-2 text-secondary font-bold">Download App</a>
+  </div>
+</header>
+
+
+<main class="flex-grow pt-[64px]">
+
+  <!-- Hero Section -->
+  <section class="max-w-[1280px] mx-auto px-margin-mobile md:px-margin-desktop py-stack-lg md:py-[100px] flex flex-col md:flex-row items-center gap-margin-desktop">
+    <div class="flex-1 space-y-stack-md">
+      <span class="inline-flex items-center gap-2 bg-[#69F0AE]/20 text-primary px-4 py-1.5 rounded-full font-label-caps text-label-caps border border-[#69F0AE]/40">
+        <span class="w-2 h-2 rounded-full bg-[#69F0AE] animate-pulse inline-block"></span>
+        STCR/FPE Algorithm Active · Kiphire, Nagaland
+      </span>
+      <h1 class="font-display-lg text-display-lg text-primary leading-tight">
+        Jurivya NE.<br/>
+        <span class="text-secondary">Precision Rooted<br/>in Tradition.</span>
+      </h1>
+      <p class="font-body-lg text-body-lg text-on-surface-variant max-w-xl">
+        AI-powered fertilizer prescriptions for Northeast India's farmers. Built on ICAR's STCR methodology — blending generations of farming wisdom with high-fidelity agronomic science.
+      </p>
+      <div class="flex flex-wrap gap-stack-md pt-stack-sm">
+        <a href="recommendation.html" id="cta-get-recommendation"
+           class="bg-primary text-on-primary font-bold px-6 py-3 rounded-lg hover:-translate-y-0.5 transition-transform shadow-[0_4px_14px_0_rgba(13,99,27,0.25)] flex items-center gap-2">
+          Get Recommendation
+          <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">arrow_forward</span>
+        </a>
+        <a href="download.html" id="cta-download-app"
+           class="border-2 border-secondary text-secondary font-bold px-6 py-3 rounded-lg hover:-translate-y-0.5 transition-transform flex items-center gap-2">
+          <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">android</span>
+          Download APK
+        </a>
+      </div>
+    </div>
+    <div class="flex-1 relative w-full aspect-[4/3] rounded-xl overflow-hidden border border-outline-variant/30 bg-surface-container-lowest shadow-[0_8px_30px_rgb(0,0,0,0.06)]">
+      <img alt="Northeast India agricultural map visualization" class="w-full h-full object-cover"
+           src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?auto=format&fit=crop&w=1200&q=80"/>
+      <!-- AI Glass Overlay -->
+      <div class="absolute bottom-4 left-4 right-4 bg-surface-container-lowest/85 backdrop-blur-[20px] rounded-lg border border-outline-variant/50 p-4">
+        <div class="flex items-center gap-3">
+          <span class="material-symbols-outlined text-primary" style="font-variation-settings:'FILL' 1;">hub</span>
+          <div>
+            <p class="font-label-caps text-label-caps text-on-surface-variant uppercase">AI Processing Active</p>
+            <p class="font-data-mono text-data-mono text-primary">Kiphire, Nagaland · STCR Engine Ready</p>
+          </div>
+          <span class="ml-auto w-2 h-2 rounded-full bg-[#69F0AE] animate-pulse"></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats Strip -->
+  <section class="bg-surface-container-lowest border-y border-outline-variant/20 py-stack-lg">
+    <div class="max-w-[1280px] mx-auto px-margin-mobile md:px-margin-desktop">
+      <div class="flex flex-col md:flex-row justify-center items-center gap-margin-desktop text-center">
+        <div class="hero-stat">
+          <p class="font-display-lg text-display-lg text-primary">15K+</p>
+          <p class="font-body-md text-body-md text-on-surface-variant">Farmers Reached</p>
+        </div>
+        <div class="w-px h-16 bg-outline-variant/30 hidden md:block"></div>
+        <div class="hero-stat" style="animation-delay:0.1s">
+          <p class="font-display-lg text-display-lg text-primary">8</p>
+          <p class="font-body-md text-body-md text-on-surface-variant">States Covered</p>
+        </div>
+        <div class="w-px h-16 bg-outline-variant/30 hidden md:block"></div>
+        <div class="hero-stat" style="animation-delay:0.2s">
+          <p class="font-display-lg text-display-lg text-primary">3</p>
+          <p class="font-body-md text-body-md text-on-surface-variant">Crops Supported</p>
+        </div>
+        <div class="w-px h-16 bg-outline-variant/30 hidden md:block"></div>
+        <div class="hero-stat" style="animation-delay:0.3s">
+          <p class="font-display-lg text-display-lg text-primary">99%</p>
+          <p class="font-body-md text-body-md text-on-surface-variant">Data Accuracy</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Bento Grid Features -->
+  <section class="max-w-[1280px] mx-auto px-margin-mobile md:px-margin-desktop py-stack-lg">
+    <h2 class="font-headline-lg text-headline-lg text-primary mb-gutter text-center">Intelligent Ecosystem</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+      <!-- Card 1 -->
+      <div class="bg-surface-container-lowest rounded-xl border border-[#E8F0E8] p-6 hover:-translate-y-1 transition-transform duration-300">
+        <span class="material-symbols-outlined text-[#69F0AE] text-[32px] mb-4 block" style="font-variation-settings:'FILL' 1;">science</span>
+        <h3 class="font-headline-md text-headline-md text-on-surface mb-2">Soil Chemistry</h3>
+        <p class="font-body-sm text-body-sm text-on-surface-variant mb-4">Real-time NPK analysis tailored to specific crop requirements and local soil conditions.</p>
+        <div class="flex gap-2 flex-wrap">
+          <span class="bg-[#69F0AE] text-[#1B2E1B] font-data-mono text-data-mono px-2 py-1 rounded text-xs">N: Nitrogen</span>
+          <span class="bg-[#cfe5ff] text-[#001d34] font-data-mono text-data-mono px-2 py-1 rounded text-xs">P: Phosphorus</span>
+          <span class="bg-[#FFCC80] text-[#E65100] font-data-mono text-data-mono px-2 py-1 rounded text-xs">K: Potassium</span>
+        </div>
+      </div>
+      <!-- Card 2 - Wide -->
+      <div class="bg-surface-container-lowest rounded-xl border border-[#E8F0E8] border-t-4 border-t-[#69F0AE] p-6 hover:-translate-y-1 transition-transform duration-300 md:col-span-2">
+        <span class="material-symbols-outlined text-primary text-[32px] mb-4 block" style="font-variation-settings:'FILL' 1;">insights</span>
+        <h3 class="font-headline-md text-headline-md text-on-surface mb-2">Prescriptive Insights</h3>
+        <p class="font-body-sm text-body-sm text-on-surface-variant mb-4">Our AI translates raw soil & field data into actionable fertilizer prescriptions optimised for the Northeastern climate and traditional farming practices.</p>
+        <div class="grid grid-cols-3 gap-3">
+          <div class="bg-surface-container-low rounded-lg p-3 text-center">
+            <p class="font-data-mono text-data-mono text-primary font-bold text-lg">FPE</p>
+            <p class="font-body-sm text-body-sm text-on-surface-variant text-xs mt-1">Algorithm Engine</p>
+          </div>
+          <div class="bg-surface-container-low rounded-lg p-3 text-center">
+            <p class="font-data-mono text-data-mono text-tertiary font-bold text-lg">NASA</p>
+            <p class="font-body-sm text-body-sm text-on-surface-variant text-xs mt-1">Weather Data</p>
+          </div>
+          <div class="bg-surface-container-low rounded-lg p-3 text-center">
+            <p class="font-data-mono text-data-mono text-secondary font-bold text-lg">LLaMA</p>
+            <p class="font-body-sm text-body-sm text-on-surface-variant text-xs mt-1">AI Summary</p>
+          </div>
+        </div>
+      </div>
+      <!-- Card 3 -->
+      <div class="bg-surface-container-lowest rounded-xl border border-[#E8F0E8] border-t-4 border-t-tertiary p-6 hover:-translate-y-1 transition-transform duration-300 md:col-span-2">
+        <span class="material-symbols-outlined text-tertiary text-[32px] mb-4 block" style="font-variation-settings:'FILL' 1;">satellite_alt</span>
+        <h3 class="font-headline-md text-headline-md text-on-surface mb-2">NASA POWER Weather Sync</h3>
+        <p class="font-body-sm text-body-sm text-on-surface-variant mb-4">Continuous integration with NASA POWER meteorological datasets provides real-time climate context for adaptive agronomic recommendations.</p>
+        <div class="flex items-center gap-2 bg-[#cfe5ff]/40 rounded-lg p-3 border border-[#cfe5ff]">
+          <span class="w-2 h-2 rounded-full bg-tertiary animate-pulse"></span>
+          <span class="font-data-mono text-data-mono text-tertiary">Live Telemetry Active · Kiphire Region</span>
+        </div>
+      </div>
+      <!-- Card 4 -->
+      <div class="bg-surface-container-lowest rounded-xl border border-[#E8F0E8] p-6 hover:-translate-y-1 transition-transform duration-300">
+        <span class="material-symbols-outlined text-[#69F0AE] text-[32px] mb-4 block" style="font-variation-settings:'FILL' 1;">eco</span>
+        <h3 class="font-headline-md text-headline-md text-on-surface mb-2">Organic Pathway</h3>
+        <p class="font-body-sm text-body-sm text-on-surface-variant mb-4">FYM, Vermicompost & PSNC alternatives with hybrid organic-inorganic strategies for sustainable farming.</p>
+        <div class="flex gap-2 flex-wrap">
+          <span class="bg-surface-container px-2 py-1 rounded-full font-label-caps text-label-caps text-secondary">FYM</span>
+          <span class="bg-surface-container px-2 py-1 rounded-full font-label-caps text-label-caps text-secondary">Vermicompost</span>
+          <span class="bg-surface-container px-2 py-1 rounded-full font-label-caps text-label-caps text-secondary">PSNC</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section class="bg-surface-container-lowest border-y border-outline-variant/20 py-stack-lg">
+    <div class="max-w-[1280px] mx-auto px-margin-mobile md:px-margin-desktop">
+      <h2 class="font-headline-lg text-headline-lg text-primary mb-2 text-center">How It Works</h2>
+      <p class="font-body-md text-body-md text-on-surface-variant text-center mb-stack-lg max-w-2xl mx-auto">Three simple steps to get a precise, science-backed fertilizer prescription for your farm.</p>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+        <div class="text-center p-6">
+          <div class="w-14 h-14 bg-[#69F0AE]/20 rounded-full flex items-center justify-center mx-auto mb-4 border-2 border-[#69F0AE]/40">
+            <span class="font-data-mono text-data-mono text-primary font-bold text-xl">1</span>
+          </div>
+          <h3 class="font-headline-md text-headline-md text-on-surface mb-2">Enter Farm Details</h3>
+          <p class="font-body-sm text-body-sm text-on-surface-variant">Select your crop (Maize / Kholar), set your target yield, enter farm area and GPS coordinates.</p>
+        </div>
+        <div class="text-center p-6">
+          <div class="w-14 h-14 bg-[#69F0AE]/20 rounded-full flex items-center justify-center mx-auto mb-4 border-2 border-[#69F0AE]/40">
+            <span class="font-data-mono text-data-mono text-primary font-bold text-xl">2</span>
+          </div>
+          <h3 class="font-headline-md text-headline-md text-on-surface mb-2">Input Soil Values</h3>
+          <p class="font-body-sm text-body-sm text-on-surface-variant">Enter soil test values for N, P, K — or simply select your soil fertility class (Low / Medium / High).</p>
+        </div>
+        <div class="text-center p-6">
+          <div class="w-14 h-14 bg-[#69F0AE]/20 rounded-full flex items-center justify-center mx-auto mb-4 border-2 border-[#69F0AE]/40">
+            <span class="font-data-mono text-data-mono text-primary font-bold text-xl">3</span>
+          </div>
+          <h3 class="font-headline-md text-headline-md text-on-surface mb-2">Get Prescription</h3>
+          <p class="font-body-sm text-body-sm text-on-surface-variant">Receive Urea, SSP & MOP quantities, application schedule, organic alternatives & an AI-generated summary.</p>
+        </div>
+      </div>
+      <div class="text-center mt-stack-md">
+        <a href="recommendation.html" class="inline-flex items-center gap-2 bg-primary text-on-primary font-bold px-8 py-3 rounded-lg hover:-translate-y-0.5 transition-transform shadow-[0_4px_14px_0_rgba(13,99,27,0.2)]">
+          Try the Tool Now
+          <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">arrow_forward</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Download App CTA -->
+  <section class="max-w-[1280px] mx-auto px-margin-mobile md:px-margin-desktop py-stack-lg">
+    <div class="bg-primary rounded-2xl p-8 md:p-12 flex flex-col md:flex-row items-center gap-8 relative overflow-hidden">
+      <div class="absolute top-0 right-0 opacity-10">
+        <span class="material-symbols-outlined text-on-primary" style="font-size:200px;font-variation-settings:'FILL' 1;">android</span>
+      </div>
+      <div class="flex-1 relative z-10">
+        <h2 class="font-headline-lg text-headline-lg text-on-primary mb-3">Take Jurivya NE to the Field</h2>
+        <p class="font-body-lg text-body-lg text-on-primary/80 mb-6">Download the Android app for offline access, GPS-aware recommendations, and AI-powered summaries — right from your phone.</p>
+        <div class="flex flex-wrap gap-4">
+          <a href="download.html" id="cta-download-apk"
+             class="inline-flex items-center gap-2 bg-[#69F0AE] text-[#1B2E1B] font-bold px-6 py-3 rounded-lg hover:-translate-y-0.5 transition-transform shadow-lg">
+            <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">download</span>
+            Download APK
+          </a>
+          <a href="science.html" class="inline-flex items-center gap-2 border-2 border-on-primary/30 text-on-primary font-bold px-6 py-3 rounded-lg hover:-translate-y-0.5 transition-transform">
+            Learn the Science
+          </a>
+        </div>
+      </div>
+      <div class="relative z-10 text-center">
+        <div class="w-32 h-32 bg-on-primary/10 rounded-2xl flex items-center justify-center border-2 border-on-primary/20">
+          <span class="material-symbols-outlined text-on-primary" style="font-size:64px;font-variation-settings:'FILL' 1;">android</span>
+        </div>
+        <p class="font-label-caps text-label-caps text-on-primary/70 mt-2">Android APK</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- Footer -->
+<footer class="bg-surface-container-low w-full border-t border-outline-variant mt-auto">
+  <div class="flex flex-col md:flex-row justify-between items-center px-margin-mobile md:px-margin-desktop py-stack-lg gap-gutter max-w-[1280px] mx-auto">
+    <div>
+      <div class="font-headline-md text-headline-md font-bold text-primary mb-1">Jurivya NE</div>
+      <p class="font-body-sm text-body-sm text-on-surface-variant">Built by ICAR · Powered by STCR Science</p>
+    </div>
+    <ul class="flex flex-wrap gap-4 justify-center">
+      <li><a href="index.html" class="font-body-sm text-body-sm text-on-surface-variant hover:text-secondary transition-colors">Home</a></li>
+      <li><a href="recommendation.html" class="font-body-sm text-body-sm text-on-surface-variant hover:text-secondary transition-colors">Recommendation Tool</a></li>
+      <li><a href="science.html" class="font-body-sm text-body-sm text-on-surface-variant hover:text-secondary transition-colors">Science</a></li>
+      <li><a href="features.html" class="font-body-sm text-body-sm text-on-surface-variant hover:text-secondary transition-colors">Features</a></li>
+      <li><a href="download.html" class="font-body-sm text-body-sm text-on-surface-variant hover:text-secondary transition-colors">Download</a></li>
+    </ul>
+    <p class="font-body-sm text-body-sm text-on-surface-variant">© 2024 Jurivya NE. Eco-Minimalism for Northeast India.</p>
+  </div>
+</footer>
+
+<script>
+  // Mobile menu toggle
+  document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+    document.getElementById('mobile-menu').classList.toggle('hidden');
+  });
+</script>
+<script>
+(function(){
+  // Mobile menu
+  var btn=document.getElementById('mobile-menu-btn');
+  if(btn) btn.addEventListener('click',function(){
+    document.getElementById('mobile-menu').classList.toggle('hidden');
+  });
+  // Show Regional Report link only if navigated from Map View
+  if(sessionStorage.getItem('jurivya_from_map')){
+    var d=document.getElementById('nav-report-link');
+    if(d) d.classList.remove('hidden');
+    var m=document.getElementById('nav-report-mobile');
+    if(m) m.classList.remove('hidden');
+  }
+})();
+</script>
+</body>
+</html>

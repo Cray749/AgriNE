@@ -18,18 +18,22 @@ Critical rules (from manual Part 11):
 """
 
 from fastapi import APIRouter, HTTPException
-from backend.models.schemas import (
+from ..models.schemas import (
     RecommendRequest,
     RecommendResponse,
     NutrientResult,
     ApplicationScheduleItem,
+    OrganicAlternatives,
+    WeatherSummary,
 )
-from backend.fpe_engine import FPEEngine
-from backend.nutrient_utils import (
+from ..fpe_engine import FPEEngine
+from ..nutrient_utils import (
     get_nitrogen_details,
     get_phosphorus_details,
     get_potassium_details,
 )
+from ..output_enricher import enrich_output
+from ..input_enricher import get_weather_context
 import uuid
 from datetime import datetime, timezone
 
@@ -125,23 +129,37 @@ def get_recommendation(req: RecommendRequest) -> RecommendResponse:
             detail=f"Potassium computation failed: {exc}",
         )
 
-    # ── STEP 3: Enrich with human-readable details (nutrient_utils) ────────────
+    # ── STEP 3: Clamp negative FPE values to 0 (CRITICAL — prevents UI crash) ──
+    # output_enricher.enrich_output clamps all negative kg values to 0.0.
+    # Negative values can occur on very high-fertility soils — scientifically
+    # valid (no fertilizer needed) but would crash the Flutter card layout.
+    fn_clamped, fp_clamped, fk_clamped, _ = enrich_output(
+        n_res["FN"], p_res["FP"], k_res["FK"]
+    )
+    n_res["FN"]        = fn_clamped
+    n_res["urea_kg_ha"] = round(fn_clamped / 0.46, 2)
+    p_res["FP"]        = fp_clamped
+    p_res["ssp_kg_ha"]  = round(fp_clamped / 0.16, 2)
+    k_res["FK"]        = fk_clamped
+    k_res["mop_kg_ha"]  = round(fk_clamped / 0.60, 2)
+
+    # ── STEP 4: Enrich with human-readable details (nutrient_utils) ────────────
     # These functions return why / schedule / improvement / conversion strings.
     n_details = get_nitrogen_details(n_res["FN"], n_res["urea_kg_ha"])
     p_details = get_phosphorus_details(p_res["FP"], p_res["ssp_kg_ha"])
     k_details = get_potassium_details(k_res["FK"], k_res["mop_kg_ha"])
 
-    # ── STEP 4: Resolve final fertility class for UI display ────────────────────
+    # ── STEP 5: Resolve final fertility class for UI display ────────────────────
     n_fc = _get_fertility_class(req.nitrogen_input, crop, "N")
     p_fc = _get_fertility_class(req.phosphorus_input, crop, "P")
     k_fc = _get_fertility_class(req.potassium_input, crop, "K")
 
-    # ── STEP 5: Extract commercial product amounts ──────────────────────────────
-    urea = n_res["urea_kg_ha"]   # Urea kg/ha
-    ssp  = p_res["ssp_kg_ha"]    # SSP  kg/ha
-    mop  = k_res["mop_kg_ha"]    # MOP  kg/ha
+    # ── STEP 6: Extract commercial product amounts ──────────────────────────────
+    urea = n_res["urea_kg_ha"]   # Urea kg/ha (clamped ≥ 0)
+    ssp  = p_res["ssp_kg_ha"]    # SSP  kg/ha (clamped ≥ 0)
+    mop  = k_res["mop_kg_ha"]    # MOP  kg/ha (clamped ≥ 0)
 
-    # ── STEP 6: Build application schedule ─────────────────────────────────────
+    # ── STEP 7: Build application schedule ─────────────────────────────────────
     # Rule:  Urea → 50% basal + 25% at 30 DAS + 25% at 60 DAS
     #        SSP  → 100% basal (phosphorus is immobile, always basal)
     #        MOP  → 100% basal
@@ -149,28 +167,96 @@ def get_recommendation(req: RecommendRequest) -> RecommendResponse:
     urea_30_das   = round(urea * 0.25, 1)
     urea_60_das   = round(urea * 0.25, 1)
 
-    application_schedule = [
-        ApplicationScheduleItem(
-            timing="At Sowing (Basal)",
-            description=(
-                f"Apply all SSP ({ssp} kg/ha)  +  All MOP ({mop} kg/ha)"
-                f"  +  {urea_basal} kg/ha Urea"
+    if crop == "Maize":
+        application_schedule = [
+            ApplicationScheduleItem( 
+                timing="50% nitrogen as basal (During final land preparation)",
+                description=(
+                    f"Apply all SSP ({ssp} kg/ha)  +  All MOP ({mop} kg/ha)"
+                    f"  +  {urea_basal} kg/ha Urea"
+                ),
+                days_after_sowing=0,
             ),
-            days_after_sowing=0,
-        ),
-        ApplicationScheduleItem(
-            timing="30 Days After Sowing",
-            description=f"{urea_30_das} kg/ha Urea (First top-dressing)",
-            days_after_sowing=30,
-        ),
-        ApplicationScheduleItem(
-            timing="60 Days After Sowing",
-            description=f"{urea_60_das} kg/ha Urea (Second top-dressing)",
-            days_after_sowing=60,
-        ),
-    ]
+            ApplicationScheduleItem(
+                timing="25% at knee high stage 30 Days after sowing",
+                description=f"{urea_30_das} kg/ha Urea (First top-dressing)",
+                days_after_sowing=30,
+            ),
+            ApplicationScheduleItem(
+                timing="Next 25% at 60 Days after sowing",
+                description=f"{urea_60_das} kg/ha Urea (Second top-dressing)",
+                days_after_sowing=60,
+            ),
+        ]
+    else:
+        application_schedule = [
+            ApplicationScheduleItem(
+                timing="50% nitrogen as basal (During final land preparation)",
+                description=(
+                    f"Apply all SSP ({ssp} kg/ha)  +  All MOP ({mop} kg/ha)"
+                    f"  +  {urea_basal} kg/ha Urea"
+                ),
+                days_after_sowing=0,
+            ),
+            ApplicationScheduleItem(
+                timing="25% at knee high stage 30 Days after sowing",
+                description=f"{urea_30_das} kg/ha Urea (First top-dressing)",
+                days_after_sowing=30,
+            ),
+            ApplicationScheduleItem(
+                timing="Next 25% at 60 Days after sowing",
+                description=f"{urea_60_das} kg/ha Urea (Second top-dressing)",
+                days_after_sowing=60,
+            ),
+        ]
 
-    # ── STEP 7: Assemble and return the full response ───────────────────────────
+    # ── STEP 8: Organic alternatives for Nitrogen (always computed) ────────────
+    # FYM = FN/5, Vermicompost = FN/15, PSNC (enriched compost) = FN/29 (t/ha)
+    fn = fn_clamped
+    organic = OrganicAlternatives(
+        fym_t_ha=round(fn / 5, 2)  if fn > 0 else 0.0,
+        vermicompost_t_ha=round(fn / 15, 2) if fn > 0 else 0.0,
+        psnc_t_ha=round(fn / 29, 2) if fn > 0 else 0.0,
+        nitrogen_offset_kg_ha=fn,
+    )
+
+    # ── STEP 9: NASA POWER weather context (best-effort, never blocks the response) ──
+    weather: WeatherSummary | None = None
+    try:
+        wx = get_weather_context(req.lat or 25.9, req.lon or 94.3)
+        if wx:
+            rain = wx.get('avg_monthly_rainfall_mm', 0) or 0
+            tmax = wx.get('avg_max_temp_c')
+            tmin = wx.get('avg_min_temp_c')
+
+            # Plain-language advice based on rainfall
+            if rain > 80:
+                advice = (
+                    f"Monthly rainfall is {rain} mm — good moisture. "
+                    "Apply basal dose just before sowing. "
+                    "Top-dress Urea when soil is moist but not waterlogged."
+                )
+            elif rain > 30:
+                advice = (
+                    f"Monthly rainfall is {rain} mm — moderate. "
+                    "Irrigate before top-dressing if no rain in 5 days."
+                )
+            else:
+                advice = (
+                    f"Monthly rainfall is {rain} mm — dry conditions. "
+                    "Ensure irrigation before fertilizer application "
+                    "to prevent nutrient burn."
+                )
+            weather = WeatherSummary(
+                avg_monthly_rainfall_mm=rain,
+                avg_max_temp_c=tmax,
+                avg_min_temp_c=tmin,
+                advice=advice,
+            )
+    except Exception:
+        weather = None   # Silently skip — never block the prescription
+
+    # ── STEP 10: Assemble and return the full response ─────────────────────────────
     return RecommendResponse(
         crop_display=CROP_DISPLAY_MAP.get(crop, crop.capitalize()),
         target_yield=T,
@@ -187,7 +273,7 @@ def get_recommendation(req: RecommendRequest) -> RecommendResponse:
             equation_used=n_res["equation"],
             why=n_details["why"],
             schedule=n_details["schedule"],
-            color_hex="#69F0AE",   # kColorN — Mint green (matches theme.dart)
+            color_hex="#69F0AE",
             icon_name="leaf",
         ),
 
@@ -202,7 +288,7 @@ def get_recommendation(req: RecommendRequest) -> RecommendResponse:
             equation_used=p_res["equation"],
             why=p_details["why"],
             schedule=p_details["schedule"],
-            color_hex="#81D4FA",   # kColorP — Sky blue (matches theme.dart)
+            color_hex="#81D4FA",
             icon_name="seed",
         ),
 
@@ -217,11 +303,13 @@ def get_recommendation(req: RecommendRequest) -> RecommendResponse:
             equation_used=k_res["equation"],
             why=k_details["why"],
             schedule=k_details["schedule"],
-            color_hex="#FFCC80",   # kColorK — Warm amber (matches theme.dart)
+            color_hex="#FFCC80",
             icon_name="grain",
         ),
 
         application_schedule=application_schedule,
+        organic_alternatives=organic,
+        weather_summary=weather,
         recommendation_id=str(uuid.uuid4()),
         generated_at=datetime.now(timezone.utc).isoformat(),
     )
