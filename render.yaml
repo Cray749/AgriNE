@@ -56,8 +56,5 @@ services:
   - type: web
     name: jurivya-ne
     env: static
-    plan: free
-    region: oregon
     rootDir: website
-    buildCommand: "" # No build required for static HTML
-    staticPublishPath: ./ # Publish everything inside the `website` directory
+    staticPublishPath: ./
